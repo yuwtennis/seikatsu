@@ -1,0 +1,46 @@
+name: Continuous deployment
+
+on:
+  workflow_call:
+    secrets:
+      DOCKER_REPOS_URL:
+        required: true
+      GOOGLE_WORKLOAD_IDENTITY_PATH:
+        required: true
+      GOOGLE_CD_SERVICE_ACCOUNT:
+        required: true
+
+jobs:
+  deploy:
+    name: Continuous deployment
+    env:
+      DOCKER_REPOS_URL: ${{ secrets.DOCKER_REPOS_URL }}
+      GIT_REV: ${{ github.sha }}
+      GOOGLE_CLOUD_REGION: asia-northeast1
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout project sources
+        uses: actions/checkout@v4
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          build-scan-publish: true
+          build-scan-terms-of-use-url: "https://gradle.com/terms-of-service"
+          build-scan-terms-of-use-agree: "yes"
+      - id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GOOGLE_WORKLOAD_IDENTITY_PATH }}
+          service_account: ${{ secrets.GOOGLE_CD_SERVICE_ACCOUNT }}
+      - name: Login to GAR
+        run: gcloud auth configure-docker asia-northeast1-docker.pkg.dev
+      - name: Build
+        run: ./gradlew dockerPushRemoteRepos
+      - name: Deploy
+        run: |
+          gcloud run jobs update descriptive-analytics \
+            --region $GOOGLE_CLOUD_REGION \
+            --image $DOCKER_REPOS_URL:$GIT_REV

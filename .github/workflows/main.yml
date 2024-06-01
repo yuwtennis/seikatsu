@@ -1,0 +1,16 @@
+name: Build Gradle project
+
+on:
+  push:
+
+jobs:
+  test:
+    uses: ./.github/workflows/test.yml
+  deploy:
+    uses: ./.github/workflows/deploy.yml
+    secrets:
+      DOCKER_REPOS_URL: ${{ secrets.DOCKER_REPOS_URL }}
+      GOOGLE_WORKLOAD_IDENTITY_PATH: ${{ secrets.GOOGLE_WORKLOAD_IDENTITY_PATH }}
+      GOOGLE_CD_SERVICE_ACCOUNT: ${{ secrets.GOOGLE_CD_SERVICE_ACCOUNT }}
+    needs:
+      - test
