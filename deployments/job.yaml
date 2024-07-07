@@ -1,0 +1,18 @@
+apiVersion: run.googleapis.com/v1
+kind: Job
+metadata:
+  name: descriptive-analytics
+spec:
+  template:
+    spec:
+      template:
+        spec:
+          serviceAccountName: "desc-analytics-job"
+          containers:
+            - image: IMAGE:TAG
+              args:
+                - /app/bin/app
+              resources:
+                limits:
+                  cpu: "1"
+                  memory: "512Mi"
