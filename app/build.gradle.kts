@@ -31,6 +31,8 @@ dependencies {
 
     // This dependency is used by the application.
     implementation(libs.guava)
+    implementation(platform("org.apache.beam:beam-sdks-java-google-cloud-platform-bom:2.57.0"))
+    implementation("org.apache.beam:beam-sdks-java-core")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
