@@ -3,25 +3,35 @@
  */
 package org.example;
 
+import org.apache.beam.runners.direct.DirectRunner;
 import org.apache.beam.sdk.Pipeline;
+import org.apache.beam.sdk.options.Default;
+import org.apache.beam.sdk.options.Description;
 import org.apache.beam.sdk.options.PipelineOptionsFactory;
 import org.apache.beam.sdk.options.PipelineOptions;
+import org.apache.beam.sdk.transforms.Create;
+import org.apache.beam.sdk.transforms.MapElements;
+import org.apache.beam.sdk.transforms.SimpleFunction;
 import org.example.dags.Dag;
+import org.example.dags.HelloWorldDag;
 
 public class App {
 
+    public interface DagOptions extends PipelineOptions {
+        @Description("Dag options")
+        @Default.String("HELLOWORLD")
+        String getDagType();
+        void setDagType(String dagType);
+    }
     public static void main(String[] args) {
-        DagType dagType = null;
-        if (args.length > 0) {
-            dagType = DagType.valueOf(args[0]);
-        }
-
-        PipelineOptions options = PipelineOptionsFactory.create();
+        DagOptions options = PipelineOptionsFactory
+                .fromArgs()
+                .withValidation()
+                .as(DagOptions.class);
         Pipeline p = Pipeline.create(options);
 
-        Dag dag = Dispatcher.dispatch(dagType);
-        dag.construct(p);
-
+        Dag dag = Dispatcher.dispatch(DagType.valueOf(options.getDagType()));
+        dag.process(p);
         p.run().waitUntilFinish();
     }
 }

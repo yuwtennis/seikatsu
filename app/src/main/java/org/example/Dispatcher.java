@@ -14,8 +14,14 @@ public class Dispatcher {
      */
     public static Dag dispatch(DagType dagType) {
         Dag d = null;
-        if (Objects.requireNonNull(dagType) == DagType.HELLOWORLD) {
-            d = new HelloWorldDag();
+
+        switch (dagType) {
+            case DagType.HELLOWORLD:
+                d = new HelloWorldDag();
+            case DagType.REALESTATES:
+                d = new HelloWorldDag();
+            default:
+                d = new HelloWorldDag();
         }
 
         return d;
