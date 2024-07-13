@@ -5,7 +5,6 @@
  * For more details on building Java & JVM projects, please refer to https://docs.gradle.org/8.8/userguide/building_java_projects.html in the Gradle documentation.
  */
 
-
 version = "v0.0.1"
 val repositoryUrl: String = System.getenv("DOCKER_REPOS_URL") ?: "myrepos"
 val dockerTag: String = System.getenv("GIT_REV") ?: "${project.version}"
@@ -23,8 +22,11 @@ repositories {
 }
 
 dependencies {
-    // Use JUnit test framework.
-    testImplementation(libs.junit)
+    // Use JUnit Jupiter for testing.
+    testImplementation(libs.junit.jupiter)
+    testCompileOnly("junit:junit:4.13.1")
+    testRuntimeOnly("org.junit.vintage:junit-vintage-engine")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
     // This dependency is used by the application.
     implementation(libs.guava)
@@ -40,14 +42,6 @@ java {
     }
 }
 
-docker {
-    dependsOn(tasks.distTar.get())
-    name = "${rootProject.name}:${dockerTag}"
-    tag("RemoteRepos", "${repositoryUrl}:${dockerTag}")
-    files(tasks.distTar.get().archiveFile)
-    buildArgs(mapOf("ARTIFACT_NAME" to tasks.distTar.get().archiveFileName.get()))
-}
-
 application {
     // Define the main class for the application.
     mainClass = "org.example.App"
@@ -56,4 +50,12 @@ application {
 tasks.named<Test>("test") {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
+}
+
+docker {
+    dependsOn(tasks.distTar.get())
+    name = "${rootProject.name}:${dockerTag}"
+    tag("RemoteRepos", "${repositoryUrl}:${dockerTag}")
+    files(tasks.distTar.get().archiveFile)
+    buildArgs(mapOf("ARTIFACT_NAME" to tasks.distTar.get().archiveFileName.get()))
 }
