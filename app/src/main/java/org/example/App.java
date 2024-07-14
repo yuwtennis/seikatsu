@@ -3,17 +3,12 @@
  */
 package org.example;
 
-import org.apache.beam.runners.direct.DirectRunner;
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.options.Default;
 import org.apache.beam.sdk.options.Description;
 import org.apache.beam.sdk.options.PipelineOptionsFactory;
 import org.apache.beam.sdk.options.PipelineOptions;
-import org.apache.beam.sdk.transforms.Create;
-import org.apache.beam.sdk.transforms.MapElements;
-import org.apache.beam.sdk.transforms.SimpleFunction;
 import org.example.dags.Dag;
-import org.example.dags.HelloWorldDag;
 
 public class App {
 
@@ -30,8 +25,7 @@ public class App {
                 .as(DagOptions.class);
         Pipeline p = Pipeline.create(options);
 
-        Dag dag = Dispatcher.dispatch(DagType.valueOf(options.getDagType()));
+        Dag dag = DagDispatcher.dispatch(DagType.valueOf(options.getDagType()));
         dag.process(p);
-        p.run().waitUntilFinish();
     }
 }

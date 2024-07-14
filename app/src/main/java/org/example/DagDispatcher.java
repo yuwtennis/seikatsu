@@ -3,9 +3,7 @@ package org.example;
 import org.example.dags.Dag;
 import org.example.dags.HelloWorldDag;
 
-import java.util.Objects;
-
-public class Dispatcher {
+public class DagDispatcher {
 
     /***
      * Dispatches with the correct dag to the app client
@@ -19,8 +17,6 @@ public class Dispatcher {
             case DagType.HELLOWORLD:
                 d = new HelloWorldDag();
             case DagType.REALESTATES:
-                d = new HelloWorldDag();
-            default:
                 d = new HelloWorldDag();
         }
 

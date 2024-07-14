@@ -27,12 +27,16 @@ dependencies {
     testCompileOnly("junit:junit:4.13.1")
     testRuntimeOnly("org.junit.vintage:junit-vintage-engine")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testRuntimeOnly("com.fasterxml.jackson.core:jackson-databind:2.16.0")
 
     // This dependency is used by the application.
     implementation(libs.guava)
     implementation(platform("org.apache.beam:beam-sdks-java-google-cloud-platform-bom:2.57.0"))
     implementation("org.apache.beam:beam-sdks-java-core")
     implementation("org.apache.beam:beam-runners-direct-java")
+    implementation("org.hamcrest:hamcrest:2.2")
+    implementation("org.slf4j:slf4j-api:2.0.13")
+    implementation("org.slf4j:slf4j-simple:2.0.13")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
