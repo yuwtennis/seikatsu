@@ -9,17 +9,12 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import static org.example.Utils.asJsonStr;
 import static org.junit.Assert.assertTrue;
 
 public class HelloWorldDagTest {
     public interface TestHWOptions extends TestPipelineOptions, App.DagOptions {}
 
-    private List<String> input;
     private String dagType;
 
     @Rule
@@ -34,7 +29,6 @@ public class HelloWorldDagTest {
                 "--runner=DirectRunner"
         };
         System.setProperty("beamTestPipelineOptions", asJsonStr(pOpts));
-        input = new ArrayList<String>(Arrays.asList("Hello", "World."));
         dagType = "HELLOWORLD";
     }
 
