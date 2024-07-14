@@ -3,11 +3,9 @@ package org.example.dags;
 import org.apache.beam.sdk.testing.NeedsRunner;
 import org.apache.beam.sdk.testing.PAssert;
 import org.apache.beam.sdk.testing.TestPipeline;
-import org.apache.beam.sdk.testing.TestPipelineOptions;
 import org.apache.beam.sdk.transforms.Create;
 import org.apache.beam.sdk.transforms.MapElements;
 import org.apache.beam.sdk.values.PCollection;
-import org.example.App;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -16,9 +14,6 @@ import org.junit.experimental.categories.Category;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import static org.example.Utils.asJsonStr;
-
 
 public class HeloWorldVerticesTest {
 
