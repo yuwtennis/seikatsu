@@ -1,6 +1,6 @@
 package org.example;
 
-import org.example.dags.HelloWorldDag;
+import org.example.dags.helloworld.HelloWorldDag;
 import org.junit.Before;
 import org.junit.Test;
 

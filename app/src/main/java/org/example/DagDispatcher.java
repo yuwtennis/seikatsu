@@ -1,7 +1,7 @@
 package org.example;
 
 import org.example.dags.Dag;
-import org.example.dags.HelloWorldDag;
+import org.example.dags.helloworld.HelloWorldDag;
 
 public class DagDispatcher {
 

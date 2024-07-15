@@ -34,6 +34,8 @@ dependencies {
     implementation(platform("org.apache.beam:beam-sdks-java-google-cloud-platform-bom:2.57.0"))
     implementation("org.apache.beam:beam-sdks-java-core")
     implementation("org.apache.beam:beam-runners-direct-java")
+    implementation("org.apache.beam:beam-sdks-java-io-rrio")
+    implementation("com.google.api-client:google-api-client:2.6.0")
     implementation("org.hamcrest:hamcrest:2.2")
     implementation("org.slf4j:slf4j-api:2.0.13")
     implementation("org.slf4j:slf4j-simple:2.0.13")

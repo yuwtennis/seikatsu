@@ -1,4 +1,4 @@
-package org.example.dags;
+package org.example.dags.helloworld;
 
 import org.apache.beam.sdk.transforms.MapElements;
 import org.apache.beam.sdk.transforms.PTransform;

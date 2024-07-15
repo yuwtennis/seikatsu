@@ -1,8 +1,9 @@
-package org.example.dags;
+package org.example.dags.helloworld;
 
 
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.transforms.Create;
+import org.example.dags.Dag;
 
 public class HelloWorldDag implements Dag {
 
