@@ -36,6 +36,8 @@ dependencies {
     implementation("org.apache.beam:beam-runners-direct-java")
     implementation("org.apache.beam:beam-sdks-java-io-rrio")
     implementation("com.google.api-client:google-api-client:2.6.0")
+    compileOnly("com.google.auto.value:auto-value-annotations:1.11.0")
+    annotationProcessor("com.google.auto.value:auto-value:1.11.0")
     implementation("org.hamcrest:hamcrest:2.2")
     implementation("org.slf4j:slf4j-api:2.0.13")
     implementation("org.slf4j:slf4j-simple:2.0.13")

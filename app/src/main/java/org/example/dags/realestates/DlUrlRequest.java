@@ -8,9 +8,9 @@ import java.io.Serializable;
 
 @DefaultSchema(AutoValueSchema.class)
 @AutoValue
-public abstract class DlUrlRequest implements Serializable {
+abstract class DlUrlRequest implements Serializable {
     static Builder builder() {
-        return AutoValue_DlUrlRequest.Builder();
+        return new AutoValue_DlUrlRequest.Builder();
     }
 
     static DlUrlRequest of(String url) {

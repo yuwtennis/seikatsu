@@ -4,9 +4,10 @@ import com.google.auto.value.AutoValue;
 
 import java.io.Serializable;
 
-public abstract class DlUrlResponse implements Serializable {
+@AutoValue
+abstract class DlUrlResponse implements Serializable {
     static Builder builder() {
-        return AutoValue_DlUrlResponse.Builder();
+        return new AutoValue_DlUrlResponse.Builder();
     }
 
     abstract String getData();
