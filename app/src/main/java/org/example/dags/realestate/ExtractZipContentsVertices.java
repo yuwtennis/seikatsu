@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.nio.charset.Charset;
+import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 public class ExtractZipContentsVertices {
@@ -21,23 +22,22 @@ public class ExtractZipContentsVertices {
 
     static class UnzipFn extends DoFn<KV<String, WebApiHttpResponse>, String> {
         @ProcessElement
-        public void processElement(ProcessContext c) throws IOException {
+        public void processElement(ProcessContext c) throws IOException, Exception {
             KV<String, WebApiHttpResponse> elem = c.element();
-            BufferedReader br = null;
             ByteArrayInputStream bis = new ByteArrayInputStream(elem.getValue().getData());
             ZipInputStream zs = new ZipInputStream(bis);
+            // TODO Should iterate through zip file for expected file
             zs.getNextEntry();
-            br = new BufferedReader(
+
+            BufferedReader br = new BufferedReader(
                     new InputStreamReader(zs, Charset.forName("windows-31j")));
 
             while (br.ready()) {
                 String line = br.readLine();
-                if (line != null && line.startsWith("\"種類")) {
+                if (line.startsWith("\"種類")) {
                     continue;
                 }
-                // FIXME Broken string
                 // TODO Output as RealEstate Entity
-                LOG.info(line);
                 c.output(line);
             }
 
