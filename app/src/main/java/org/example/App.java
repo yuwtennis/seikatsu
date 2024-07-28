@@ -20,7 +20,7 @@ public class App {
     }
     public static void main(String[] args) {
         DagOptions options = PipelineOptionsFactory
-                .fromArgs()
+                .fromArgs(args)
                 .withValidation()
                 .as(DagOptions.class);
         Pipeline p = Pipeline.create(options);
