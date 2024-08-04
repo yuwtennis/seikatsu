@@ -20,7 +20,7 @@ import java.util.zip.ZipInputStream;
 public class ExtractZipContentsVertices {
     static Logger LOG = LoggerFactory.getLogger(ExtractZipContentsVertices.class);
 
-    static class UnzipFn extends DoFn<KV<String, WebApiHttpResponse>, String> {
+    static class UnzipFn extends DoFn<KV<String, WebApiHttpResponse>, RealEstatesXactRec> {
         @ProcessElement
         public void processElement(ProcessContext c) throws IOException, Exception {
             KV<String, WebApiHttpResponse> elem = c.element();
@@ -37,8 +37,7 @@ public class ExtractZipContentsVertices {
                 if (line.startsWith("\"種類")) {
                     continue;
                 }
-                // TODO Output as RealEstate Entity
-                c.output(line);
+                c.output(RealEstatesXactRec.of(line));
             }
 
             zs.close();
@@ -47,9 +46,9 @@ public class ExtractZipContentsVertices {
          }
     }
 
-    public static class Extract extends PTransform<PCollection<String>, PCollection<String>> {
+    public static class Extract extends PTransform<PCollection<String>, PCollection<RealEstatesXactRec>> {
         @Override
-        public PCollection<String> expand(PCollection<String> input) {
+        public PCollection<RealEstatesXactRec> expand(PCollection<String> input) {
             LOG.info("Start extracting zip file contents");
             KvCoder<String, WebApiHttpResponse> respCoder = KvCoder.of(
                     StringUtf8Coder.of(), WebApiHttpResponseCoder.of());
