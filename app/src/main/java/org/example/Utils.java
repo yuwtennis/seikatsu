@@ -36,4 +36,32 @@ public class Utils {
             throw new RuntimeException(e);
         }
     }
+
+    public static String validateStr(String str) {
+        return str.isEmpty() ? Magics.IS_EMPTY.value : str;
+    }
+
+    public static int asInt(String val) {
+        int result = 0 ;
+
+        try {
+            result = Integer.parseInt(val);
+        } catch (NumberFormatException e) {
+            result = Integer.parseInt(Magics.IS_UNEXPECTED_NUMERIC_VAL.value);
+        }
+
+        return result;
+    }
+
+    public static float asFloat(String val) {
+        float result = 0 ;
+
+        try {
+            result = Float.parseFloat(val);
+        } catch (NumberFormatException e) {
+            result = Float.parseFloat(Magics.IS_UNEXPECTED_NUMERIC_VAL.value);
+        }
+
+        return result;
+    }
 }

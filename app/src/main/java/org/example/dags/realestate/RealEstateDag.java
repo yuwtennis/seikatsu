@@ -1,9 +1,13 @@
 package org.example.dags.realestate;
 
+import com.google.api.services.bigquery.model.TableRow;
 import com.google.common.collect.ImmutableList;
 import org.apache.beam.sdk.Pipeline;
+import org.apache.beam.sdk.io.gcp.bigquery.BigQueryIO;
 import org.apache.beam.sdk.transforms.Create;
+import org.apache.beam.sdk.transforms.MapElements;
 import org.apache.beam.sdk.values.PCollection;
+import org.apache.beam.sdk.values.TypeDescriptor;
 import org.example.dags.Dag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,9 +31,24 @@ public class RealEstateDag implements Dag {
                 .apply(new GetDlUrlVertices.DownloadUrl());
 
         // 2. Next get the zip contents
-        dlUrls.apply(new ExtractZipContentsVertices.Extract());
+        PCollection<RealEstatesXactRec> xacts =  dlUrls.apply(new ExtractZipContentsVertices.Extract());
 
         // 3. Insert into Bigquery
+        xacts
+                .apply(
+                        MapElements
+                                .into(TypeDescriptor.of(TableRow.class))
+                                .via((RealEstatesXactRec r)-> {
+                                    assert r != null;
+                                    return r.toTableRow();
+                                }))
+                .apply(
+                    BigQueryIO
+                            .writeTableRows()
+                            .to(RealEstateEnv.FullyQualifiedTblName)
+                            .withCreateDisposition(BigQueryIO.Write.CreateDisposition.CREATE_NEVER)
+                            .withWriteDisposition(BigQueryIO.Write.WriteDisposition.WRITE_TRUNCATE)
+                            .withMethod(BigQueryIO.Write.Method.STORAGE_WRITE_API));
 
         p.run().waitUntilFinish();
     }

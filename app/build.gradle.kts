@@ -36,6 +36,7 @@ dependencies {
     implementation("org.apache.beam:beam-runners-direct-java")
     implementation("org.apache.beam:beam-sdks-java-io-rrio")
     implementation("org.apache.beam:beam-sdks-java-extensions-avro")
+    implementation("org.apache.beam:beam-sdks-java-io-google-cloud-platform")
     implementation("com.google.api-client:google-api-client:2.6.0")
     compileOnly("com.google.auto.value:auto-value-annotations:1.11.0")
     annotationProcessor("com.google.auto.value:auto-value:1.11.0")
