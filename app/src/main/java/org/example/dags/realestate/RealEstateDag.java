@@ -2,6 +2,7 @@ package org.example.dags.realestate;
 
 import com.google.api.services.bigquery.model.TableRow;
 import com.google.common.collect.ImmutableList;
+import org.apache.avro.generic.GenericRecord;
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.io.gcp.bigquery.BigQueryIO;
 import org.apache.beam.sdk.transforms.Create;
@@ -34,21 +35,16 @@ public class RealEstateDag implements Dag {
         PCollection<RealEstatesXactRec> xacts =  dlUrls.apply(new ExtractZipContentsVertices.Extract());
 
         // 3. Insert into Bigquery
-        xacts
-                .apply(
-                        MapElements
-                                .into(TypeDescriptor.of(TableRow.class))
-                                .via((RealEstatesXactRec r)-> {
-                                    assert r != null;
-                                    return r.toTableRow();
-                                }))
-                .apply(
-                    BigQueryIO
-                            .writeTableRows()
-                            .to(RealEstateEnv.FullyQualifiedTblName)
-                            .withCreateDisposition(BigQueryIO.Write.CreateDisposition.CREATE_NEVER)
-                            .withWriteDisposition(BigQueryIO.Write.WriteDisposition.WRITE_TRUNCATE)
-                            .withMethod(BigQueryIO.Write.Method.STORAGE_WRITE_API));
+        xacts.apply(BigQueryIO
+                        .<RealEstatesXactRec>write()
+                        .to(RealEstateEnv.FullyQualifiedTblName)
+                        .withFormatFunction(e -> {
+                            assert e != null;
+                            return e.toTableRow();
+                        })
+                        .withCreateDisposition(BigQueryIO.Write.CreateDisposition.CREATE_NEVER)
+                        .withWriteDisposition(BigQueryIO.Write.WriteDisposition.WRITE_TRUNCATE)
+                );
 
         p.run().waitUntilFinish();
     }
