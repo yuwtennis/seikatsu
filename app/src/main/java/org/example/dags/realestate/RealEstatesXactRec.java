@@ -4,8 +4,12 @@ import com.google.api.services.bigquery.model.TableRow;
 import com.google.common.hash.Hashing;
 import org.apache.beam.sdk.coders.DefaultCoder;
 import org.apache.beam.sdk.extensions.avro.coders.AvroCoder;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 import static org.example.Utils.*;
 
@@ -100,38 +104,39 @@ public class RealEstatesXactRec {
      * @param csvLine
      * @return
      */
-    public static RealEstatesXactRec of(String csvLine) {
-        String[] fields = csvLine.split(",");
-        
+    public static RealEstatesXactRec of(String csvLine) throws IOException {
+        List<String> fields = CSVParser.parse(csvLine, CSVFormat.RFC4180)
+                .getRecords().get(0).toList();
+
         RealEstatesXactRec r = new RealEstatesXactRec();
-        r.dealType = validateStr(fields[0]).replaceAll("\"", "");
-        r.priceType = validateStr(fields[1]).replaceAll("\"", "");
-        r.landPurpose = validateStr(fields[2]).replaceAll("\"", "");
-        r.districtCode = validateStr(fields[3]).replaceAll("\"", "");
-        r.prefectureName = validateStr(fields[4]).replaceAll("\"", "");
-        r.districtName = validateStr(fields[5]).replaceAll("\"", "");
-        r.cityName = validateStr(fields[6]).replaceAll("\"", "");
-        r.closestStationName = validateStr(fields[7]).replaceAll("\"", "");
-        r.durationToClosestStationInMin = asInt(fields[8]);
-        r.closedPrice = asInt(fields[9]);
-        r.unitPriceOfFloorspace = asInt(fields[10]);
-        r.areaInSquareMeter = asInt(fields[11]);
-        r.unitPriceOfSquareMeter = asInt(fields[12]);
-        r.shapeOfLand = validateStr(fields[13]).replaceAll("\"", "");
-        r.facadeInMeters = asFloat(fields[14]);
-        r.areaTotal = asInt(fields[15]);
-        r.yearBuilt = asInt(fields[16]);
-        r.architectureType = validateStr(fields[17]).replaceAll("\"", "");
-        r.purpose = validateStr(fields[18]).replaceAll("\"", "");
-        r.futurePurpose = validateStr(fields[19]).replaceAll("\"", "");
-        r.frontRoadDirection = validateStr(fields[20]).replaceAll("\"", "");
-        r.frontRoadType = validateStr(fields[21]).replaceAll("\"", "");
-        r.frontRoadWidthInMeters = asFloat(fields[22]);
-        r.cityPlan = validateStr(fields[23]).replaceAll("\"", "");
-        r.buildingToLandRatio = asFloat(fields[24]);
-        r.floorToLandRatio = asFloat(fields[25]);
-        r.agreementPointOfTime = validateStr(fields[26]).replaceAll("\"", "");
-        r.agreementNote = validateStr(fields[27]).replaceAll("\"", "");
+        r.dealType = validateStr(trimQuotes(fields.get(0)));
+        r.priceType = validateStr(trimQuotes(fields.get(1)));
+        r.landPurpose = validateStr(trimQuotes(fields.get(2)));
+        r.districtCode = validateStr(trimQuotes(fields.get(3)));
+        r.prefectureName = validateStr(trimQuotes(fields.get(4)));
+        r.districtName = validateStr(trimQuotes(fields.get(5)));
+        r.cityName = validateStr(trimQuotes(fields.get(6)));
+        r.closestStationName = validateStr(trimQuotes(fields.get(7)));
+        r.durationToClosestStationInMin = asInt(fields.get(8));
+        r.closedPrice = asInt(fields.get(9));
+        r.unitPriceOfFloorspace = asInt(fields.get(10));
+        r.areaInSquareMeter = asInt(fields.get(11));
+        r.unitPriceOfSquareMeter = asInt(fields.get(12));
+        r.shapeOfLand = validateStr(trimQuotes(fields.get(13)));
+        r.facadeInMeters = asFloat(fields.get(14));
+        r.areaTotal = asInt(fields.get(15));
+        r.yearBuilt = asInt(fields.get(16));
+        r.architectureType = validateStr(trimQuotes(fields.get(17)));
+        r.purpose = validateStr(trimQuotes(fields.get(18)));
+        r.futurePurpose = validateStr(trimQuotes(fields.get(19)));
+        r.frontRoadDirection = validateStr(trimQuotes(fields.get(20)));
+        r.frontRoadType = validateStr(trimQuotes(fields.get(21)));
+        r.frontRoadWidthInMeters = asFloat(fields.get(22));
+        r.cityPlan = validateStr(trimQuotes(fields.get(23)));
+        r.buildingToLandRatio = asFloat(fields.get(24));
+        r.floorToLandRatio = asFloat(fields.get(25));
+        r.agreementPointOfTime = validateStr(trimQuotes(fields.get(26)));
+        r.agreementNote = validateStr(trimQuotes(fields.get(27)));
 
         return r;
     }
@@ -168,4 +173,7 @@ public class RealEstatesXactRec {
                 .set("agreementNote", agreementNote);
     }
 
+    private static String trimQuotes(String str) {
+        return str.replaceAll("\"", "");
+    }
 }
