@@ -1,7 +1,6 @@
 package org.example.dags.realestate;
 
 import com.google.api.services.bigquery.model.TableRow;
-import com.google.common.collect.ImmutableList;
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.io.gcp.bigquery.BigQueryIO;
 import org.apache.beam.sdk.transforms.Create;
@@ -12,6 +11,8 @@ import org.example.dags.Dag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.Year;
+import java.util.ArrayList;
 import java.util.List;
 
 public class RealEstateDag implements Dag {
@@ -19,10 +20,7 @@ public class RealEstateDag implements Dag {
 
     public void process(Pipeline p) {
 
-        final List<String> urls = ImmutableList.of(
-                "https://www.reinfolib.mlit.go.jp/in-api/api-aur/aur/csv/transactionPrices?language=ja&areaCondition=address&prefecture=13&transactionPrice=true&closedPrice=true&kind=residential&seasonFrom=20221&seasonTo=20224",
-                "https://www.reinfolib.mlit.go.jp/in-api/api-aur/aur/csv/transactionPrices?language=ja&areaCondition=address&prefecture=13&transactionPrice=true&closedPrice=true&kind=residential&seasonFrom=20231&seasonTo=20234"
-        );
+        final List<String> urls = createUrls(RealEstateEnv.BACKTRACKED_YEARS);
 
         LOG.info("Start running {}", RealEstateDag.class.getSimpleName());
 
@@ -43,12 +41,25 @@ public class RealEstateDag implements Dag {
                         }))
                 .apply(BigQueryIO
                         .writeTableRows()
-                        .to(RealEstateEnv.FullyQualifiedTblName)
+                        .to(RealEstateEnv.FULLY_QUALIFIED_TABLE_NAME)
                         .withCreateDisposition(BigQueryIO.Write.CreateDisposition.CREATE_NEVER)
                         .withWriteDisposition(BigQueryIO.Write.WriteDisposition.WRITE_TRUNCATE)
                         .withMethod(BigQueryIO.Write.Method.DEFAULT)
                 );
 
         p.run().waitUntilFinish();
+    }
+
+    private List<String> createUrls(int backtrackedYears) {
+        List<String> urls = new ArrayList<>();
+
+        for (int i = 1; i <= backtrackedYears; i++) {
+            int backtracked = Year.now().minusYears(i).getValue();
+            urls.add(String.format(
+            "https://www.reinfolib.mlit.go.jp/in-api/api-aur/aur/csv/transactionPrices?language=ja&areaCondition=address&prefecture=13&transactionPrice=true&closedPrice=true&kind=residential&seasonFrom=%d1&seasonTo=%d4",
+                    backtracked, backtracked));
+        }
+
+        return urls;
     }
 }
