@@ -10,6 +10,7 @@ public abstract class WebApiHttpResponse implements Serializable {
         return new AutoValue_WebApiHttpResponse.Builder();
     }
 
+    @SuppressWarnings("mutable")
     public abstract byte[] getData();
 
     @AutoValue.Builder
