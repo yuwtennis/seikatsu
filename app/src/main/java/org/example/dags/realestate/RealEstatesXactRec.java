@@ -6,10 +6,15 @@ import org.apache.beam.sdk.coders.DefaultCoder;
 import org.apache.beam.sdk.extensions.avro.coders.AvroCoder;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
+import org.example.Magics;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static org.example.Utils.*;
 
@@ -99,12 +104,18 @@ public class RealEstatesXactRec {
     //取引の事情等
     public String agreementNote;
 
+    // 四半期の日付
+    public String quarterAsDate;
+
+    static Logger LOG = LoggerFactory.getLogger(RealEstatesXactRec.class);
+
     /***
      *
      * @param csvLine
      * @return
      */
     public static RealEstatesXactRec of(String csvLine) throws IOException {
+
         List<String> fields = CSVParser.parse(csvLine, CSVFormat.RFC4180)
                 .getRecords().get(0).toList();
 
@@ -138,6 +149,13 @@ public class RealEstatesXactRec {
         r.agreementPointOfTime = validateStr(trimQuotes(fields.get(26)));
         r.agreementNote = validateStr(trimQuotes(fields.get(27)));
 
+        try {
+            r.quarterAsDate = parseQuarterDateFormat(r.agreementPointOfTime);
+        } catch (IllegalArgumentException e) {
+            LOG.warn(e.getMessage());
+            r.quarterAsDate = "";
+        }
+
         return r;
     }
 
@@ -170,10 +188,31 @@ public class RealEstatesXactRec {
                 .set("buildingToLandRatio", buildingToLandRatio)
                 .set("floorToLandRatio", floorToLandRatio)
                 .set("agreementPointOfTime", agreementPointOfTime)
-                .set("agreementNote", agreementNote);
+                .set("agreementNote", agreementNote)
+                .set("quarterAsDate", quarterAsDate);
     }
 
     private static String trimQuotes(String str) {
         return str.replaceAll("\"", "");
+    }
+
+    private static String parseQuarterDateFormat(String s) {
+        String pattern = "^(\\d+)年(.*?)$";
+        Pattern r = Pattern.compile(pattern);
+        Matcher m = r.matcher(s);
+        String formattedDate;
+
+        if (!m.find()) {
+            throw new IllegalArgumentException("Unknown quarterly date format: " + s);
+        }
+
+        formattedDate = switch (m.group(2)) {
+            case "第1四半期" -> m.group(1) + "-01-01";
+            case "第2四半期" -> m.group(1) + "-04-01";
+            case "第3四半期" -> m.group(1) + "-07-01";
+            case "第4四半期" -> m.group(1) + "-10-01";
+            default -> throw new IllegalArgumentException("Unexpected value: " + m.group(2));
+        };
+        return formattedDate;
     }
 }
