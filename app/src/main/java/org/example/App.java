@@ -17,6 +17,11 @@ public class App {
         @Default.String("HELLOWORLD")
         String getDagType();
         void setDagType(String dagType);
+
+        @Description("Backtracked years")
+        @Default.Integer(3)
+        int getBacktrackedYears();
+        void setBacktrackedYears(int dagType);
     }
     public static void main(String[] args) {
         DagOptions options = PipelineOptionsFactory

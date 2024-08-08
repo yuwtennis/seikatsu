@@ -7,6 +7,7 @@ import org.apache.beam.sdk.transforms.Create;
 import org.apache.beam.sdk.transforms.MapElements;
 import org.apache.beam.sdk.values.PCollection;
 import org.apache.beam.sdk.values.TypeDescriptor;
+import org.example.App;
 import org.example.dags.Dag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +21,8 @@ public class RealEstateDag implements Dag {
 
     public void process(Pipeline p) {
 
-        final List<String> urls = createUrls(RealEstateEnv.BACKTRACKED_YEARS);
+        final List<String> urls = createUrls(
+                p.getOptions().as(App.DagOptions.class).getBacktrackedYears());
 
         LOG.info("Start running {}", RealEstateDag.class.getSimpleName());
 
