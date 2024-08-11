@@ -21,6 +21,13 @@ public class ExtractZipContentsVertices {
     public static final TupleTag<UsedApartmentTxn> usedApartment = new TupleTag<>() {};
 
     static class UnzipFn extends DoFn<KV<String, WebApiHttpResponse>, ResidentialLandTxn> {
+        /**
+         *
+         * @param c
+         * @param out
+         * @throws IOException
+         * @throws Exception
+         */
         @ProcessElement
         public void processElement(ProcessContext c, MultiOutputReceiver out) throws IOException, Exception {
             KV<String, WebApiHttpResponse> elem = c.element();
@@ -52,25 +59,30 @@ public class ExtractZipContentsVertices {
     }
 
     public static class Extract extends PTransform<PCollection<String>, PCollectionTuple> {
+        /**
+         *
+         * @param input
+         * @return
+         */
         @Override
         public PCollectionTuple expand(PCollection<String> input) {
-            LOG.info("Start extracting zip file contents");
             KvCoder<String, WebApiHttpResponse> respCoder = KvCoder.of(
                     StringUtf8Coder.of(), WebApiHttpResponseCoder.of());
 
             PCollection<WebApiHttpRequest> requests = input
-                    .apply(
+                    .apply("ToWebApiHttpRequest",
                             MapElements
                                     .into(TypeDescriptor.of(WebApiHttpRequest.class))
                                     .via(WebApiHttpRequest::of))
                     .setCoder(WebApiHttpRequestCoder.of());
 
             Result<KV<String, WebApiHttpResponse>> results = requests
-                    .apply(RequestResponseIO.of(WebApiHttpClient.of(), respCoder));
+                    .apply("DownloadZipFiles",
+                            RequestResponseIO.of(WebApiHttpClient.of(), respCoder));
 
             return results
                     .getResponses()
-                    .apply(ParDo.of(new ExtractZipContentsVertices.UnzipFn())
+                    .apply("ToEntites", ParDo.of(new ExtractZipContentsVertices.UnzipFn())
                             .withOutputTags(residentialLand, TupleTagList.of(usedApartment)));
         }
     }

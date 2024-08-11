@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 
 public class DagDispatcher {
     static Logger LOG = LoggerFactory.getLogger(DagDispatcher.class);
-    /***
+    /**
      * Dispatches with the correct dag to the app client
      * @param dagType
      * @return

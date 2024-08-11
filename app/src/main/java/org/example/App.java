@@ -18,10 +18,14 @@ public class App {
         String getDagType();
         void setDagType(String dagType);
 
-        @Description("Backtracked years")
+        @Description("Number of years to backtrack the data. Available in dag type: REALESTATE")
         @Default.Integer(3)
         int getBacktrackedYears();
-        void setBacktrackedYears(int dagType);
+        void setBacktrackedYears(int backtrackedYears);
+
+        @Description("Subscription key to use to extract data from MLIT. Available in dag type: REALESTATE")
+        String getSubscriptionKey();
+        void setSubscriptionKey(String SubscriptionKey);
     }
     public static void main(String[] args) {
         DagOptions options = PipelineOptionsFactory

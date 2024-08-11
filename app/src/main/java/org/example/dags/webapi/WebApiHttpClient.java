@@ -65,8 +65,6 @@ public class WebApiHttpClient
             throws RuntimeException{
         HttpHeaders httpHeaders = new HttpHeaders();
 
-        LOG.info("Entires headers: {}", headers.toString());
-
         for (Map.Entry<String, String> header : headers.entrySet()) {
             httpHeaders.set(header.getKey(), header.getValue());
         }

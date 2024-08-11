@@ -28,6 +28,10 @@ public class RealEstateDag implements Dag {
     public static final String KIND_RESIDENTIAL_LAND = "residential";
     public static final String KIND_USED_APARTMENT = "used";
 
+    /***
+     *
+     * @param p
+     */
     public void process(Pipeline p) {
 
         final List<String> urls = createUrls(
@@ -37,7 +41,8 @@ public class RealEstateDag implements Dag {
 
         // 1. Start by getting the actual url provided by the server
         PCollection<String> dlUrls = p.apply(Create.of(urls))
-                .apply(new GetDlUrlVertices.DownloadUrl());
+                .apply(new GetDlUrlVertices.DownloadUrl(
+                        p.getOptions().as(App.DagOptions.class).getSubscriptionKey()));
 
         // 2. Next get the zip contents
         PCollection<ResidentialLandTxn> residentialLandXacts = dlUrls
@@ -46,35 +51,41 @@ public class RealEstateDag implements Dag {
                 .apply(new ExtractZipContentsVertices.Extract()).get(usedApartment);
 
         // 3. Insert into Bigquery using Bigquery Storage API
-        residentialLandXacts.apply(MapElements
+        PCollection<TableRow> rlTableRows =  residentialLandXacts.apply(MapElements
                         .into(TypeDescriptor.of(TableRow.class))
                         .via((ResidentialLandTxn e) -> {
                             assert e != null;
                             return e.toTableRow();
-                        }))
-                .apply(BigQueryIO
-                        .writeTableRows()
-                        .to(FQTN_RESIDENTIAL_LAND)
-                        .withCreateDisposition(BigQueryIO.Write.CreateDisposition.CREATE_NEVER)
-                        .withWriteDisposition(BigQueryIO.Write.WriteDisposition.WRITE_TRUNCATE)
-                        .withMethod(BigQueryIO.Write.Method.DEFAULT));
+                        }));
 
-        usedApartmentXacts.apply(MapElements
+        toBq(
+                rlTableRows,
+                FQTN_RESIDENTIAL_LAND,
+                BigQueryIO.Write.CreateDisposition.CREATE_NEVER,
+                BigQueryIO.Write.WriteDisposition.WRITE_TRUNCATE,
+                BigQueryIO.Write.Method.DEFAULT);
+
+        PCollection<TableRow> rATableRows = usedApartmentXacts.apply(MapElements
                         .into(TypeDescriptor.of(TableRow.class))
                         .via((UsedApartmentTxn e) -> {
                             assert e != null;
                             return e.toTableRow();
-                        }))
-                .apply(BigQueryIO
-                        .writeTableRows()
-                        .to(FQTN_USED_APARTMENT)
-                        .withCreateDisposition(BigQueryIO.Write.CreateDisposition.CREATE_NEVER)
-                        .withWriteDisposition(BigQueryIO.Write.WriteDisposition.WRITE_TRUNCATE)
-                        .withMethod(BigQueryIO.Write.Method.DEFAULT));
+                        }));
+        toBq(
+                rATableRows,
+                FQTN_USED_APARTMENT,
+                BigQueryIO.Write.CreateDisposition.CREATE_NEVER,
+                BigQueryIO.Write.WriteDisposition.WRITE_TRUNCATE,
+                BigQueryIO.Write.Method.DEFAULT);
 
         p.run().waitUntilFinish();
     }
 
+    /***
+     *
+     * @param backtrackedYears
+     * @return
+     */
     private List<String> createUrls(int backtrackedYears) {
         List<String> urls = new ArrayList<>();
 
@@ -89,5 +100,29 @@ public class RealEstateDag implements Dag {
         }
 
         return urls;
+    }
+
+    /***
+     *
+     * @param rows
+     * @param fullyQualifiedTableName
+     * @param createDisposition
+     * @param writeDisposition
+     * @param writeMethod
+     */
+    private void toBq(
+            PCollection<TableRow> rows,
+            String fullyQualifiedTableName,
+            BigQueryIO.Write.CreateDisposition createDisposition,
+            BigQueryIO.Write.WriteDisposition writeDisposition,
+            BigQueryIO.Write.Method writeMethod) {
+        rows
+                .apply("To"+fullyQualifiedTableName,
+                        BigQueryIO
+                            .writeTableRows()
+                            .to(fullyQualifiedTableName)
+                            .withCreateDisposition(createDisposition)
+                            .withWriteDisposition(writeDisposition)
+                            .withMethod(writeMethod));
     }
 }

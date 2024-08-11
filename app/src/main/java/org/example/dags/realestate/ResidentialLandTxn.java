@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 import static org.example.Utils.*;
 
 /***
- * Residential land deals
+ * Residential land deals　published from Ministry of Land, Infrastructure and Transportation
  * i.e. 宅地取引 in Japanese
  */
 @DefaultCoder(AvroCoder.class)
@@ -110,7 +110,7 @@ public class ResidentialLandTxn {
 
     static Logger LOG = LoggerFactory.getLogger(ResidentialLandTxn.class);
 
-    /***
+    /**
      *
      * @param csvLine
      * @return
@@ -161,6 +161,10 @@ public class ResidentialLandTxn {
         return r;
     }
 
+    /**
+     *
+     * @return
+     */
     public TableRow toTableRow() {
         return new TableRow()
                 .set("txnType", txnType)
@@ -194,6 +198,11 @@ public class ResidentialLandTxn {
                 .set("startOfQuarter", startOfQuarter);
     }
 
+    /**
+     *
+     * @param s
+     * @return
+     */
     public static String parseQuarterDateFormat(String s) {
         String pattern = "^(\\d+)年(.*?)$";
         Pattern r = Pattern.compile(pattern);

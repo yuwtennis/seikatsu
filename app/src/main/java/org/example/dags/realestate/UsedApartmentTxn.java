@@ -88,7 +88,7 @@ public class UsedApartmentTxn {
 
     static Logger LOG = LoggerFactory.getLogger(UsedApartmentTxn.class);
 
-    /***
+    /**
      *
      * @param csvLine
      * @return
@@ -131,6 +131,10 @@ public class UsedApartmentTxn {
         return r;
     }
 
+    /**
+     *
+     * @return
+     */
     public TableRow toTableRow() {
         return new TableRow()
                 .set("txnType", txnType)

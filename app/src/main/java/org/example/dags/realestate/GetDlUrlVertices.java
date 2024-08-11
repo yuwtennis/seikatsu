@@ -23,10 +23,14 @@ public class GetDlUrlVertices {
 
     static class ParseDlUrlFn
             extends SimpleFunction<KV<String, WebApiHttpResponse>, String> {
+        /**
+         *
+         * @param input
+         * @return
+         */
         @Override
         public String apply(KV<String, WebApiHttpResponse> input) {
             String result = new String(input.getValue().getData());
-            LOG.info("Retrieved data: {}", result);
             Map<String, String> map = Utils.asJsonMap(result);
             return map.get("url");
         }
@@ -35,26 +39,40 @@ public class GetDlUrlVertices {
     public static class DownloadUrl
             extends PTransform<PCollection<String>, PCollection<String>> {
 
+        private final String subscriptionKey;
+
+        public DownloadUrl(String subscriptionKey) {
+            this.subscriptionKey = subscriptionKey;
+        }
+        /**
+         *
+         * @param input
+         * @return
+         */
         @Override
         public PCollection<String> expand(PCollection<String> input) {
-            LOG.info("Start downloading url");
             Map<String, String> headers = new HashMap<String, String>();
-            headers.put(OcpApimSubscriptionKeyHeader.NAME, OcpApimSubscriptionKeyHeader.VALUE);
+            headers.put(OcpApimSubscriptionKeyHeader.NAME, subscriptionKey);
 
             KvCoder<String, WebApiHttpResponse> respCoder = KvCoder.of(
                     StringUtf8Coder.of(), WebApiHttpResponseCoder.of());
 
             PCollection<WebApiHttpRequest> requests = input.apply(
+                    "ToWebApiHttpRequest",
                             MapElements
                                     .into(TypeDescriptor.of(WebApiHttpRequest.class))
                                     .via((String url) -> WebApiHttpRequest.of(url, headers)))
                     .setCoder(WebApiHttpRequestCoder.of());
 
             Result<KV<String, WebApiHttpResponse>> results = requests
-                    .apply(RequestResponseIO.of(WebApiHttpClient.of(), respCoder));
+                    .apply(
+                            "DownloadUrls",
+                            RequestResponseIO.of(WebApiHttpClient.of(), respCoder));
 
             return results.getResponses()
-                    .apply(MapElements.via(new GetDlUrlVertices.ParseDlUrlFn()));
+                    .apply(
+                            "ParseDlUrl",
+                            MapElements.via(new GetDlUrlVertices.ParseDlUrlFn()));
         }
     }
 }
