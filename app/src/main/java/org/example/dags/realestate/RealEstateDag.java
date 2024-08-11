@@ -23,11 +23,6 @@ import static org.example.dags.realestate.RealEstateEnv.FQTN_USED_APARTMENT;
 
 public class RealEstateDag implements Dag {
     static Logger LOG = LoggerFactory.getLogger(RealEstateDag.class);
-
-    public static final String URL_PREFIX = "https://www.reinfolib.mlit.go.jp/in-api/api-aur/aur/csv/transactionPrices?language=ja&areaCondition=address&prefecture=13&transactionPrice=true&closedPrice=true";
-    public static final String KIND_RESIDENTIAL_LAND = "residential";
-    public static final String KIND_USED_APARTMENT = "used";
-
     /***
      *
      * @param p
@@ -36,9 +31,6 @@ public class RealEstateDag implements Dag {
 
         final List<String> urls = createUrls(
                 p.getOptions().as(App.DagOptions.class).getBacktrackedYears());
-
-        LOG.info("Start running {}", RealEstateDag.class.getSimpleName());
-
         // 1. Start by getting the actual url provided by the server
         PCollection<String> dlUrls = p.apply(Create.of(urls))
                 .apply(new GetDlUrlVertices.DownloadUrl(
@@ -91,13 +83,19 @@ public class RealEstateDag implements Dag {
 
         for (int i = 1; i <= backtrackedYears; i++) {
             int backtracked = Year.now().minusYears(i).getValue();
-            urls.add(String.format(
-                    "%s&kind=%s&seasonFrom=%d1&seasonTo=%d4",
-                    URL_PREFIX, KIND_RESIDENTIAL_LAND, backtracked, backtracked));
-            urls.add(String.format(
-                    "%s&kind=%s&seasonFrom=%d1&seasonTo=%d4",
-                    URL_PREFIX, KIND_USED_APARTMENT, backtracked, backtracked));
+            urls.add(
+                    new RealEstateTxnCsvDlEndpoint.Builder(
+                            TxnKind.RESIDENTIAL_LAND,
+                            backtracked,
+                            backtracked).build().toUrl());
+            urls.add(
+                    new RealEstateTxnCsvDlEndpoint.Builder(
+                            TxnKind.USED_APARTMENT,
+                            backtracked,
+                            backtracked).build().toUrl());
         }
+
+        LOG.info(urls.toString());
 
         return urls;
     }

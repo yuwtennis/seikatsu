@@ -31,6 +31,7 @@ public class GetDlUrlVertices {
         @Override
         public String apply(KV<String, WebApiHttpResponse> input) {
             String result = new String(input.getValue().getData());
+            LOG.info(result);
             Map<String, String> map = Utils.asJsonMap(result);
             return map.get("url");
         }
