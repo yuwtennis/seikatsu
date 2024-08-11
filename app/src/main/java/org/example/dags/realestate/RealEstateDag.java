@@ -16,8 +16,17 @@ import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.example.dags.realestate.ExtractZipContentsVertices.residentialLand;
+import static org.example.dags.realestate.ExtractZipContentsVertices.usedApartment;
+import static org.example.dags.realestate.RealEstateEnv.FQTN_RESIDENTIAL_LAND;
+import static org.example.dags.realestate.RealEstateEnv.FQTN_USED_APARTMENT;
+
 public class RealEstateDag implements Dag {
     static Logger LOG = LoggerFactory.getLogger(RealEstateDag.class);
+
+    public static final String URL_PREFIX = "https://www.reinfolib.mlit.go.jp/in-api/api-aur/aur/csv/transactionPrices?language=ja&areaCondition=address&prefecture=13&transactionPrice=true&closedPrice=true";
+    public static final String KIND_RESIDENTIAL_LAND = "residential";
+    public static final String KIND_USED_APARTMENT = "used";
 
     public void process(Pipeline p) {
 
@@ -31,23 +40,37 @@ public class RealEstateDag implements Dag {
                 .apply(new GetDlUrlVertices.DownloadUrl());
 
         // 2. Next get the zip contents
-        PCollection<RealEstatesXactRec> xacts =  dlUrls.apply(new ExtractZipContentsVertices.Extract());
+        PCollection<ResidentialLandTxn> residentialLandXacts = dlUrls
+                .apply(new ExtractZipContentsVertices.Extract()).get(residentialLand);
+        PCollection<UsedApartmentTxn> usedApartmentXacts = dlUrls
+                .apply(new ExtractZipContentsVertices.Extract()).get(usedApartment);
 
         // 3. Insert into Bigquery using Bigquery Storage API
-        xacts.apply(
-                MapElements
+        residentialLandXacts.apply(MapElements
                         .into(TypeDescriptor.of(TableRow.class))
-                        .via((RealEstatesXactRec e) -> {
+                        .via((ResidentialLandTxn e) -> {
                             assert e != null;
                             return e.toTableRow();
                         }))
                 .apply(BigQueryIO
                         .writeTableRows()
-                        .to(RealEstateEnv.FULLY_QUALIFIED_TABLE_NAME)
+                        .to(FQTN_RESIDENTIAL_LAND)
                         .withCreateDisposition(BigQueryIO.Write.CreateDisposition.CREATE_NEVER)
                         .withWriteDisposition(BigQueryIO.Write.WriteDisposition.WRITE_TRUNCATE)
-                        .withMethod(BigQueryIO.Write.Method.DEFAULT)
-                );
+                        .withMethod(BigQueryIO.Write.Method.DEFAULT));
+
+        usedApartmentXacts.apply(MapElements
+                        .into(TypeDescriptor.of(TableRow.class))
+                        .via((UsedApartmentTxn e) -> {
+                            assert e != null;
+                            return e.toTableRow();
+                        }))
+                .apply(BigQueryIO
+                        .writeTableRows()
+                        .to(FQTN_USED_APARTMENT)
+                        .withCreateDisposition(BigQueryIO.Write.CreateDisposition.CREATE_NEVER)
+                        .withWriteDisposition(BigQueryIO.Write.WriteDisposition.WRITE_TRUNCATE)
+                        .withMethod(BigQueryIO.Write.Method.DEFAULT));
 
         p.run().waitUntilFinish();
     }
@@ -58,8 +81,11 @@ public class RealEstateDag implements Dag {
         for (int i = 1; i <= backtrackedYears; i++) {
             int backtracked = Year.now().minusYears(i).getValue();
             urls.add(String.format(
-            "https://www.reinfolib.mlit.go.jp/in-api/api-aur/aur/csv/transactionPrices?language=ja&areaCondition=address&prefecture=13&transactionPrice=true&closedPrice=true&kind=residential&seasonFrom=%d1&seasonTo=%d4",
-                    backtracked, backtracked));
+                    "%s&kind=%s&seasonFrom=%d1&seasonTo=%d4",
+                    URL_PREFIX, KIND_RESIDENTIAL_LAND, backtracked, backtracked));
+            urls.add(String.format(
+                    "%s&kind=%s&seasonFrom=%d1&seasonTo=%d4",
+                    URL_PREFIX, KIND_USED_APARTMENT, backtracked, backtracked));
         }
 
         return urls;

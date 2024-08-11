@@ -5,24 +5,24 @@ import org.apache.beam.io.requestresponse.Result;
 import org.apache.beam.sdk.coders.KvCoder;
 import org.apache.beam.sdk.coders.StringUtf8Coder;
 import org.apache.beam.sdk.transforms.*;
-import org.apache.beam.sdk.values.KV;
-import org.apache.beam.sdk.values.PCollection;
-import org.apache.beam.sdk.values.TypeDescriptor;
+import org.apache.beam.sdk.values.*;
 import org.example.dags.webapi.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.nio.charset.Charset;
-import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 public class ExtractZipContentsVertices {
     static Logger LOG = LoggerFactory.getLogger(ExtractZipContentsVertices.class);
 
-    static class UnzipFn extends DoFn<KV<String, WebApiHttpResponse>, RealEstatesXactRec> {
+    public static final TupleTag<ResidentialLandTxn> residentialLand = new TupleTag<>() {};
+    public static final TupleTag<UsedApartmentTxn> usedApartment = new TupleTag<>() {};
+
+    static class UnzipFn extends DoFn<KV<String, WebApiHttpResponse>, ResidentialLandTxn> {
         @ProcessElement
-        public void processElement(ProcessContext c) throws IOException, Exception {
+        public void processElement(ProcessContext c, MultiOutputReceiver out) throws IOException, Exception {
             KV<String, WebApiHttpResponse> elem = c.element();
             ByteArrayInputStream bis = new ByteArrayInputStream(elem.getValue().getData());
             ZipInputStream zs = new ZipInputStream(bis);
@@ -37,7 +37,12 @@ public class ExtractZipContentsVertices {
                 if (line.startsWith("\"種類")) {
                     continue;
                 }
-                c.output(RealEstatesXactRec.of(line));
+
+                if(line.startsWith("\"宅地")) {
+                    out.get(residentialLand).output(ResidentialLandTxn.of(line));
+                } else if(line.startsWith("\"中古マンション等")) {
+                    out.get(usedApartment).output(UsedApartmentTxn.of(line));
+                }
             }
 
             zs.close();
@@ -46,9 +51,9 @@ public class ExtractZipContentsVertices {
          }
     }
 
-    public static class Extract extends PTransform<PCollection<String>, PCollection<RealEstatesXactRec>> {
+    public static class Extract extends PTransform<PCollection<String>, PCollectionTuple> {
         @Override
-        public PCollection<RealEstatesXactRec> expand(PCollection<String> input) {
+        public PCollectionTuple expand(PCollection<String> input) {
             LOG.info("Start extracting zip file contents");
             KvCoder<String, WebApiHttpResponse> respCoder = KvCoder.of(
                     StringUtf8Coder.of(), WebApiHttpResponseCoder.of());
@@ -65,7 +70,8 @@ public class ExtractZipContentsVertices {
 
             return results
                     .getResponses()
-                    .apply(ParDo.of(new ExtractZipContentsVertices.UnzipFn()));
+                    .apply(ParDo.of(new ExtractZipContentsVertices.UnzipFn())
+                            .withOutputTags(residentialLand, TupleTagList.of(usedApartment)));
         }
     }
 }

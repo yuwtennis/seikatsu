@@ -15,10 +15,14 @@ import java.util.regex.Pattern;
 
 import static org.example.Utils.*;
 
+/***
+ * Residential land deals
+ * i.e. 宅地取引 in Japanese
+ */
 @DefaultCoder(AvroCoder.class)
-public class RealEstatesXactRec {
+public class ResidentialLandTxn {
     // 種類
-    public String dealType;
+    public String txnType;
 
     // 価格情報区分
     public String priceType;
@@ -45,31 +49,31 @@ public class RealEstatesXactRec {
     public int durationToClosestStationInMin;
 
     // 取引価格（総額）
-    public int closedPrice;
+    public int totalTxnPrice;
 
     // 坪単価
-    public int unitPriceOfFloorspace;
+    public int pricePerPyeong;
 
-    // 面積（㎡）
-    public int areaInSquareMeter;
+    // 面積（平方メートル）
+    public int areaSizeInSqm;
 
-    // 取引価格（㎡単価）
-    public int unitPriceOfSquareMeter;
+    // 取引価格（平方メートル単価）
+    public int txnPricePerSqm;
 
     // 土地の形状
-    public String shapeOfLand;
+    public String landShape;
 
     // 間口
-    public float facadeInMeters;
+    public float frontageLengthInMeters;
 
-    // 延床面積（％）
-    public int areaTotal;
+    // 延床面積（平方メートル）
+    public int floorAreaTotalInSqm;
 
     // 建築年
     public int yearBuilt;
     
     // 建物の構造
-    public String architectureType;
+    public String buildingStructure;
 
     // 用途
     public String purpose;
@@ -90,67 +94,68 @@ public class RealEstatesXactRec {
     public String cityPlan;
 
     // 建ぺい率（％）
-    public float buildingToLandRatio;
+    public float bcrReqmt;
 
     // 容積率（％）
-    public float floorToLandRatio;
+    public float farReqmt;
 
     // 取引時期
-    public String agreementPointOfTime;
+    public String txnPeriod;
 
     //取引の事情等
-    public String agreementNote;
+    public String txnRemarks;
 
-    // 四半期の日付
-    public String quarterAsDate;
+    // 四半期の開始日付
+    public String startOfQuarter;
 
-    static Logger LOG = LoggerFactory.getLogger(RealEstatesXactRec.class);
+    static Logger LOG = LoggerFactory.getLogger(ResidentialLandTxn.class);
 
     /***
      *
      * @param csvLine
      * @return
      */
-    public static RealEstatesXactRec of(String csvLine) throws IOException {
+    public static ResidentialLandTxn of(String csvLine) throws IOException {
 
         List<String> fields = CSVParser.parse(csvLine, CSVFormat.RFC4180)
                 .getRecords().get(0).toList();
 
-        RealEstatesXactRec r = new RealEstatesXactRec();
-        r.dealType = validateStr(trimQuotes(fields.get(0)));
-        r.priceType = validateStr(trimQuotes(fields.get(1)));
-        r.landPurpose = validateStr(trimQuotes(fields.get(2)));
-        r.districtCode = validateStr(trimQuotes(fields.get(3)));
-        r.prefectureName = validateStr(trimQuotes(fields.get(4)));
-        r.districtName = validateStr(trimQuotes(fields.get(5)));
-        r.cityName = validateStr(trimQuotes(fields.get(6)));
-        r.closestStationName = validateStr(trimQuotes(fields.get(7)));
+        ResidentialLandTxn r = new ResidentialLandTxn();
+        r.txnType = validateStr(fields.get(0));
+        r.priceType = validateStr(fields.get(1));
+        r.landPurpose = validateStr(fields.get(2));
+        r.districtCode = validateStr(fields.get(3));
+        r.prefectureName = validateStr(fields.get(4));
+        r.districtName = validateStr(fields.get(5));
+        r.cityName = validateStr(fields.get(6));
+        r.closestStationName = validateStr(fields.get(7));
         r.durationToClosestStationInMin = asInt(fields.get(8));
-        r.closedPrice = asInt(fields.get(9));
-        r.unitPriceOfFloorspace = asInt(fields.get(10));
-        r.areaInSquareMeter = asInt(fields.get(11));
-        r.unitPriceOfSquareMeter = asInt(fields.get(12));
-        r.shapeOfLand = validateStr(trimQuotes(fields.get(13)));
-        r.facadeInMeters = asFloat(fields.get(14));
-        r.areaTotal = asInt(fields.get(15));
+        r.totalTxnPrice = asInt(fields.get(9));
+        r.pricePerPyeong = asInt(fields.get(10));
+        r.areaSizeInSqm = asInt(fields.get(11));
+        r.txnPricePerSqm = asInt(fields.get(12));
+        r.landShape = validateStr(fields.get(13));
+        r.frontageLengthInMeters = asFloat(fields.get(14));
+        r.floorAreaTotalInSqm = asInt(fields.get(15));
         r.yearBuilt = asInt(fields.get(16));
-        r.architectureType = validateStr(trimQuotes(fields.get(17)));
-        r.purpose = validateStr(trimQuotes(fields.get(18)));
-        r.futurePurpose = validateStr(trimQuotes(fields.get(19)));
-        r.frontRoadDirection = validateStr(trimQuotes(fields.get(20)));
-        r.frontRoadType = validateStr(trimQuotes(fields.get(21)));
+        r.buildingStructure = validateStr(fields.get(17));
+        r.purpose = validateStr(fields.get(18));
+        r.futurePurpose = validateStr(fields.get(19));
+        r.frontRoadDirection = validateStr(fields.get(20));
+        r.frontRoadType = validateStr(fields.get(21));
         r.frontRoadWidthInMeters = asFloat(fields.get(22));
-        r.cityPlan = validateStr(trimQuotes(fields.get(23)));
-        r.buildingToLandRatio = asFloat(fields.get(24));
-        r.floorToLandRatio = asFloat(fields.get(25));
-        r.agreementPointOfTime = validateStr(trimQuotes(fields.get(26)));
-        r.agreementNote = validateStr(trimQuotes(fields.get(27)));
+        r.cityPlan = validateStr(fields.get(23));
+        r.bcrReqmt = asFloat(fields.get(24));
+        r.farReqmt = asFloat(fields.get(25));
+        r.txnPeriod = validateStr(fields.get(26));
+        r.txnRemarks = validateStr(fields.get(27));
+
 
         try {
-            r.quarterAsDate = parseQuarterDateFormat(r.agreementPointOfTime);
+            r.startOfQuarter = parseQuarterDateFormat(r.txnPeriod);
         } catch (IllegalArgumentException e) {
             LOG.warn(e.getMessage());
-            r.quarterAsDate = "";
+            r.startOfQuarter = "";
         }
 
         return r;
@@ -158,7 +163,7 @@ public class RealEstatesXactRec {
 
     public TableRow toTableRow() {
         return new TableRow()
-                .set("dealType", dealType)
+                .set("txnType", txnType)
                 .set("priceType", priceType)
                 .set("landPurpose", landPurpose)
                 .set("districtCode", districtCode)
@@ -167,33 +172,29 @@ public class RealEstatesXactRec {
                 .set("cityName", cityName)
                 .set("closestStationName", closestStationName)
                 .set("durationToClosestStationInMin", durationToClosestStationInMin)
-                .set("closedPrice", closedPrice)
-                .set("unitPriceOfFloorspace", unitPriceOfFloorspace)
-                .set("areaInSquareMeter", areaInSquareMeter)
-                .set("unitPriceOfSquareMeter", unitPriceOfSquareMeter)
-                .set("shapeOfLand", shapeOfLand)
-                .set("facadeInMeters", facadeInMeters)
-                .set("areaTotal", areaTotal)
+                .set("totalTxnPrice", totalTxnPrice)
+                .set("pyeongUnitPrice", pricePerPyeong)
+                .set("areaSizeInSqm", areaSizeInSqm)
+                .set("sqmTxnPrice", txnPricePerSqm)
+                .set("landShape", landShape)
+                .set("frontageLengthInMeters", frontageLengthInMeters)
+                .set("floorAreaTotalInSqm", floorAreaTotalInSqm)
                 .set("yearBuilt", yearBuilt)
-                .set("architectureType", architectureType)
+                .set("buildingStructure", buildingStructure)
                 .set("purpose", purpose)
                 .set("futurePurpose", futurePurpose)
                 .set("frontRoadDirection", frontRoadDirection)
                 .set("frontRoadType", frontRoadType)
                 .set("frontRoadWidthInMeters", frontRoadWidthInMeters)
                 .set("cityPlan", cityPlan)
-                .set("buildingToLandRatio", buildingToLandRatio)
-                .set("floorToLandRatio", floorToLandRatio)
-                .set("agreementPointOfTime", agreementPointOfTime)
-                .set("agreementNote", agreementNote)
-                .set("quarterAsDate", quarterAsDate);
+                .set("bcrReqmt", bcrReqmt)
+                .set("farReqmt", farReqmt)
+                .set("txnPeriod", txnPeriod)
+                .set("txnRemarks", txnRemarks)
+                .set("startOfQuarter", startOfQuarter);
     }
 
-    private static String trimQuotes(String str) {
-        return str.replaceAll("\"", "");
-    }
-
-    private static String parseQuarterDateFormat(String s) {
+    public static String parseQuarterDateFormat(String s) {
         String pattern = "^(\\d+)年(.*?)$";
         Pattern r = Pattern.compile(pattern);
         Matcher m = r.matcher(s);
