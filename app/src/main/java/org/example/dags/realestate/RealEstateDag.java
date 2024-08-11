@@ -18,8 +18,8 @@ import java.util.List;
 
 import static org.example.dags.realestate.ExtractZipContentsVertices.residentialLand;
 import static org.example.dags.realestate.ExtractZipContentsVertices.usedApartment;
-import static org.example.dags.realestate.RealEstateEnv.FQTN_RESIDENTIAL_LAND;
-import static org.example.dags.realestate.RealEstateEnv.FQTN_USED_APARTMENT;
+import static org.example.dags.realestate.BqMetaData.FQTN_RESIDENTIAL_LAND;
+import static org.example.dags.realestate.BqMetaData.FQTN_USED_APARTMENT;
 
 public class RealEstateDag implements Dag {
     static Logger LOG = LoggerFactory.getLogger(RealEstateDag.class);
@@ -34,7 +34,7 @@ public class RealEstateDag implements Dag {
         // 1. Start by getting the actual url provided by the server
         PCollection<String> dlUrls = p.apply(Create.of(urls))
                 .apply(new GetDlUrlVertices.DownloadUrl(
-                        p.getOptions().as(App.DagOptions.class).getSubscriptionKey()));
+                        OcpApimSubscriptionKeyHeader.VALUE));
 
         // 2. Next get the zip contents
         PCollection<ResidentialLandTxn> residentialLandXacts = dlUrls

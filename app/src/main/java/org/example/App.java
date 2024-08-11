@@ -23,9 +23,6 @@ public class App {
         int getBacktrackedYears();
         void setBacktrackedYears(int backtrackedYears);
 
-        @Description("Subscription key to use to extract data from MLIT. Available in dag type: REALESTATE")
-        String getSubscriptionKey();
-        void setSubscriptionKey(String SubscriptionKey);
     }
     public static void main(String[] args) {
         DagOptions options = PipelineOptionsFactory
