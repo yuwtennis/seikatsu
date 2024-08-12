@@ -1,11 +1,12 @@
 package org.example.dags.realestate;
 
-public enum TxnKind {
+public enum EndpointKind {
     RESIDENTIAL_LAND("residential"),
-    USED_APARTMENT("used");
+    USED_APARTMENT("used"),
+    LAND_VALUE("appraisals");
 
     public final String value;
-    TxnKind(String value) {
+    EndpointKind(String value) {
         this.value = value;
     }
 }

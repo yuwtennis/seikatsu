@@ -6,6 +6,7 @@ import org.apache.beam.sdk.io.gcp.bigquery.BigQueryIO;
 import org.apache.beam.sdk.transforms.Create;
 import org.apache.beam.sdk.transforms.MapElements;
 import org.apache.beam.sdk.values.PCollection;
+import org.apache.beam.sdk.values.PCollectionTuple;
 import org.apache.beam.sdk.values.TypeDescriptor;
 import org.example.App;
 import org.example.dags.Dag;
@@ -37,10 +38,10 @@ public class RealEstateDag implements Dag {
                         OcpApimSubscriptionKeyHeader.VALUE));
 
         // 2. Next get the zip contents
-        PCollection<ResidentialLandTxn> residentialLandXacts = dlUrls
-                .apply(new ExtractZipContentsVertices.Extract()).get(residentialLand);
-        PCollection<UsedApartmentTxn> usedApartmentXacts = dlUrls
-                .apply(new ExtractZipContentsVertices.Extract()).get(usedApartment);
+        PCollectionTuple pCols = dlUrls
+                .apply(new ExtractZipContentsVertices.Extract());
+        PCollection<ResidentialLandTxn> residentialLandXacts = pCols.get(residentialLand);
+        PCollection<UsedApartmentTxn> usedApartmentXacts = pCols.get(usedApartment);
 
         // 3. Insert into Bigquery using Bigquery Storage API
         PCollection<TableRow> rlTableRows =  residentialLandXacts.apply(MapElements
@@ -85,12 +86,12 @@ public class RealEstateDag implements Dag {
             int backtracked = Year.now().minusYears(i).getValue();
             urls.add(
                     new RealEstateTxnCsvDlEndpoint.Builder(
-                            TxnKind.RESIDENTIAL_LAND,
+                            EndpointKind.RESIDENTIAL_LAND,
                             backtracked,
                             backtracked).build().toUrl());
             urls.add(
                     new RealEstateTxnCsvDlEndpoint.Builder(
-                            TxnKind.USED_APARTMENT,
+                            EndpointKind.USED_APARTMENT,
                             backtracked,
                             backtracked).build().toUrl());
         }

@@ -6,12 +6,12 @@ import org.apache.beam.sdk.coders.KvCoder;
 import org.apache.beam.sdk.coders.StringUtf8Coder;
 import org.apache.beam.sdk.transforms.*;
 import org.apache.beam.sdk.values.*;
+import org.apache.commons.csv.CSVRecord;
 import org.example.dags.webapi.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
-import java.nio.charset.Charset;
 import java.util.zip.ZipInputStream;
 
 public class ExtractZipContentsVertices {
@@ -33,28 +33,26 @@ public class ExtractZipContentsVertices {
             KV<String, WebApiHttpResponse> elem = c.element();
             ByteArrayInputStream bis = new ByteArrayInputStream(elem.getValue().getData());
             ZipInputStream zs = new ZipInputStream(bis);
-            // TODO Should iterate through zip file for expected file
-            zs.getNextEntry();
+            RealEstateCsv realEstateCsv = RealEstateCsv.of(zs);
 
-            BufferedReader br = new BufferedReader(
-                    new InputStreamReader(zs, Charset.forName("windows-31j")));
-
-            while (br.ready()) {
-                String line = br.readLine();
-                if (line.startsWith("\"種類")) {
-                    continue;
-                }
-
-                if(line.startsWith("\"宅地")) {
-                    out.get(residentialLand).output(ResidentialLandTxn.of(line));
-                } else if(line.startsWith("\"中古マンション等")) {
-                    out.get(usedApartment).output(UsedApartmentTxn.of(line));
+            // Flatten
+            for(CSVRecord record : realEstateCsv.records) {
+                switch (realEstateCsv.dlEndpoint) {
+                    case EndpointKind.RESIDENTIAL_LAND:
+                        out.get(residentialLand).output(ResidentialLandTxn.of(record));
+                        break;
+                    case EndpointKind.USED_APARTMENT:
+                        out.get(usedApartment).output(UsedApartmentTxn.of(record));
+                        break;
+                    case EndpointKind.LAND_VALUE:
+                        break;
+                    default:
+                        throw new IllegalStateException("Unknown endpoint: " + realEstateCsv.dlEndpoint);
                 }
             }
 
             zs.close();
             bis.close();
-            br.close();
          }
     }
 

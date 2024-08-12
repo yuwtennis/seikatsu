@@ -5,7 +5,7 @@ public class RealEstateTxnCsvDlEndpoint {
     private static final int fromQuarter = 1;
     private static final int toQuarter = 4;
 
-    private final TxnKind kind;
+    private final EndpointKind kind;
     private final int seasonFrom;
     private final int seasonTo;
 
@@ -18,7 +18,7 @@ public class RealEstateTxnCsvDlEndpoint {
     public static class Builder {
         private final int seasonFrom;
         private final int seasonTo;
-        private TxnKind kind;
+        private EndpointKind kind;
 
         private String language = "ja";
         private String areaCondition = "address";
@@ -26,7 +26,7 @@ public class RealEstateTxnCsvDlEndpoint {
         private String transactionPrice = "true";
         private String closedPrice = "true";
 
-        public Builder(TxnKind kind, int seasonFrom, int seasonTo) {
+        public Builder(EndpointKind kind, int seasonFrom, int seasonTo) {
             this.kind = kind;
             this.seasonFrom = seasonFrom;
             this.seasonTo = seasonTo;
@@ -37,7 +37,7 @@ public class RealEstateTxnCsvDlEndpoint {
         public Builder prefecture(String val) { prefecture = val; return this; }
         public Builder transactionPrice(String val) { transactionPrice = val; return this; }
         public Builder closedPrice(String val) { closedPrice = val; return this; }
-        public Builder kind(TxnKind val) { kind = val; return this; }
+        public Builder kind(EndpointKind val) { kind = val; return this; }
 
         public RealEstateTxnCsvDlEndpoint build() {
             return new RealEstateTxnCsvDlEndpoint(this);

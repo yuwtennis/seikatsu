@@ -5,6 +5,7 @@ import org.apache.beam.sdk.coders.DefaultCoder;
 import org.apache.beam.sdk.extensions.avro.coders.AvroCoder;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -112,44 +113,40 @@ public class ResidentialLandTxn {
 
     /**
      *
-     * @param csvLine
+     * @param record
      * @return
      */
-    public static ResidentialLandTxn of(String csvLine) throws IOException {
-
-        List<String> fields = CSVParser.parse(csvLine, CSVFormat.RFC4180)
-                .getRecords().get(0).toList();
+    public static ResidentialLandTxn of(CSVRecord record) throws IOException {
 
         ResidentialLandTxn r = new ResidentialLandTxn();
-        r.txnType = validateStr(fields.get(0));
-        r.priceType = validateStr(fields.get(1));
-        r.landPurpose = validateStr(fields.get(2));
-        r.districtCode = validateStr(fields.get(3));
-        r.prefectureName = validateStr(fields.get(4));
-        r.districtName = validateStr(fields.get(5));
-        r.cityName = validateStr(fields.get(6));
-        r.closestStationName = validateStr(fields.get(7));
-        r.durationToClosestStationInMin = asInt(fields.get(8));
-        r.totalTxnPrice = asInt(fields.get(9));
-        r.pricePerPyeong = asInt(fields.get(10));
-        r.areaSizeInSqm = asInt(fields.get(11));
-        r.txnPricePerSqm = asInt(fields.get(12));
-        r.landShape = validateStr(fields.get(13));
-        r.frontageLengthInMeters = asFloat(fields.get(14));
-        r.floorAreaTotalInSqm = asInt(fields.get(15));
-        r.yearBuilt = asInt(fields.get(16));
-        r.buildingStructure = validateStr(fields.get(17));
-        r.purpose = validateStr(fields.get(18));
-        r.futurePurpose = validateStr(fields.get(19));
-        r.frontRoadDirection = validateStr(fields.get(20));
-        r.frontRoadType = validateStr(fields.get(21));
-        r.frontRoadWidthInMeters = asFloat(fields.get(22));
-        r.cityPlan = validateStr(fields.get(23));
-        r.bcrReqmt = asFloat(fields.get(24));
-        r.farReqmt = asFloat(fields.get(25));
-        r.txnPeriod = validateStr(fields.get(26));
-        r.txnRemarks = validateStr(fields.get(27));
-
+        r.txnType = validateStr(record.get(0));
+        r.priceType = validateStr(record.get(1));
+        r.landPurpose = validateStr(record.get(2));
+        r.districtCode = validateStr(record.get(3));
+        r.prefectureName = validateStr(record.get(4));
+        r.districtName = validateStr(record.get(5));
+        r.cityName = validateStr(record.get(6));
+        r.closestStationName = validateStr(record.get(7));
+        r.durationToClosestStationInMin = asInt(record.get(8));
+        r.totalTxnPrice = asInt(record.get(9));
+        r.pricePerPyeong = asInt(record.get(10));
+        r.areaSizeInSqm = asInt(record.get(11));
+        r.txnPricePerSqm = asInt(record.get(12));
+        r.landShape = validateStr(record.get(13));
+        r.frontageLengthInMeters = asFloat(record.get(14));
+        r.floorAreaTotalInSqm = asInt(record.get(15));
+        r.yearBuilt = asInt(record.get(16));
+        r.buildingStructure = validateStr(record.get(17));
+        r.purpose = validateStr(record.get(18));
+        r.futurePurpose = validateStr(record.get(19));
+        r.frontRoadDirection = validateStr(record.get(20));
+        r.frontRoadType = validateStr(record.get(21));
+        r.frontRoadWidthInMeters = asFloat(record.get(22));
+        r.cityPlan = validateStr(record.get(23));
+        r.bcrReqmt = asFloat(record.get(24));
+        r.farReqmt = asFloat(record.get(25));
+        r.txnPeriod = validateStr(record.get(26));
+        r.txnRemarks = validateStr(record.get(27));
 
         try {
             r.startOfQuarter = parseQuarterDateFormat(r.txnPeriod);
