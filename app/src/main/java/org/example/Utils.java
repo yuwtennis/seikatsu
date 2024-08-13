@@ -1,42 +1,34 @@
 package org.example;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.util.ArrayList;
-import java.util.Map;
 
 public class Utils {
     public static Boolean isNullOrEmpty(String s) {
         return s == null || s.isEmpty();
     }
 
-    /***
+    /**
      *
-     * @param arr
+     * @param jsonStr
+     * @param schema
      * @return
      */
-    public static String asJsonStr(String[] arr) {
+    public static Object asJson(String jsonStr, Class<?> schema) {
         ObjectMapper objectMapper = new ObjectMapper();
 
         try {
-            return objectMapper.writeValueAsString(arr);
+            return objectMapper.readValue(jsonStr, schema);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static Map<String, String> asJsonMap(String jsonStr) {
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        try {
-            return objectMapper.readValue(jsonStr, new TypeReference<Map<String, String>>(){});
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
+    /**
+     *
+     * @param str
+     * @return
+     */
     public static String validateStr(String str) {
         return str.isEmpty() ? Magics.IS_EMPTY.value : str;
     }
@@ -53,6 +45,11 @@ public class Utils {
         return result;
     }
 
+    /**
+     *
+     * @param val
+     * @return
+     */
     public static float asFloat(String val) {
         float result = 0 ;
 
@@ -63,5 +60,14 @@ public class Utils {
         }
 
         return result;
+    }
+
+    /**
+     *
+     * @param val
+     * @return
+     */
+    public static String from4digitStr(String val) {
+        return String.format("%s-%s-%s", val.substring(0, 4), val.substring(4, 6), val.substring(6, 8));
     }
 }

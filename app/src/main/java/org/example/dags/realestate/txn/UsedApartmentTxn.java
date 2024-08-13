@@ -1,19 +1,16 @@
-package org.example.dags.realestate;
+package org.example.dags.realestate.txn;
 
 import com.google.api.services.bigquery.model.TableRow;
 import org.apache.beam.sdk.coders.DefaultCoder;
 import org.apache.beam.sdk.extensions.avro.coders.AvroCoder;
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.List;
 
 import static org.example.Utils.*;
-import static org.example.dags.realestate.ResidentialLandTxn.parseQuarterDateFormat;
+import static org.example.dags.realestate.txn.ResidentialLandTxn.parseQuarterDateFormat;
 
 /***
  * Used apartment transaction

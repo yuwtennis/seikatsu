@@ -1,6 +1,6 @@
-package org.example.dags.realestate;
+package org.example.dags.realestate.endpoints;
 
-public class RealEstateTxnCsvDlEndpoint {
+public class RealEstateTxnCsvDlEndpoint extends Endpoint {
     private static final String ENDPOINT = "https://www.reinfolib.mlit.go.jp/in-api/api-aur/aur/csv/transactionPrices";
     private static final int fromQuarter = 1;
     private static final int toQuarter = 4;
@@ -15,7 +15,7 @@ public class RealEstateTxnCsvDlEndpoint {
     private final String transactionPrice;
     private final String closedPrice;
 
-    public static class Builder {
+    public static class Builder extends Endpoint.Builder<Builder> {
         private final int seasonFrom;
         private final int seasonTo;
         private EndpointKind kind;
@@ -39,12 +39,18 @@ public class RealEstateTxnCsvDlEndpoint {
         public Builder closedPrice(String val) { closedPrice = val; return this; }
         public Builder kind(EndpointKind val) { kind = val; return this; }
 
+        @Override
         public RealEstateTxnCsvDlEndpoint build() {
             return new RealEstateTxnCsvDlEndpoint(this);
         }
+
+        @Override
+        protected Builder self() { return this; }
     }
 
     private RealEstateTxnCsvDlEndpoint(Builder builder) {
+        super(builder);
+
         seasonFrom = builder.seasonFrom;
         seasonTo = builder.seasonTo;
         language = builder.language;

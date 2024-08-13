@@ -29,8 +29,8 @@ public abstract class WebApiHttpRequest implements Serializable {
                 .build();
     }
 
-    abstract String getUrl();
-    abstract Map<String, String> getHeaders();
+    public abstract String getUrl();
+    public abstract Map<String, String> getHeaders();
 
     @AutoValue.Builder
     abstract static class Builder {

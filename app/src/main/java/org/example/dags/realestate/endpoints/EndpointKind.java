@@ -1,4 +1,4 @@
-package org.example.dags.realestate;
+package org.example.dags.realestate.endpoints;
 
 public enum EndpointKind {
     RESIDENTIAL_LAND("residential"),
