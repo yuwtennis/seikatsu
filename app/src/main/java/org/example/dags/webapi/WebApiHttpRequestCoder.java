@@ -18,12 +18,24 @@ public class WebApiHttpRequestCoder extends CustomCoder<WebApiHttpRequest> {
         return new WebApiHttpRequestCoder();
     }
 
+    /**
+     *
+     * @param value
+     * @param outputStream
+     * @throws IOException
+     */
     @Override
     public void encode(WebApiHttpRequest value, OutputStream outputStream) throws IOException {
         STRING_UTF_8_CODER.encode(value.getUrl(), outputStream);
         MAP_CODER.encode(value.getHeaders(), outputStream);
     }
 
+    /**
+     *
+     * @param inputStream
+     * @return
+     * @throws IOException
+     */
     @Override
     public WebApiHttpRequest decode(InputStream inputStream) throws IOException {
         String url = STRING_UTF_8_CODER.decode(inputStream);

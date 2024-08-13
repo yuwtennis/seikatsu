@@ -15,8 +15,17 @@ public abstract class WebApiHttpResponse implements Serializable {
 
     @AutoValue.Builder
     abstract static class Builder {
+        /**
+         *
+         * @param value
+         * @return
+         */
         abstract Builder setData(byte[] value);
 
+        /**
+         *
+         * @return
+         */
         abstract WebApiHttpResponse build();
     }
 

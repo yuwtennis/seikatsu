@@ -33,6 +33,11 @@ public class Utils {
         return str.isEmpty() ? Magics.IS_EMPTY.value : str;
     }
 
+    /**
+     *
+     * @param val
+     * @return
+     */
     public static int asInt(String val) {
         int result = 0 ;
 

@@ -68,6 +68,9 @@ public class RealEstateDag implements Dag {
         p.run().waitUntilFinish();
     }
 
+    /**
+     *
+     */
     static class ParseBodyFn extends DoFn<WebApiHttpResponse, byte[]> {
         @ProcessElement
         public void processElement(ProcessContext c) {
@@ -75,6 +78,9 @@ public class RealEstateDag implements Dag {
         }
     }
 
+    /**
+     *
+     */
     static class ParseUrlFn extends DoFn<byte[], String> {
         @ProcessElement
         public void processElement(ProcessContext c) {
@@ -85,6 +91,9 @@ public class RealEstateDag implements Dag {
         }
     }
 
+    /**
+     *
+     */
     static class DecodeBase64Fn extends DoFn<byte[], byte[]> {
         @ProcessElement
         public void processElement(ProcessContext c) {

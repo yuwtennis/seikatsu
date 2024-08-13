@@ -92,7 +92,6 @@ public class UsedApartmentTxn {
      * @return
      */
     public static UsedApartmentTxn of(CSVRecord record) throws IOException {
-        
         UsedApartmentTxn r = new UsedApartmentTxn();
         r.txnType = validateStr(record.get(0));
         r.priceType = validateStr(record.get(1));

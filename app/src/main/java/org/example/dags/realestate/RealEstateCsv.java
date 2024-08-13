@@ -22,6 +22,12 @@ public class RealEstateCsv {
 
     static Logger LOG = LoggerFactory.getLogger(RealEstateCsv.class);
 
+    /**
+     *
+     * @param zs
+     * @return
+     * @throws IOException
+     */
     public static RealEstateCsv of(ZipInputStream zs) throws IOException {
         RealEstateCsv realEstateCsv = new RealEstateCsv();
         ZipEntry entry;

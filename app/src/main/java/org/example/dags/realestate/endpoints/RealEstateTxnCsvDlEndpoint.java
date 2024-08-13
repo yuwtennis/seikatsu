@@ -32,13 +32,52 @@ public class RealEstateTxnCsvDlEndpoint extends Endpoint {
             this.seasonTo = seasonTo;
         }
 
+        /**
+         *
+         * @param val
+         * @return
+         */
         public Builder language(String val) { language = val; return this; }
+
+        /**
+         *
+         * @param val
+         * @return
+         */
         public Builder areaCondition(String val) { areaCondition = val; return this; }
+
+        /**
+         *
+         * @param val
+         * @return
+         */
         public Builder prefecture(String val) { prefecture = val; return this; }
+
+        /**
+         *
+         * @param val
+         * @return
+         */
         public Builder transactionPrice(String val) { transactionPrice = val; return this; }
+
+        /**
+         *
+         * @param val
+         * @return
+         */
         public Builder closedPrice(String val) { closedPrice = val; return this; }
+
+        /**
+         *
+         * @param val
+         * @return
+         */
         public Builder kind(EndpointKind val) { kind = val; return this; }
 
+        /**
+         *
+         * @return
+         */
         @Override
         public RealEstateTxnCsvDlEndpoint build() {
             return new RealEstateTxnCsvDlEndpoint(this);

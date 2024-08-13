@@ -15,6 +15,11 @@ public abstract class WebApiHttpRequest implements Serializable {
         return new AutoValue_WebApiHttpRequest.Builder();
     }
 
+    /**
+     *
+     * @param url
+     * @return
+     */
     public static WebApiHttpRequest of(String url) {
         return builder()
                 .setUrl(url)
@@ -22,6 +27,12 @@ public abstract class WebApiHttpRequest implements Serializable {
                 .build();
     }
 
+    /**
+     *
+     * @param url
+     * @param headers
+     * @return
+     */
     public static WebApiHttpRequest of(String url, Map<String, String> headers) {
         return builder()
                 .setUrl(url)
@@ -34,9 +45,24 @@ public abstract class WebApiHttpRequest implements Serializable {
 
     @AutoValue.Builder
     abstract static class Builder {
+        /**
+         *
+         * @param url
+         * @return
+         */
         abstract Builder setUrl(String url);
+
+        /**
+         *
+         * @param headers
+         * @return
+         */
         abstract Builder setHeaders(Map<String, String> headers);
 
+        /**
+         *
+         * @return
+         */
         abstract WebApiHttpRequest build();
     }
 }

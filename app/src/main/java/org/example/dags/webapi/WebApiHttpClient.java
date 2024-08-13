@@ -21,6 +21,12 @@ public class WebApiHttpClient
         return new WebApiHttpClient();
     }
 
+    /**
+     *
+     * @param webApiHttpRequest
+     * @return
+     * @throws UserCodeExecutionException
+     */
     @Override
     public WebApiHttpResponse call(WebApiHttpRequest webApiHttpRequest)
             throws UserCodeExecutionException {

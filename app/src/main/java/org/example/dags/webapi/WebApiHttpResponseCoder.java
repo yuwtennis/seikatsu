@@ -14,11 +14,23 @@ public class WebApiHttpResponseCoder extends CustomCoder<WebApiHttpResponse> {
         return new WebApiHttpResponseCoder();
     }
 
+    /**
+     *
+     * @param value
+     * @param outStream
+     * @throws IOException
+     */
     @Override
     public void encode(WebApiHttpResponse value, OutputStream outStream) throws IOException {
         BYTE_ARRAY_CODER.encode(value.getData(), outStream);
     }
 
+    /**
+     *
+     * @param inStream
+     * @return
+     * @throws IOException
+     */
     @Override
     public WebApiHttpResponse decode(InputStream inStream) throws IOException {
         byte[] data = BYTE_ARRAY_CODER.decode(inStream);

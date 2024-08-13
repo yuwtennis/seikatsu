@@ -15,13 +15,26 @@ public class RealEstateLandValueCsvDlEndpoint extends Endpoint {
             this.yearOfPrice = yearOfPrice;
         }
 
+        /**
+         *
+         * @return
+         */
         @Override
         public RealEstateLandValueCsvDlEndpoint build() {
             return new RealEstateLandValueCsvDlEndpoint(this);
         }
 
+        /**
+         *
+         * @param val
+         * @return
+         */
         public Builder selectedPrefId(String val) { selectedPrefId = val; return this; }
 
+        /**
+         *
+         * @return
+         */
         @Override
         protected Builder self() { return this; }
     }
