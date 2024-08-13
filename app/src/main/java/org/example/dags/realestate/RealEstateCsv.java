@@ -37,6 +37,10 @@ public class RealEstateCsv {
             }
         }
 
+        if (realEstateCsv.fileName == null) {
+            throw new IOException("No entries or no filename which matches prefix");
+        }
+
         CSVParser parser = CSVParser.parse(
                 zs,
                 Charset.forName("windows-31j"),

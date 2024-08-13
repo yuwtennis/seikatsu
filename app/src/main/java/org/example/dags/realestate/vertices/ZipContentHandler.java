@@ -34,27 +34,29 @@ public class ZipContentHandler {
         public void processElement(ProcessContext c, MultiOutputReceiver out) throws IOException, Exception {
             byte[] b = c.element();
             ByteArrayInputStream bis = new ByteArrayInputStream(b);
-            ZipInputStream zs = new ZipInputStream(bis);
-            RealEstateCsv realEstateCsv = RealEstateCsv.of(zs);
 
-            // Flatten
-            for(CSVRecord record : realEstateCsv.records) {
-                switch (realEstateCsv.dlEndpoint) {
-                    case EndpointKind.RESIDENTIAL_LAND:
-                        out.get(residentialLand).output(ResidentialLandTxn.of(record));
-                        break;
-                    case EndpointKind.USED_APARTMENT:
-                        out.get(usedApartment).output(UsedApartmentTxn.of(record));
-                        break;
-                    case EndpointKind.LAND_VALUE:
-                        out.get(landValue).output(LandValue.of(realEstateCsv.fileName, record));
-                        break;
-                    default:
-                        throw new IllegalStateException("Unknown endpoint: " + realEstateCsv.dlEndpoint);
+            try (ZipInputStream zs = new ZipInputStream(bis)) {
+                RealEstateCsv realEstateCsv = RealEstateCsv.of(zs);
+
+                // Flatten
+                for (CSVRecord record : realEstateCsv.records) {
+                    switch (realEstateCsv.dlEndpoint) {
+                        case EndpointKind.RESIDENTIAL_LAND:
+                            out.get(residentialLand).output(ResidentialLandTxn.of(record));
+                            break;
+                        case EndpointKind.USED_APARTMENT:
+                            out.get(usedApartment).output(UsedApartmentTxn.of(record));
+                            break;
+                        case EndpointKind.LAND_VALUE:
+                            out.get(landValue).output(LandValue.of(realEstateCsv.fileName, record));
+                            break;
+                        default:
+                            throw new IllegalStateException("Unknown endpoint: " + realEstateCsv.dlEndpoint);
+                    }
                 }
+            } catch (IOException e) {
+                LOG.error("Error reading file", e);
             }
-
-            zs.close();
          }
     }
 
