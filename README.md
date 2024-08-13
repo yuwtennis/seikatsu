@@ -1,5 +1,8 @@
 # pipelines-java
 
+This repository is intended to create dataset to do descriptive analytics.  
+It uses [apache beam](https://github.com/apache/beam/tree/master) for ETL .
+
 ## RealEstates
 
 This dag will parse csv data from [RealEstate information](https://www.reinfolib.mlit.go.jp/) from MLIT.  
