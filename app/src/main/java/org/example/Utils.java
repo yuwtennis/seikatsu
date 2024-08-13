@@ -8,6 +8,21 @@ public class Utils {
         return s == null || s.isEmpty();
     }
 
+    /***
+     *
+     * @param arr
+     * @return
+     */
+    public static String asJsonStr(String[] arr) {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        try {
+            return objectMapper.writeValueAsString(arr);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     /**
      *
      * @param jsonStr
