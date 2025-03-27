@@ -1,0 +1,77 @@
+{
+  "type": "FeatureCollection",
+  "name": "land_prices",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "urn:ogc:def:crs:EPSG::6668"
+    }
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          139.65232372283936,
+          35.70772775962189
+        ]
+      },
+      "properties": {
+        "_id": "jmda6JABk4JyLPT2q-bf",
+        "_index": "bi007_land_prices_2011-2023_202407251413",
+        "location_number_ja": "高円寺北２丁目７３０番２７",
+        "area_division_name_ja": "市街化区域",
+        "gas_supply_availablity": true,
+        "city_code": "13115",
+        "residence_display_name_ja": "高円寺北２－２６－６",
+        "side_road_name_ja": "",
+        "u_road_distance_to_nearest_station_name_ja": "450m",
+        "sewer_supply_availablity": true,
+        "building_structure_name_ja": "W（木造）",
+        "proximity_to_transportation_facilitites": 0,
+        "regulations_use_category_name_ja": "第一種中高層住居専用地域",
+        "side_road_azimuth_name_ja": "",
+        "current_usage_status_of_surrounding_land_name_ja": "小規模一般住宅、共同住宅等が建ち並ぶ住宅地域",
+        "front_road_name_ja": "区道",
+        "u_ground_hierarchy_ja": "3F",
+        "use_category_name_ja": "住宅地",
+        "nearest_station_name_ja": "高円寺",
+        "front_road_width": 40,
+        "u_underground_hierarchy_ja": "",
+        "year_on_year_change_rate": "4.5",
+        "u_regulations_building_coverage_ratio_ja": "60(%)",
+        "water_supply_availablity": true,
+        "u_cadastral_ja": "77(㎡)",
+        "point_id": 16002670,
+        "front_road_pavement_condition": "1",
+        "usage_category_name_ja": "建物などの敷地",
+        "prefecture_code": "13",
+        "regulations_forest_law_name_ja": "",
+        "regulations_park_law_name_ja": "",
+        "city_county_name_ja": "",
+        "front_road_azimuth_name_ja": "西",
+        "target_year_name_ja": "令和5年1月1日",
+        "u_regulations_floor_area_ratio_ja": "200(%)",
+        "prefecture_name_ja": "東京都",
+        "regulations_fireproof_name_ja": "準防火地域",
+        "depth_ratio": 20,
+        "u_current_years_price_ja": "670,000(円/㎡)",
+        "ward_town_village_name_ja": "杉並区",
+        "frontage_ratio": 10,
+        "place_name_ja": "杉並",
+        "land_price_type": 0,
+        "usage_status_name_ja": "住宅",
+        "regulations_altitude_district_name_ja": "",
+        "pause_flag": 0,
+        "standard_lot_number_ja": "杉並-2",
+        "last_years_price": 641000,
+        "location": "東京都杉並区高円寺北２丁目７３０番２７",
+        "shape": "(1.0：2.0)",
+        "front_road_condition": "西　4.0m　区道",
+        "side_road_condition": "",
+        "park_forest_law": ""
+      }
+    }
+  ]
+}

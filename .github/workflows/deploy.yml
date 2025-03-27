@@ -1,17 +1,11 @@
 name: Continuous deployment
 
 on:
-  workflow_call:
-    secrets:
-      DOCKER_REPOS_URL:
-        required: true
-      GOOGLE_WORKLOAD_IDENTITY_PATH:
-        required: true
-      GOOGLE_CD_SERVICE_ACCOUNT:
-        required: true
+  push:
 
 jobs:
   deploy:
+    if: github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
     name: Continuous deployment
     env:
       DOCKER_REPOS_URL: ${{ secrets.DOCKER_REPOS_URL }}
@@ -25,7 +19,7 @@ jobs:
       - name: Checkout project sources
         uses: actions/checkout@v4
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v3
+        uses: gradle/actions/setup-gradle@v4
         with:
           build-scan-publish: true
           build-scan-terms-of-use-url: "https://gradle.com/terms-of-service"

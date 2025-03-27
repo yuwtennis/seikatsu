@@ -2,6 +2,8 @@ package org.example;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.geojson.FeatureCollection;
+import org.geojson.GeoJsonObject;
 
 public class Utils {
     public static Boolean isNullOrEmpty(String s) {
@@ -34,6 +36,21 @@ public class Utils {
 
         try {
             return objectMapper.readValue(jsonStr, schema);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     *
+     * @param jsonStr
+     * @return
+     */
+    public static FeatureCollection asFeatureCollection(String jsonStr) {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        try {
+            return objectMapper.readValue(jsonStr, FeatureCollection.class);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

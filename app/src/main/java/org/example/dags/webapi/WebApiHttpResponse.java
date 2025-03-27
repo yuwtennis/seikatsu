@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 @AutoValue
 public abstract class WebApiHttpResponse implements Serializable {
-    static Builder builder() {
+    public static Builder builder() {
         return new AutoValue_WebApiHttpResponse.Builder();
     }
 
@@ -14,19 +14,19 @@ public abstract class WebApiHttpResponse implements Serializable {
     public abstract byte[] getData();
 
     @AutoValue.Builder
-    abstract static class Builder {
+    public abstract static class Builder {
         /**
          *
          * @param value
          * @return
          */
-        abstract Builder setData(byte[] value);
+        public abstract Builder setData(byte[] value);
 
         /**
          *
          * @return
          */
-        abstract WebApiHttpResponse build();
+        public abstract WebApiHttpResponse build();
     }
 
 }

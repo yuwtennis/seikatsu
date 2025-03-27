@@ -4,6 +4,7 @@ import com.google.api.services.bigquery.model.TableRow;
 import org.apache.beam.sdk.coders.DefaultCoder;
 import org.apache.beam.sdk.extensions.avro.coders.AvroCoder;
 import org.apache.commons.csv.CSVRecord;
+import org.geojson.FeatureCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

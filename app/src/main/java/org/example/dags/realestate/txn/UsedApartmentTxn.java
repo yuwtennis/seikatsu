@@ -104,7 +104,7 @@ public class UsedApartmentTxn {
         r.totalTxnPrice = asInt(record.get(8));
         r.floorPlan = validateStr(record.get(9));
         r.areaSizeInSqm = asInt(record.get(10));
-        r.yearBuilt = asInt(record.get(11));
+        r.yearBuilt = asInt(record.get(11).replaceAll("年", ""));
         r.buildingStructure = validateStr(record.get(12));
         r.purpose = validateStr(record.get(13));
         r.futurePurpose = validateStr(record.get(14));

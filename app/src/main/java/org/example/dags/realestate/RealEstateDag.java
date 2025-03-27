@@ -11,15 +11,14 @@ import org.example.App;
 import org.example.Utils;
 import org.example.dags.Dag;
 import org.example.dags.realestate.endpoints.EndpointKind;
+import org.example.dags.realestate.endpoints.RealEstateGeoJsonLandValueDlEndpoint;
 import org.example.dags.realestate.endpoints.RealEstateLandValueCsvDlEndpoint;
 import org.example.dags.realestate.endpoints.RealEstateTxnCsvDlEndpoint;
-import org.example.dags.realestate.http_response_schema.AppRaisalsResponseSchema;
-import org.example.dags.realestate.http_response_schema.TxnResponseSchema;
+import org.example.dags.realestate.landvalue.GeoLandValue;
+import org.example.dags.realestate.vertices.*;
 import org.example.dags.realestate.landvalue.LandValue;
 import org.example.dags.realestate.txn.ResidentialLandTxn;
 import org.example.dags.realestate.txn.UsedApartmentTxn;
-import org.example.dags.realestate.vertices.ZipContentHandler;
-import org.example.dags.realestate.vertices.ContentDownloader;
 import org.example.dags.webapi.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +39,8 @@ public class RealEstateDag implements Dag {
         int backtrackedYears = p.getOptions().as(App.DagOptions.class).getBacktrackedYears();
         final List<String> urlsForTxn = new ArrayList<>();
         final List<String> urlsForLV = new ArrayList<>();
+        final List<String> urlsForGeoJsonLV = new ArrayList<>();
+        final int x_start = 7264, x_end = 7278, y_start = 3223, y_end = 3229;
 
         for (int i = 1; i <= backtrackedYears; i++) {
             int backtracked = Year.now().minusYears(i).getValue();
@@ -57,51 +58,31 @@ public class RealEstateDag implements Dag {
             urlsForLV.add(
                     new RealEstateLandValueCsvDlEndpoint.Builder(backtracked)
                             .build().toUrl());
+            // Geo Json LandValue
+            for(int x = x_start; x <= x_end; x++) {
+                for(int y = y_start; y <= y_end; y++) {
+                    urlsForGeoJsonLV.add(new RealEstateGeoJsonLandValueDlEndpoint.Builder(
+                            x,
+                            y,
+                            backtracked
+                    ).build().toUrl());
+                }
+            }
         }
+
+        LOG.info(urlsForGeoJsonLV.toString());
 
         PCollection<String> txnUrls = p.apply(Create.of(urlsForTxn));
         PCollection<String> lvUrls = p.apply(Create.of(urlsForLV));
+        PCollection<String> geoJsonLvUrls = p.apply(Create.of(urlsForGeoJsonLV));
 
         txnDag(asWebApiHttpRequest(txnUrls));
         lvDag(asWebApiHttpRequest(lvUrls));
+        geoLvDag(asWebApiHttpRequest(geoJsonLvUrls));
 
         p.run().waitUntilFinish();
     }
 
-    /**
-     *
-     */
-    static class ParseBodyFn extends DoFn<WebApiHttpResponse, byte[]> {
-        @ProcessElement
-        public void processElement(ProcessContext c) {
-            c.output(c.element().getData());
-        }
-    }
-
-    /**
-     *
-     */
-    static class ParseUrlFn extends DoFn<byte[], String> {
-        @ProcessElement
-        public void processElement(ProcessContext c) {
-            String s = new String(c.element());
-            TxnResponseSchema json = (TxnResponseSchema)Utils.asJson(s, TxnResponseSchema.class);
-            LOG.info(json.toString());
-            c.output(json.url);
-        }
-    }
-
-    /**
-     *
-     */
-    static class DecodeBase64Fn extends DoFn<byte[], byte[]> {
-        @ProcessElement
-        public void processElement(ProcessContext c) {
-            String s = new String(c.element());
-            AppRaisalsResponseSchema json = (AppRaisalsResponseSchema)Utils.asJson(s, AppRaisalsResponseSchema.class);
-            c.output(Base64.getDecoder().decode(json.body));
-        }
-    }
 
     /**
      *
@@ -111,15 +92,15 @@ public class RealEstateDag implements Dag {
         // NOTE Unable to apply MapElements after Custom Transform
         PCollection<String> dlUrls = requests
                 .apply("DownloadUrls", new ContentDownloader.DownloadUrl())
-                .apply(ParDo.of(new ParseBodyFn()))
-                .apply(ParDo.of(new ParseUrlFn()));
+                .apply(ParDo.of(new ParseBodyDoFn.ParseBodyFn()))
+                .apply(ParDo.of(new ParseUrlDoFn.ParseUrlFn()));
 
         // 2. Next get the zip contents
         PCollection<WebApiHttpRequest> parsedUrls = asWebApiHttpRequest(dlUrls);
 
         PCollectionTuple entities = parsedUrls
                 .apply(new ContentDownloader.DownloadUrl())
-                .apply(ParDo.of(new ParseBodyFn()))
+                .apply(ParDo.of(new ParseBodyDoFn.ParseBodyFn()))
                 .apply(new ZipContentHandler.Extract());
 
         // 3. Insert into Bigquery using Bigquery Storage API
@@ -165,8 +146,8 @@ public class RealEstateDag implements Dag {
     private void lvDag(PCollection<WebApiHttpRequest> requests) {
         PCollectionTuple entities = requests
                 .apply(new ContentDownloader.DownloadUrl())
-                .apply(ParDo.of(new ParseBodyFn()))
-                .apply(ParDo.of(new DecodeBase64Fn()))
+                .apply(ParDo.of(new ParseBodyDoFn.ParseBodyFn()))
+                .apply(ParDo.of(new Base64DecoderDoFn.Base64DecoderFn()))
                 .apply(new ZipContentHandler.Extract());
 
         PCollection<LandValue> landValues = entities.get(landValue);
@@ -181,6 +162,28 @@ public class RealEstateDag implements Dag {
                 BigQueryIO
                         .writeTableRows()
                         .to(FQTN_LAND_VALUE)
+                        .withCreateDisposition(BigQueryIO.Write.CreateDisposition.CREATE_NEVER)
+                        .withWriteDisposition(BigQueryIO.Write.WriteDisposition.WRITE_TRUNCATE)
+                        .withMethod(BigQueryIO.Write.Method.DEFAULT));
+    }
+
+    /**
+     *
+     * @param requests
+     */
+    private void geoLvDag(PCollection<WebApiHttpRequest> requests) {
+        PCollection<TableRow> geoLvRows = requests
+                .apply(new ContentDownloader.DownloadUrl())
+                .apply(ParDo.of(new GeoLandValueFn.FromWebApiHttpResponseFn()))
+                .apply(
+                        MapElements
+                                .into(TypeDescriptor.of(TableRow.class))
+                                .via((GeoLandValue lv)->lv.toTableRow())
+                );
+        geoLvRows.apply(
+                BigQueryIO
+                        .writeTableRows()
+                        .to(FQTN_GEO_LAND_VALUE)
                         .withCreateDisposition(BigQueryIO.Write.CreateDisposition.CREATE_NEVER)
                         .withWriteDisposition(BigQueryIO.Write.WriteDisposition.WRITE_TRUNCATE)
                         .withMethod(BigQueryIO.Write.Method.DEFAULT));
