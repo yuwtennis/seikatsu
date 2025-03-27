@@ -1,4 +1,4 @@
-package org.example.dags;
+package org.example.dags.helloworld;
 
 import org.apache.beam.sdk.testing.NeedsRunner;
 import org.apache.beam.sdk.testing.TestPipeline;
@@ -12,7 +12,8 @@ import org.junit.experimental.categories.Category;
 import static org.example.Utils.asJsonStr;
 import static org.junit.Assert.assertTrue;
 
-public class HelloWorldDagTest {
+public class
+HelloWorldDagTest {
     public interface TestHWOptions extends TestPipelineOptions, App.DagOptions {}
 
     private String dagType;

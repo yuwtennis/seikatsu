@@ -45,6 +45,7 @@ dependencies {
     implementation("org.slf4j:slf4j-simple:2.0.13")
     implementation("org.apache.commons:commons-csv:1.11.0")
     implementation("commons-codec:commons-codec:1.17.1")
+    implementation("de.grundid.opendatalab:geojson-jackson:1.14")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.

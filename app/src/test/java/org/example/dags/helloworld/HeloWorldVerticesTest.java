@@ -1,4 +1,4 @@
-package org.example.dags;
+package org.example.dags.helloworld;
 
 import org.apache.beam.sdk.testing.NeedsRunner;
 import org.apache.beam.sdk.testing.PAssert;
@@ -6,7 +6,6 @@ import org.apache.beam.sdk.testing.TestPipeline;
 import org.apache.beam.sdk.transforms.Create;
 import org.apache.beam.sdk.transforms.MapElements;
 import org.apache.beam.sdk.values.PCollection;
-import org.example.dags.helloworld.HelloWorldVertices;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
