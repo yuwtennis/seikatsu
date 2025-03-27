@@ -76,12 +76,15 @@ docker {
 
 checkstyle {
     toolVersion ="10.21.4"
-    configFile = file("$rootDir/config/checkstyle/google_checks.xml")
+    configFile = file("$rootDir/config/checkstyle/sun_checks.xml")
 }
 
 configure<org.owasp.dependencycheck.gradle.extension.DependencyCheckExtension> {
     nvd.apiKey = System.getenv("NVD_API_KEY")
     autoUpdate = false
+
+    // Fail build if vulnerabilities are found
+    failBuildOnCVSS = 0.0F
 }
 
 sonar {
