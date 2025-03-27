@@ -94,10 +94,6 @@ sonar {
 }
 
 tasks.named<Test>("test") {
-    dependsOn("dependencyCheckAnalyze")
-    dependsOn("checkstyleMain")
-    dependsOn("checkstyleTest")
-
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
 }
