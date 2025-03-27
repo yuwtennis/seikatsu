@@ -1,4 +1,4 @@
-name: Build Gradle project
+name: SAST
 
 on:
   pull_request:
