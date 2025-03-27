@@ -17,7 +17,12 @@ jobs:
           build-scan-publish: true
           build-scan-terms-of-use-url: "https://gradle.com/terms-of-service"
           build-scan-terms-of-use-agree: "yes"
-      - name: Run Analysis
+      - name: Cache nvd
+        uses: actions/cache@v4
+        with:
+          path: ~/.gradle/dependency-check-data
+          key: ${{ github.repository }}
+      - name: Run dependency check for JARS
         run: ./gradlew dependencyCheckAnalyze
-      - name: Run Sonar
+      - name: Run code analysis
         run: echo "Not implemented"
