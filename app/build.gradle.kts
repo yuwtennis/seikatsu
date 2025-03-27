@@ -81,6 +81,7 @@ checkstyle {
 
 configure<org.owasp.dependencycheck.gradle.extension.DependencyCheckExtension> {
     nvd.apiKey = System.getenv("NVD_API_KEY")
+    autoUpdate = false
 }
 
 sonar {

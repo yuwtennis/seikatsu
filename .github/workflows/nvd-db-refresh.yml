@@ -1,0 +1,27 @@
+on:
+  schedule:
+    - cron: "0 6 * * *"
+
+jobs:
+  nvd-refresh:
+    runs-on: ubuntu-latest
+    env:
+      NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
+    steps:
+      - name: Checkout project sources
+        uses: actions/checkout@v4
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          build-scan-publish: true
+          build-scan-terms-of-use-url: "https://gradle.com/terms-of-service"
+          build-scan-terms-of-use-agree: "yes"
+      - name: Cache nvd
+        uses: actions/cache@v4
+        with:
+          path: ~/.gradle/dependency-check-data
+          key: "dependency-check-data"
+      - name: Purge database
+        run: ./gradlew dependencyCheckPurge
+      - name: Update database
+        run: ./gradlew dependencyCheckUpdate
