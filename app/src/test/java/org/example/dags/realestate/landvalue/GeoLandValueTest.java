@@ -10,13 +10,10 @@ import org.apache.beam.sdk.testing.PAssert;
 import org.apache.beam.sdk.testing.TestPipeline;
 import org.apache.beam.sdk.transforms.*;
 import org.apache.beam.sdk.values.PCollection;
-import org.apache.beam.sdk.values.TypeDescriptor;
 import org.apache.beam.sdk.values.TypeDescriptors;
-import org.example.Utils;
 import org.example.dags.realestate.vertices.GeoLandValueFn;
 import org.example.dags.webapi.WebApiHttpResponse;
 import org.example.dags.webapi.WebApiHttpResponseCoder;
-import org.geojson.Feature;
 import org.geojson.FeatureCollection;
 import org.junit.Before;
 import org.junit.Rule;
@@ -25,6 +22,7 @@ import org.junit.experimental.categories.Category;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,9 +45,9 @@ public class GeoLandValueTest {
         try {
             FeatureCollection json = mapper.readValue(geoJson, FeatureCollection.class);
             GeoLandValue geoLV = GeoLandValue.of(json.getFeatures().getFirst());
-            assertEquals("高円寺北２丁目７３０番２７", geoLV.location_number);
+            assertEquals("高円寺北２丁目７３０番２７", geoLV.locationNumber);
             assertEquals(670000, geoLV.pricePerSqm);
-        } catch (IOException e) {
+        } catch (IOException | ParseException e) {
             throw new RuntimeException(e);
         }
     }
@@ -88,7 +86,7 @@ public class GeoLandValueTest {
                         ParDo.of(new GeoLandValueFn.FromWebApiHttpResponseFn()))
                 .apply(MapElements
                         .into(TypeDescriptors.strings())
-                        .via((GeoLandValue g)-> g.location_number));
+                        .via((GeoLandValue g)-> g.locationNumber));
 
         PAssert.that(results).containsInAnyOrder("高円寺北２丁目７３０番２７");
         p.run().waitUntilFinish();
