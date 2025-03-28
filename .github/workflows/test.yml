@@ -14,5 +14,10 @@ jobs:
         with:
           distribution: corretto
           java-version: 21
+      - name: Cache Gradle packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.gradle/caches
+          key: gradle-${{ hashFiles('**/*.gradle.kts') }}
       - name: Run Test
         run: ./gradlew check
