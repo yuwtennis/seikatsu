@@ -1,10 +1,9 @@
 package org.example.dags.realestate;
 
+import java.io.File;
 import org.apache.beam.sdk.testing.TestPipeline;
 import org.junit.Before;
 import org.junit.Rule;
-
-import java.io.File;
 
 public class RealEstateDagTest {
     File geoJson;

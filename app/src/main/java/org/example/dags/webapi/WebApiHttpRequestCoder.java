@@ -1,13 +1,12 @@
 package org.example.dags.webapi;
 
-import org.apache.beam.sdk.coders.CustomCoder;
-import org.apache.beam.sdk.coders.MapCoder;
-import org.apache.beam.sdk.coders.StringUtf8Coder;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Map;
+import org.apache.beam.sdk.coders.CustomCoder;
+import org.apache.beam.sdk.coders.MapCoder;
+import org.apache.beam.sdk.coders.StringUtf8Coder;
 
 public class WebApiHttpRequestCoder extends CustomCoder<WebApiHttpRequest> {
     private static final StringUtf8Coder STRING_UTF_8_CODER = StringUtf8Coder.of();

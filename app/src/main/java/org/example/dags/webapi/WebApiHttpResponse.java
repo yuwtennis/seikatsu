@@ -1,7 +1,6 @@
 package org.example.dags.webapi;
 
 import com.google.auto.value.AutoValue;
-
 import java.io.Serializable;
 
 @AutoValue

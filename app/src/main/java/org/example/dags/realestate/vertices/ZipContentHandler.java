@@ -1,5 +1,7 @@
 package org.example.dags.realestate.vertices;
 
+import java.io.*;
+import java.util.zip.ZipInputStream;
 import org.apache.beam.sdk.transforms.*;
 import org.apache.beam.sdk.values.*;
 import org.apache.commons.csv.CSVRecord;
@@ -10,9 +12,6 @@ import org.example.dags.realestate.txn.ResidentialLandTxn;
 import org.example.dags.realestate.txn.UsedApartmentTxn;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.*;
-import java.util.zip.ZipInputStream;
 
 public class ZipContentHandler {
     static Logger LOG = LoggerFactory.getLogger(ZipContentHandler.class);

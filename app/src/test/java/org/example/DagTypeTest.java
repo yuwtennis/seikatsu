@@ -1,13 +1,12 @@
 package org.example;
 
-import org.example.dags.helloworld.HelloWorldDag;
-import org.example.dags.realestate.RealEstateDag;
-import org.example.dags.realestate.RealEstateDagTest;
-import org.junit.Before;
-import org.junit.Test;
-
 import static org.example.DagDispatcher.dispatch;
 import static org.junit.Assert.assertTrue;
+
+import org.example.dags.helloworld.HelloWorldDag;
+import org.example.dags.realestate.RealEstateDag;
+import org.junit.Before;
+import org.junit.Test;
 
 public class DagTypeTest {
     private final String DAGTYPE_HELLOWORLD = "HELLOWORLD";

@@ -1,16 +1,14 @@
 package org.example.dags.realestate.landvalue;
 
+import static org.example.Utils.*;
+
 import com.google.api.services.bigquery.model.TableRow;
+import java.io.IOException;
 import org.apache.beam.sdk.coders.DefaultCoder;
 import org.apache.beam.sdk.extensions.avro.coders.AvroCoder;
 import org.apache.commons.csv.CSVRecord;
-import org.geojson.FeatureCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-
-import static org.example.Utils.*;
 
 /***
  * Residential land deals　published from Ministry of Land, Infrastructure and Transportation

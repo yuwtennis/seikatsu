@@ -1,11 +1,10 @@
 package org.example.dags.webapi;
 
-import org.apache.beam.sdk.coders.ByteArrayCoder;
-import org.apache.beam.sdk.coders.CustomCoder;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import org.apache.beam.sdk.coders.ByteArrayCoder;
+import org.apache.beam.sdk.coders.CustomCoder;
 
 public class WebApiHttpResponseCoder extends CustomCoder<WebApiHttpResponse> {
     private final ByteArrayCoder BYTE_ARRAY_CODER = ByteArrayCoder.of();

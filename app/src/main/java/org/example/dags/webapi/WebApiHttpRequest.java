@@ -1,12 +1,11 @@
 package org.example.dags.webapi;
 
 import com.google.auto.value.AutoValue;
-import org.apache.beam.sdk.schemas.AutoValueSchema;
-import org.apache.beam.sdk.schemas.annotations.DefaultSchema;
-
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import org.apache.beam.sdk.schemas.AutoValueSchema;
+import org.apache.beam.sdk.schemas.annotations.DefaultSchema;
 
 @DefaultSchema(AutoValueSchema.class)
 @AutoValue

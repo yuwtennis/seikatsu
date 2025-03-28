@@ -1,6 +1,11 @@
 package org.example.dags.realestate;
 
+import static org.example.dags.realestate.BqMetaData.*;
+import static org.example.dags.realestate.vertices.ZipContentHandler.*;
+
 import com.google.api.services.bigquery.model.TableRow;
+import java.time.Year;
+import java.util.*;
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.io.gcp.bigquery.BigQueryIO;
 import org.apache.beam.sdk.transforms.*;
@@ -8,26 +13,19 @@ import org.apache.beam.sdk.values.PCollection;
 import org.apache.beam.sdk.values.PCollectionTuple;
 import org.apache.beam.sdk.values.TypeDescriptor;
 import org.example.App;
-import org.example.Utils;
 import org.example.dags.Dag;
 import org.example.dags.realestate.endpoints.EndpointKind;
 import org.example.dags.realestate.endpoints.RealEstateGeoJsonLandValueDlEndpoint;
 import org.example.dags.realestate.endpoints.RealEstateLandValueCsvDlEndpoint;
 import org.example.dags.realestate.endpoints.RealEstateTxnCsvDlEndpoint;
 import org.example.dags.realestate.landvalue.GeoLandValue;
-import org.example.dags.realestate.vertices.*;
 import org.example.dags.realestate.landvalue.LandValue;
 import org.example.dags.realestate.txn.ResidentialLandTxn;
 import org.example.dags.realestate.txn.UsedApartmentTxn;
+import org.example.dags.realestate.vertices.*;
 import org.example.dags.webapi.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.time.Year;
-import java.util.*;
-
-import static org.example.dags.realestate.BqMetaData.*;
-import static org.example.dags.realestate.vertices.ZipContentHandler.*;
 
 public class RealEstateDag implements Dag {
     static Logger LOG = LoggerFactory.getLogger(RealEstateDag.class);
