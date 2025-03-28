@@ -8,8 +8,8 @@ jobs:
     if: github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
     name: Continuous deployment
     env:
-      DOCKER_REPOS_URL: ${{ secrets.DOCKER_REPOS_URL }}
-      GIT_REV: ${{ github.sha }}
+      DOCKER_HOSTNAME: asia-northeast1-docker.pkg.dev
+      GOOGLE_AR_REPOS_PATH: "${{ github.event.repository.name }}/prod"
       GOOGLE_CLOUD_REGION: asia-northeast1
     runs-on: ubuntu-latest
     permissions:
@@ -18,23 +18,25 @@ jobs:
     steps:
       - name: Checkout project sources
         uses: actions/checkout@v4
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
+      - name: Setup java
+        uses: actions/setup-java@v4
         with:
-          build-scan-publish: true
-          build-scan-terms-of-use-url: "https://gradle.com/terms-of-service"
-          build-scan-terms-of-use-agree: "yes"
+          distribution: corretto
+          java-version: 21
       - id: auth
+        name: Setup gcloud
         uses: google-github-actions/auth@v2
         with:
           workload_identity_provider: ${{ secrets.GOOGLE_WORKLOAD_IDENTITY_PATH }}
           service_account: ${{ secrets.GOOGLE_CD_SERVICE_ACCOUNT }}
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
       - name: Login to GAR
-        run: gcloud auth configure-docker asia-northeast1-docker.pkg.dev
+        run: gcloud auth configure-docker ${{ env.DOCKER_HOSTNAME }}
       - name: Build
-        run: ./gradlew dockerPushRemoteRepos
+        run: make push DOCKER_IMAGE_TAG="${{ env.DOCKER_HOSTNAME }}/${{ env.GOOGLE_AR_REPOS_PATH }}:${{ github.sha }}"
       - name: Deploy
         run: |
           gcloud run jobs update descriptive-analytics \
             --region $GOOGLE_CLOUD_REGION \
-            --image $DOCKER_REPOS_URL:$GIT_REV
+            --image "${{ env.DOCKER_HOSTNAME }}/${{ env.GOOGLE_AR_REPOS_PATH }}:${{ github.sha }}"
