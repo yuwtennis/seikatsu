@@ -1,9 +1,11 @@
+name: NVD db refresh
+
 on:
   schedule:
-    - cron: "0 6 * * *"
+    - cron: "0 21 * * *"
 
 jobs:
-  nvd-refresh:
+  refresh:
     runs-on: ubuntu-latest
     env:
       NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
