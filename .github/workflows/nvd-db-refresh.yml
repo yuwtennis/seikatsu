@@ -22,6 +22,11 @@ jobs:
         with:
           path: ~/.gradle/dependency-check-data
           key: "dependency-check-data"
+      - name: Cache Gradle packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.gradle/caches
+          key: gradle-${{ hashFiles('**/*.gradle.kts') }}
       - name: Purge database
         run: ./gradlew dependencyCheckPurge
       - name: Update database
