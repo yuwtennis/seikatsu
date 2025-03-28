@@ -1,5 +1,8 @@
 package org.example.dags.helloworld;
 
+import static org.example.Utils.asJsonStr;
+import static org.junit.Assert.assertTrue;
+
 import org.apache.beam.sdk.testing.NeedsRunner;
 import org.apache.beam.sdk.testing.TestPipeline;
 import org.apache.beam.sdk.testing.TestPipelineOptions;
@@ -8,9 +11,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
-
-import static org.example.Utils.asJsonStr;
-import static org.junit.Assert.assertTrue;
 
 public class
 HelloWorldDagTest {

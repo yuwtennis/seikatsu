@@ -2,14 +2,13 @@ package org.example.dags.webapi;
 
 import com.google.api.client.http.*;
 import com.google.api.client.http.javanet.NetHttpTransport;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.*;
 import org.apache.beam.io.requestresponse.Caller;
 import org.apache.beam.io.requestresponse.UserCodeExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.*;
 
 public class WebApiHttpClient
         implements Caller<WebApiHttpRequest, WebApiHttpResponse> {

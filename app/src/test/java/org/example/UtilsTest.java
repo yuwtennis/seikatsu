@@ -1,15 +1,13 @@
 package org.example;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.geojson.FeatureCollection;
-import org.geojson.GeoJsonObject;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.*;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
-
-import static org.junit.Assert.*;
+import org.geojson.FeatureCollection;
+import org.junit.Before;
+import org.junit.Test;
 
 public class UtilsTest {
 
