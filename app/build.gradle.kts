@@ -30,7 +30,7 @@ dependencies {
     testCompileOnly("junit:junit:4.13.1")
     testRuntimeOnly("org.junit.vintage:junit-vintage-engine")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-    testRuntimeOnly("com.fasterxml.jackson.core:jackson-databind:2.16.0")
+    testRuntimeOnly("com.fasterxml.jackson.core:jackson-databind:2.18.3")
 
     // This dependency is used by the application.
     implementation(libs.guava)
