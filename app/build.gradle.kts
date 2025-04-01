@@ -27,7 +27,7 @@ repositories {
 dependencies {
     // Use JUnit Jupiter for testing.
     testImplementation(libs.junit.jupiter)
-    testCompileOnly("junit:junit:4.13.1")
+    testCompileOnly("junit:junit:4.13.2")
     testRuntimeOnly("org.junit.vintage:junit-vintage-engine")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testRuntimeOnly("com.fasterxml.jackson.core:jackson-databind:2.18.3")
