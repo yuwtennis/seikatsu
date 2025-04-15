@@ -9,7 +9,7 @@ import org.sonarqube.gradle.SonarTask
 version = "v0.0.1"
 
 plugins {
-    id("org.owasp.dependencycheck") version "12.1.0"
+    id("org.owasp.dependencycheck") version "12.1.1"
     id("org.sonarqube") version "6.1.0.5360"
     id("com.diffplug.spotless") version "7.0.2"
 
