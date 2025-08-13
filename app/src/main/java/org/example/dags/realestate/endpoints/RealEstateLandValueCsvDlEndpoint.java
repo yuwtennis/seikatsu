@@ -1,23 +1,48 @@
 package org.example.dags.realestate.endpoints;
 
-public class RealEstateLandValueCsvDlEndpoint extends Endpoint {
-    private static final String ENDPOINT = "https://www.reinfolib.mlit.go.jp/in-api/api-aup/aup/csv/appraisals";
+import org.example.Env;
+
+/**
+ *
+ */
+public final class RealEstateLandValueCsvDlEndpoint extends Endpoint {
+
+    /**
+     *
+     */
     private final int yearOfPrice;
+
+    /**
+     *
+     */
     private final String selectedPrefId;
 
+    /**
+     *
+     */
     public static class Builder extends Endpoint.Builder<Builder> {
+        /**
+         *
+         */
         private final int yearOfPrice;
 
         // TODO Should be enum `県コード
+        /**
+         *
+         */
         private String selectedPrefId = "13";
 
-        public Builder(int yearOfPrice) {
-            this.yearOfPrice = yearOfPrice;
+        /**
+         *
+         * @param price
+         */
+        public Builder(final int price) {
+            this.yearOfPrice = price;
         }
 
         /**
          *
-         * @return
+         * @return Builder instance
          */
         @Override
         public RealEstateLandValueCsvDlEndpoint build() {
@@ -27,33 +52,38 @@ public class RealEstateLandValueCsvDlEndpoint extends Endpoint {
         /**
          *
          * @param val
-         * @return
+         * @return Builder instance
          */
-        public Builder selectedPrefId(String val) { selectedPrefId = val; return this; }
+        public Builder selectedPrefId(final String val) {
+            this.selectedPrefId = val;
+            return this;
+        }
 
         /**
          *
-         * @return
+         * @return Builder instance
          */
         @Override
-        protected Builder self() { return this; }
+        protected Builder self() {
+            return this;
+        }
     }
 
-    private RealEstateLandValueCsvDlEndpoint(Builder builder) {
+    private RealEstateLandValueCsvDlEndpoint(final Builder builder) {
         super(builder);
-        yearOfPrice = builder.yearOfPrice;
-        selectedPrefId = builder.selectedPrefId;
+        this.yearOfPrice = builder.yearOfPrice;
+        this.selectedPrefId = builder.selectedPrefId;
     }
 
     /**
      *
-     * @return
+     * @return Url
      */
     public String toUrl() {
-        return String.format("%s?yearOfPrice=%s&selectedPrefId=%s",
-                ENDPOINT,
-                yearOfPrice,
-                selectedPrefId
-                );
+        String url = "https://" + Env.REALESTATE_INFO_LIBRARY;
+        url = url + "/in-api/api-aup/aup/csv/appraisals";
+        url = url + "?yearOfPrice=" + this.yearOfPrice;
+        url = url + "&selectedPrefId=" + this.selectedPrefId;
+        return url;
     }
 }

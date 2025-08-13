@@ -3,11 +3,13 @@ package org.example.dags.realestate.landvalue;
 import static org.junit.Assert.assertEquals;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.apache.beam.io.requestresponse.Caller;
 import org.apache.beam.io.requestresponse.RequestResponseIO;
 import org.apache.beam.io.requestresponse.Result;
@@ -44,8 +46,8 @@ public class GeoLandValueTest {
         try {
             FeatureCollection json = mapper.readValue(geoJson, FeatureCollection.class);
             GeoLandValue geoLV = GeoLandValue.of(json.getFeatures().getFirst());
-            assertEquals("高円寺北２丁目７３０番２７", geoLV.locationNumber);
-            assertEquals(670000, geoLV.pricePerSqm);
+            assertEquals("高円寺北２丁目７３０番２７", geoLV.getLocationNumber());
+            assertEquals(670000, geoLV.getPricePerSqm());
         } catch (IOException | ParseException e) {
             throw new RuntimeException(e);
         }
@@ -85,7 +87,7 @@ public class GeoLandValueTest {
                         ParDo.of(new GeoLandValueFn.FromWebApiHttpResponseFn()))
                 .apply(MapElements
                         .into(TypeDescriptors.strings())
-                        .via((GeoLandValue g)-> g.locationNumber));
+                        .via((GeoLandValue g) -> g.getLocationNumber()));
 
         PAssert.that(results).containsInAnyOrder("高円寺北２丁目７３０番２７");
         p.run().waitUntilFinish();

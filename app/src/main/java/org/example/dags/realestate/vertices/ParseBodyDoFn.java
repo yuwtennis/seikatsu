@@ -8,8 +8,12 @@ public class ParseBodyDoFn {
      *
      */
     public static class ParseBodyFn extends DoFn<WebApiHttpResponse, byte[]> {
+        /**
+         *
+         * @param c
+         */
         @ProcessElement
-        public void processElement(ProcessContext c) {
+        public void processElement(final ProcessContext c) {
             c.output(c.element().getData());
         }
     }

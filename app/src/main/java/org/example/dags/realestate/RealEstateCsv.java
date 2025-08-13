@@ -5,6 +5,7 @@ import java.nio.charset.Charset;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -13,19 +14,33 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class RealEstateCsv {
-    public EndpointKind dlEndpoint;
-    public List<CSVRecord> records;
-    public String fileName;
+    /**
+     *
+     */
+    private EndpointKind dlEndpoint;
 
-    static Logger LOG = LoggerFactory.getLogger(RealEstateCsv.class);
+    /**
+     *
+     */
+    private List<CSVRecord> records;
+
+    /**
+     *
+     */
+    private String fileName;
+
+    /**
+     *
+     */
+    static final Logger LOG = LoggerFactory.getLogger(RealEstateCsv.class);
 
     /**
      *
      * @param zs
-     * @return
+     * @return RealEstateCsv
      * @throws IOException
      */
-    public static RealEstateCsv of(ZipInputStream zs) throws IOException {
+    public static RealEstateCsv of(final ZipInputStream zs) throws IOException {
         RealEstateCsv realEstateCsv = new RealEstateCsv();
         ZipEntry entry;
 
@@ -41,7 +56,8 @@ public class RealEstateCsv {
         }
 
         if (realEstateCsv.fileName == null) {
-            throw new IOException("No entries or no filename which matches prefix");
+            throw new IOException(
+                    "No entries or no filename which matches prefix");
         }
 
         CSVParser parser = CSVParser.parse(
@@ -53,7 +69,7 @@ public class RealEstateCsv {
         LOG.info("Parsed num of records: {}", realEstateCsv.records.size());
 
         // Identify the type of record
-        if(realEstateCsv.fileName.startsWith("Tokyo")) {
+        if (realEstateCsv.fileName.startsWith("Tokyo")) {
             // NOTE First record is header
             realEstateCsv.records.removeFirst();
             switch (realEstateCsv.records.getFirst().get(0)) {
@@ -65,16 +81,44 @@ public class RealEstateCsv {
                     break;
                 default:
                     throw new IllegalStateException(
-                            "Unexpected value: " + realEstateCsv.records.getFirst().get(0));
+                            "Unexpected value: " + realEstateCsv.records
+                                    .getFirst().get(0));
             }
-        } else if(realEstateCsv.fileName.contains("TAKUCHI_k")) {
+        } else if (realEstateCsv.fileName.contains("TAKUCHI_k")) {
             realEstateCsv.dlEndpoint = EndpointKind.LAND_VALUE;
         } else {
-            throw new IllegalStateException("Unable to identify the type of record.");
+            throw new IllegalStateException(
+                    "Unable to identify the type of record.");
         }
 
-        LOG.info("Parsed csv file from endpoint name: {}", realEstateCsv.dlEndpoint.value);
+        LOG.info(
+                "Parsed csv file from endpoint name: {}",
+                realEstateCsv.dlEndpoint.getValue());
 
         return realEstateCsv;
+    }
+
+    /**
+     *
+     * @return EndpointKind
+     */
+    public EndpointKind getDlEndpoint() {
+        return dlEndpoint;
+    }
+
+    /**
+     *
+     * @return List<CSVRecord>
+     */
+    public List<CSVRecord> getRecords() {
+        return records;
+    }
+
+    /**
+     *
+     * @return String
+     */
+    public String getFileName() {
+        return fileName;
     }
 }

@@ -1,72 +1,147 @@
 package org.example.dags.realestate.endpoints;
 
-public class RealEstateGeoJsonLandValueDlEndpoint extends Endpoint {
-    private static final String ENDPOINT = "https://www.reinfolib.mlit.go.jp/ex-api/external/XPT002?response_format=geojson";
+import org.example.Env;
+import org.example.Magics;
 
+import static org.example.Utils.asInt;
+
+/**
+ *
+ */
+public final class RealEstateGeoJsonLandValueDlEndpoint extends Endpoint {
+    /**
+     *
+     */
+    private static final String ENDPOINT =
+            "https://www.reinfolib.mlit.go.jp";
+
+    /**
+     *
+     */
     private final int x;
+
+    /**
+     *
+     */
     private final int y;
+
+    /**
+     *
+     */
     private final int z;
+
+    /**
+     *
+     */
     private final int year;
+
+    /**
+     *
+     */
     private final int priceClassification;
 
     public static class Builder extends Endpoint.Builder<Builder> {
+        /**
+         *
+         */
         private final int x;
+
+        /**
+         *
+         */
         private final int y;
+
+        /**
+         *
+         */
         private final int year;
 
-        private int z = 13;
+        /**
+         *
+         */
+        private int z = asInt(Magics.NUM_0.getValue());
+
+        /**
+         *
+         */
         private int priceClassification = 0;
 
         /**
          *
          * @param val
-         * @return
+         * @return Builder instance
          */
-        public Builder z(int val) { z = val; return this; }
-
-        public Builder(int tile_x, int tile_y, int year) {
-            this.x = tile_x;
-            this.y = tile_y;
-            this.year = year;
+        public Builder z(final int val) {
+            z = val;
+            return this;
         }
-
-        public Builder priceClassification(int val) { priceClassification = val; return this; }
 
         /**
          *
-         * @return
+         * @param tileX
+         * @param tileY
+         * @param targetYear
+         */
+        public Builder(
+                final int tileX,
+                final int tileY,
+                final int targetYear) {
+            this.x = tileX;
+            this.y = tileY;
+            this.year = targetYear;
+        }
+
+        /**
+         *
+         * @param val
+         * @return Builder instance
+         */
+        public Builder priceClassification(final int val) {
+            priceClassification = val;
+            return this;
+        }
+
+        /**
+         *
+         * @return RealEstateGeoJsonLandValueDlEndpoint
          */
         @Override
         public RealEstateGeoJsonLandValueDlEndpoint build() {
             return new RealEstateGeoJsonLandValueDlEndpoint(this);
         }
 
+        /**
+         *
+         * @return Builder
+         */
         @Override
-        protected Builder self() { return this; }
+        protected Builder self() {
+            return this;
+        }
     }
 
-    private RealEstateGeoJsonLandValueDlEndpoint(Builder builder) {
+    private RealEstateGeoJsonLandValueDlEndpoint(final Builder builder) {
         super(builder);
 
-        x = builder.x;
-        y = builder.y;
-        z = builder.z;
-        year = builder.year;
-        priceClassification = builder.priceClassification;
+        this.x = builder.x;
+        this.y = builder.y;
+        this.z = builder.z;
+        this.year = builder.year;
+        this.priceClassification = builder.priceClassification;
     }
 
     /**
      *
-     * @return
+     * @return Url string
      */
     public String toUrl() {
-        return String.format("%s&x=%d&y=%d&z=%d&year=%d&priceClassification=%d",
-                ENDPOINT,
-                x,
-                y,
-                z,
-                year,
-                priceClassification
-                );
+        String url = "https://" + Env.REALESTATE_INFO_LIBRARY;
+        url = url + "/ex-api/external/XPT002";
+        url = url + "?response_format=geojson";
+        url = url + "&x=" + this.x;
+        url = url + "&y=" + this.y;
+        url = url + "&z=" + this.z;
+        url = url + "&price_classification=" + this.priceClassification;
+        return url;
     }
 }

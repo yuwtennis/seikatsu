@@ -5,6 +5,13 @@ import org.apache.beam.sdk.extensions.avro.coders.AvroCoder;
 
 @DefaultCoder(AvroCoder.class)
 public class Geometry {
-    public String type;
-    public double[] coordinates;
+    /**
+     *
+     */
+    private String type;
+
+    /**
+     *
+     */
+    private double[] coordinates;
 }
