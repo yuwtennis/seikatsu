@@ -64,8 +64,11 @@ application {
 }
 
 checkstyle {
-    toolVersion ="10.21.4"
-    configFile = file("$rootDir/config/checkstyle/sun_checks.xml")
+    toolVersion ="11.0.0"
+
+    configProperties = mapOf(
+        "org.checkstyle.google.suppressionfilter.config" to "suppressions.xml"
+    )
 }
 
 configure<org.owasp.dependencycheck.gradle.extension.DependencyCheckExtension> {

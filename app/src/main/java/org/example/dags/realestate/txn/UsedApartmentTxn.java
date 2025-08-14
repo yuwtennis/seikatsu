@@ -1,6 +1,8 @@
 package org.example.dags.realestate.txn;
 
-import static org.example.Utils.*;
+import static org.example.Utils.asFloat;
+import static org.example.Utils.asInt;
+import static org.example.Utils.validateStr;
 import static org.example.dags.realestate.txn.ResidentialLandTxn.parseQuarterDateFormat;
 
 import com.google.api.services.bigquery.model.TableRow;
@@ -8,6 +10,7 @@ import java.io.IOException;
 import org.apache.beam.sdk.coders.DefaultCoder;
 import org.apache.beam.sdk.extensions.avro.coders.AvroCoder;
 import org.apache.commons.csv.CSVRecord;
+import org.example.Magics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,102 +20,155 @@ import org.slf4j.LoggerFactory;
  */
 @DefaultCoder(AvroCoder.class)
 public class UsedApartmentTxn {
-    // 種類
-    public String txnType;
+    /**
+     * 種類.
+     */
+    private String txnType;
 
-    // 価格情報区分
-    public String priceType;
+    /**
+     * 価格情報区分.
+     */
+    private String priceType;
 
-    // 市区町村コード
-    public String districtCode;
+    /**
+     * 市区町村コード.
+     */
+    private String districtCode;
 
-    // 都道府県名
-    public String prefectureName;
+    /**
+     * 都道府県名.
+     */
+    private String prefectureName;
 
-    // 市区町村名
-    public String districtName;
+    /**
+     * 市区町村名.
+     */
+    private String districtName;
 
-    // 地区名
-    public String cityName;
+    /**
+     * 地区名.
+     */
+    private String cityName;
 
-    // 最寄駅：名称
-    public String closestStationName;
+    /**
+     * 最寄駅：名称.
+     */
+    private String closestStationName;
 
-    // 最寄駅：距離（分）
-    public int durationToClosestStationInMin;
+    /**
+     * 最寄駅：距離（分）.
+     */
+    private int durationToClosestStationInMin;
 
-    // 取引価格（総額）
-    public int totalTxnPrice;
+    /**
+     * 取引価格（総額）.
+     */
+    private int totalTxnPrice;
 
-    // 間取り
-    public String floorPlan;
+    /**
+     * 間取り.
+     */
+    private String floorPlan;
 
-    // 面積（平方メートル）
-    public int areaSizeInSqm;
+    /**
+     * 面積（平方メートル）.
+     */
+    private int areaSizeInSqm;
 
-    // 建築年
-    public int yearBuilt;
-    
-    // 建物の構造
-    public String buildingStructure;
+    /**
+     * 建築年.
+     */
+    private int yearBuilt;
 
-    // 用途
-    public String purpose;
+    /**
+     * 建物の構造.
+     */
+    private String buildingStructure;
 
-    // 今後の利用目的
-    public String futurePurpose;
+    /**
+     * 用途.
+     */
+    private String purpose;
 
-    // 都市計画
-    public String cityPlan;
+    /**
+     * 今後の利用目的.
+     */
+    private String futurePurpose;
 
-    // 建ぺい率（％）
-    public float bcrReqmt;
+    /**
+     * 都市計画.
+     */
+    private String cityPlan;
 
-    // 容積率（％）
-    public float farReqmt;
+    /**
+     * 建ぺい率（％）.
+     */
+    private float bcrReqmt;
 
-    // 取引時期
-    public String txnPeriod;
+    /**
+     * 容積率（％）.
+     */
+    private float farReqmt;
 
-    // 改装
-    public String isRefurbished;
+    /**
+     * 取引時期.
+     */
+    private String txnPeriod;
 
-    //取引の事情等
-    public String txnRemarks;
+    /**
+     * 改装.
+     */
+    private String isRefurbished;
 
-    // 四半期の開始日付
-    public String startOfQuarter;
+    /**
+     * 取引の事情等.
+     */
+    private String txnRemarks;
 
-    static Logger LOG = LoggerFactory.getLogger(UsedApartmentTxn.class);
+    /**
+     * 四半期の開始日付.
+     */
+    private String startOfQuarter;
+
+    /**
+     *
+     */
+    static final Logger LOG = LoggerFactory.getLogger(UsedApartmentTxn.class);
 
     /**
      *
      * @param record
-     * @return
+     * @return UsedApartmentTxn
      */
-    public static UsedApartmentTxn of(CSVRecord record) throws IOException {
+    public static UsedApartmentTxn of(
+            final CSVRecord record) throws IOException {
         UsedApartmentTxn r = new UsedApartmentTxn();
-        r.txnType = validateStr(record.get(0));
-        r.priceType = validateStr(record.get(1));
-        r.districtCode = validateStr(record.get(2));
-        r.prefectureName = validateStr(record.get(3));
-        r.districtName = validateStr(record.get(4));
-        r.cityName = validateStr(record.get(5));
-        r.closestStationName = validateStr(record.get(6));
-        r.durationToClosestStationInMin = asInt(record.get(7));
-        r.totalTxnPrice = asInt(record.get(8));
-        r.floorPlan = validateStr(record.get(9));
-        r.areaSizeInSqm = asInt(record.get(10));
-        r.yearBuilt = asInt(record.get(11).replaceAll("年", ""));
-        r.buildingStructure = validateStr(record.get(12));
-        r.purpose = validateStr(record.get(13));
-        r.futurePurpose = validateStr(record.get(14));
-        r.cityPlan = validateStr(record.get(15));
-        r.bcrReqmt = asFloat(record.get(16));
-        r.farReqmt = asFloat(record.get(17));
-        r.txnPeriod = validateStr(record.get(18));
-        r.isRefurbished = validateStr(record.get(19));
-        r.txnRemarks = validateStr(record.get(20));
+        r.txnType = validateStr(record.get(Magics.NUM_0.getValue()));
+        r.priceType = validateStr(record.get(Magics.NUM_1.getValue()));
+        r.districtCode = validateStr(record.get(Magics.NUM_2.getValue()));
+        r.prefectureName = validateStr(record.get(Magics.NUM_3.getValue()));
+        r.districtName = validateStr(record.get(Magics.NUM_4.getValue()));
+        r.cityName = validateStr(record.get(Magics.NUM_5.getValue()));
+        r.closestStationName =
+                validateStr(record.get(Magics.NUM_6.getValue()));
+        r.durationToClosestStationInMin =
+                asInt(record.get(Magics.NUM_7.getValue()));
+        r.totalTxnPrice = asInt(record.get(Magics.NUM_8.getValue()));
+        r.floorPlan = validateStr(record.get(Magics.NUM_9.getValue()));
+        r.areaSizeInSqm = asInt(record.get(Magics.NUM_10.getValue()));
+        r.yearBuilt =
+                asInt(record.get(Magics.NUM_11.getValue())
+                        .replaceAll("年", ""));
+        r.buildingStructure =
+                validateStr(record.get(Magics.NUM_12.getValue()));
+        r.purpose = validateStr(record.get(Magics.NUM_13.getValue()));
+        r.futurePurpose = validateStr(record.get(Magics.NUM_14.getValue()));
+        r.cityPlan = validateStr(record.get(Magics.NUM_15.getValue()));
+        r.bcrReqmt = asFloat(record.get(Magics.NUM_16.getValue()));
+        r.farReqmt = asFloat(record.get(Magics.NUM_17.getValue()));
+        r.txnPeriod = validateStr(record.get(Magics.NUM_18.getValue()));
+        r.isRefurbished = validateStr(record.get(Magics.NUM_19.getValue()));
+        r.txnRemarks = validateStr(record.get(Magics.NUM_20.getValue()));
 
         try {
             r.startOfQuarter = parseQuarterDateFormat(r.txnPeriod);
@@ -126,7 +182,7 @@ public class UsedApartmentTxn {
 
     /**
      *
-     * @return
+     * @return TableRow
      */
     public TableRow toTableRow() {
         return new TableRow()
@@ -137,7 +193,8 @@ public class UsedApartmentTxn {
                 .set("districtName", districtName)
                 .set("cityName", cityName)
                 .set("closestStationName", closestStationName)
-                .set("durationToClosestStationInMin", durationToClosestStationInMin)
+                .set("durationToClosestStationInMin",
+                        durationToClosestStationInMin)
                 .set("totalTxnPrice", totalTxnPrice)
                 .set("floorPlan", floorPlan)
                 .set("areaSizeInSqm", areaSizeInSqm)

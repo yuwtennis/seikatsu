@@ -1,11 +1,25 @@
 package org.example.dags.realestate.landvalue;
 
 public enum LandValueType {
+    /**
+     *
+     */
     RESIDENTIAL_LAND("宅地");
 
-    public final String value;
+    /**
+     *
+     */
+    private final String value;
 
-    LandValueType(String value) {
-        this.value = value;
+    LandValueType(final String v) {
+        this.value = v;
+    }
+
+    /**
+     *
+     * @return String
+     */
+    public String getValue() {
+        return value;
     }
 }

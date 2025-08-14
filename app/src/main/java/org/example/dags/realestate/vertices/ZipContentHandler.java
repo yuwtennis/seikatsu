@@ -1,9 +1,16 @@
 package org.example.dags.realestate.vertices;
 
-import java.io.*;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.zip.ZipInputStream;
-import org.apache.beam.sdk.transforms.*;
-import org.apache.beam.sdk.values.*;
+import org.apache.beam.sdk.transforms.DoFn;
+import org.apache.beam.sdk.transforms.PTransform;
+import org.apache.beam.sdk.transforms.ParDo;
+import org.apache.beam.sdk.values.PCollection;
+import org.apache.beam.sdk.values.PCollectionTuple;
+import org.apache.beam.sdk.values.TupleTag;
+import org.apache.beam.sdk.values.TupleTagList;
 import org.apache.commons.csv.CSVRecord;
 import org.example.dags.realestate.RealEstateCsv;
 import org.example.dags.realestate.endpoints.EndpointKind;
@@ -13,12 +20,37 @@ import org.example.dags.realestate.txn.UsedApartmentTxn;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ZipContentHandler {
-    static Logger LOG = LoggerFactory.getLogger(ZipContentHandler.class);
+public final class ZipContentHandler {
+    private ZipContentHandler() {
+        throw new UnsupportedOperationException();
+    }
 
-    public static final TupleTag<ResidentialLandTxn> residentialLand = new TupleTag<>() {};
-    public static final TupleTag<UsedApartmentTxn> usedApartment = new TupleTag<>() {};
-    public static final TupleTag<LandValue> landValue = new TupleTag<>() {};
+    /**
+     *
+     */
+    static final Logger LOG = LoggerFactory.getLogger(ZipContentHandler.class);
+
+    /**
+     *
+     */
+    public static final TupleTag<ResidentialLandTxn>
+            RESIDENTIAL_LAND_TXN_TUPLE_TAG =
+            new TupleTag<>() {
+            };
+
+    /**
+     *
+     */
+    public static final TupleTag<UsedApartmentTxn> USED_APARTENT_TXN_TUPLE_TAG =
+            new TupleTag<>() {
+            };
+
+    /**
+     *
+     */
+    public static final TupleTag<LandValue> LANDVALUE_TUPLE_TAG =
+            new TupleTag<>() {
+            };
 
     static class UnzipFn
             extends DoFn<byte[], ResidentialLandTxn> {
@@ -30,7 +62,9 @@ public class ZipContentHandler {
          * @throws Exception
          */
         @ProcessElement
-        public void processElement(ProcessContext c, MultiOutputReceiver out) throws IOException, Exception {
+        public void processElement(final ProcessContext c,
+                                   final MultiOutputReceiver out)
+                throws IOException, Exception {
             byte[] b = c.element();
             ByteArrayInputStream bis = new ByteArrayInputStream(b);
 
@@ -38,25 +72,33 @@ public class ZipContentHandler {
                 RealEstateCsv realEstateCsv = RealEstateCsv.of(zs);
 
                 // Flatten
-                for (CSVRecord record : realEstateCsv.records) {
-                    switch (realEstateCsv.dlEndpoint) {
+                for (CSVRecord record : realEstateCsv.getRecords()) {
+                    switch (realEstateCsv.getDlEndpoint()) {
                         case EndpointKind.RESIDENTIAL_LAND:
-                            out.get(residentialLand).output(ResidentialLandTxn.of(record));
+                            out.get(RESIDENTIAL_LAND_TXN_TUPLE_TAG)
+                                    .output(ResidentialLandTxn.of(record));
                             break;
                         case EndpointKind.USED_APARTMENT:
-                            out.get(usedApartment).output(UsedApartmentTxn.of(record));
+                            out.get(USED_APARTENT_TXN_TUPLE_TAG)
+                                    .output(UsedApartmentTxn.of(record));
                             break;
                         case EndpointKind.LAND_VALUE:
-                            out.get(landValue).output(LandValue.of(realEstateCsv.fileName, record));
+                            out.get(LANDVALUE_TUPLE_TAG)
+                                    .output(
+                                            LandValue.of(
+                                                    realEstateCsv.getFileName(),
+                                                    record));
                             break;
                         default:
-                            throw new IllegalStateException("Unknown endpoint: " + realEstateCsv.dlEndpoint);
+                            throw new IllegalStateException(
+                                    "Unknown endpoint: "
+                                            + realEstateCsv.getDlEndpoint());
                     }
                 }
             } catch (IOException e) {
                 LOG.error("Error reading file", e);
             }
-         }
+        }
     }
 
     public static class Extract
@@ -67,13 +109,13 @@ public class ZipContentHandler {
          * @return
          */
         @Override
-        public PCollectionTuple expand(PCollection<byte[]> input) {
+        public PCollectionTuple expand(final PCollection<byte[]> input) {
             return input
                     .apply("ToEntites", ParDo.of(new UnzipFn())
-                            .withOutputTags(residentialLand,
+                            .withOutputTags(RESIDENTIAL_LAND_TXN_TUPLE_TAG,
                                     TupleTagList
-                                            .of(usedApartment)
-                                            .and(landValue)));
+                                            .of(USED_APARTENT_TXN_TUPLE_TAG)
+                                            .and(LANDVALUE_TUPLE_TAG)));
         }
     }
 }

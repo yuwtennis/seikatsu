@@ -9,11 +9,16 @@ public class ParseUrlDoFn {
      *
      */
     public static class ParseUrlFn extends DoFn<byte[], String> {
+        /**
+         *
+         * @param c
+         */
         @ProcessElement
-        public void processElement(ProcessContext c) {
+        public void processElement(final ProcessContext c) {
             String s = new String(c.element());
-            TxnResponseSchema json = (TxnResponseSchema) Utils.asJson(s, TxnResponseSchema.class);
-            c.output(json.url);
+            TxnResponseSchema json = (TxnResponseSchema) Utils.asJson(
+                    s, TxnResponseSchema.class);
+            c.output(json.getUrl());
         }
     }
 }

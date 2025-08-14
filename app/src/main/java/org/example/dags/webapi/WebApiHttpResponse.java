@@ -5,10 +5,18 @@ import java.io.Serializable;
 
 @AutoValue
 public abstract class WebApiHttpResponse implements Serializable {
+    /**
+     *
+     * @return Builder
+     */
     public static Builder builder() {
         return new AutoValue_WebApiHttpResponse.Builder();
     }
 
+    /**
+     *
+     * @return byte[]
+     */
     @SuppressWarnings("mutable")
     public abstract byte[] getData();
 
@@ -17,13 +25,13 @@ public abstract class WebApiHttpResponse implements Serializable {
         /**
          *
          * @param value
-         * @return
+         * @return Builder
          */
         public abstract Builder setData(byte[] value);
 
         /**
          *
-         * @return
+         * @return WebApiHttpResponse
          */
         public abstract WebApiHttpResponse build();
     }

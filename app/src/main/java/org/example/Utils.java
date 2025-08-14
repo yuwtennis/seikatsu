@@ -4,17 +4,26 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.geojson.FeatureCollection;
 
-public class Utils {
-    public static Boolean isNullOrEmpty(String s) {
+public final class Utils {
+    private Utils() {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     *
+     * @param s
+     * @return Boolean
+     */
+    public static Boolean isNullOrEmpty(final String s) {
         return s == null || s.isEmpty();
     }
 
     /***
      *
      * @param arr
-     * @return
+     * @return String
      */
-    public static String asJsonStr(String[] arr) {
+    public static String asJsonStr(final String[] arr) {
         ObjectMapper objectMapper = new ObjectMapper();
 
         try {
@@ -28,9 +37,9 @@ public class Utils {
      *
      * @param jsonStr
      * @param schema
-     * @return
+     * @return Object
      */
-    public static Object asJson(String jsonStr, Class<?> schema) {
+    public static Object asJson(final String jsonStr, final Class<?> schema) {
         ObjectMapper objectMapper = new ObjectMapper();
 
         try {
@@ -43,9 +52,9 @@ public class Utils {
     /**
      *
      * @param jsonStr
-     * @return
+     * @return FeatureCollection
      */
-    public static FeatureCollection asFeatureCollection(String jsonStr) {
+    public static FeatureCollection asFeatureCollection(final String jsonStr) {
         ObjectMapper objectMapper = new ObjectMapper();
 
         try {
@@ -58,24 +67,25 @@ public class Utils {
     /**
      *
      * @param str
-     * @return
+     * @return String
      */
-    public static String validateStr(String str) {
-        return str.isEmpty() ? Magics.IS_EMPTY.value : str;
+    public static String validateStr(final String str) {
+        return str.isEmpty() ? Magics.IS_EMPTY.getValue() : str;
     }
 
     /**
      *
      * @param val
-     * @return
+     * @return int
      */
-    public static int asInt(String val) {
-        int result = 0 ;
+    public static int asInt(final String val) {
+        int result = 0;
 
         try {
             result = Integer.parseInt(val);
         } catch (NumberFormatException e) {
-            result = Integer.parseInt(Magics.IS_UNEXPECTED_NUMERIC_VAL.value);
+            result = Integer.parseInt(
+                    Magics.IS_UNEXPECTED_NUMERIC_VAL.getValue());
         }
 
         return result;
@@ -84,15 +94,17 @@ public class Utils {
     /**
      *
      * @param val
-     * @return
+     * @return float
      */
-    public static float asFloat(String val) {
-        float result = 0 ;
+    public static float asFloat(final String val) {
+        float result = 0;
 
         try {
             result = Float.parseFloat(val);
         } catch (NumberFormatException e) {
-            result = Float.parseFloat(Magics.IS_UNEXPECTED_NUMERIC_VAL.value);
+            result =
+                    Float.parseFloat(
+                            Magics.IS_UNEXPECTED_NUMERIC_VAL.getValue());
         }
 
         return result;
@@ -101,9 +113,16 @@ public class Utils {
     /**
      *
      * @param val
-     * @return
+     * @return String
      */
-    public static String from4digitStr(String val) {
-        return String.format("%s-%s-%s", val.substring(0, 4), val.substring(4, 6), val.substring(6, 8));
+    public static String from4digitStr(final String val) {
+        return String.format(
+                "%s-%s-%s",
+                val.substring(asInt(Magics.NUM_0.getValue()),
+                        asInt(Magics.NUM_4.getValue())),
+                val.substring(asInt(Magics.NUM_4.getValue()),
+                        asInt(Magics.NUM_6.getValue())),
+                val.substring(asInt(Magics.NUM_6.getValue()),
+                        asInt(Magics.NUM_8.getValue())));
     }
 }

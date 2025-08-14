@@ -1,93 +1,194 @@
 package org.example.dags.realestate.endpoints;
 
-public class RealEstateTxnCsvDlEndpoint extends Endpoint {
-    private static final String ENDPOINT = "https://www.reinfolib.mlit.go.jp/in-api/api-aur/aur/csv/transactionPrices";
-    private static final int fromQuarter = 1;
-    private static final int toQuarter = 4;
+import org.example.Env;
 
+public final class RealEstateTxnCsvDlEndpoint extends Endpoint {
+    /**
+     *
+     */
+    private static final int FROM_QUARTER = 1;
+
+    /**
+     *
+     */
+    private static final int TO_QUARTER = 4;
+
+    /**
+     *
+     */
     private final EndpointKind kind;
+
+    /**
+     *
+     */
     private final int seasonFrom;
+
+    /**
+     *
+     */
     private final int seasonTo;
 
+    /**
+     *
+     */
     private final String language;
+
+    /**
+     *
+     */
     private final String areaCondition;
+
+    /**
+     *
+     */
     private final String prefecture;
+
+    /**
+     *
+     */
     private final String transactionPrice;
+
+    /**
+     *
+     */
     private final String closedPrice;
 
     public static class Builder extends Endpoint.Builder<Builder> {
+        /**
+         *
+         */
         private final int seasonFrom;
+
+        /**
+         *
+         */
         private final int seasonTo;
+
+        /**
+         *
+         */
         private EndpointKind kind;
 
+        /**
+         *
+         */
         private String language = "ja";
+
+        /**
+         *
+         */
         private String areaCondition = "address";
+
+        /**
+         *
+         */
         private String prefecture = "13";
+
+        /**
+         *
+         */
         private String transactionPrice = "true";
+
+        /**
+         *
+         */
         private String closedPrice = "true";
 
-        public Builder(EndpointKind kind, int seasonFrom, int seasonTo) {
-            this.kind = kind;
-            this.seasonFrom = seasonFrom;
-            this.seasonTo = seasonTo;
+        /**
+         *
+         * @param ek
+         * @param from
+         * @param to
+         */
+        public Builder(
+                final EndpointKind ek,
+                final int from,
+                final int to) {
+            this.kind = ek;
+            this.seasonFrom = from;
+            this.seasonTo = to;
         }
 
         /**
          *
          * @param val
-         * @return
+         * @return Builder instance
          */
-        public Builder language(String val) { language = val; return this; }
+        public Builder language(final String val) {
+            language = val;
+            return this;
+        }
 
         /**
          *
          * @param val
-         * @return
+         * @return Builder instance
          */
-        public Builder areaCondition(String val) { areaCondition = val; return this; }
+        public Builder areaCondition(final String val) {
+            areaCondition = val;
+            return this;
+        }
 
         /**
          *
          * @param val
-         * @return
+         * @return Builder instance
          */
-        public Builder prefecture(String val) { prefecture = val; return this; }
+        public Builder prefecture(final String val) {
+            prefecture = val;
+            return this;
+        }
 
         /**
          *
          * @param val
-         * @return
+         * @return Builder instance
          */
-        public Builder transactionPrice(String val) { transactionPrice = val; return this; }
+        public Builder transactionPrice(final String val) {
+            transactionPrice = val;
+            return this;
+        }
 
         /**
          *
          * @param val
-         * @return
+         * @return Builder instance
          */
-        public Builder closedPrice(String val) { closedPrice = val; return this; }
+        public Builder closedPrice(final String val) {
+            closedPrice = val;
+            return this;
+        }
 
         /**
          *
          * @param val
-         * @return
+         * @return Builder instance
          */
-        public Builder kind(EndpointKind val) { kind = val; return this; }
+        public Builder kind(final EndpointKind val) {
+            kind = val;
+            return this;
+        }
 
         /**
          *
-         * @return
+         * @return Builder instance
          */
         @Override
         public RealEstateTxnCsvDlEndpoint build() {
             return new RealEstateTxnCsvDlEndpoint(this);
         }
 
+        /**
+         *
+         * @return Builder
+         */
         @Override
-        protected Builder self() { return this; }
+        protected Builder self() {
+            return this;
+        }
     }
 
-    private RealEstateTxnCsvDlEndpoint(Builder builder) {
+    private RealEstateTxnCsvDlEndpoint(final Builder builder) {
         super(builder);
 
         seasonFrom = builder.seasonFrom;
@@ -102,21 +203,19 @@ public class RealEstateTxnCsvDlEndpoint extends Endpoint {
 
     /**
      *
-     * @return
+     * @return Url
      */
     public String toUrl() {
-        return String.format("%s?language=%s&areaCondition=%s&prefecture=%s&transactionPrice=%s&closedPrice=%s&kind=%s&seasonFrom=%d%d&seasonTo=%d%d",
-                ENDPOINT,
-                language,
-                areaCondition,
-                prefecture,
-                transactionPrice,
-                closedPrice,
-                kind.value,
-                seasonFrom,
-                fromQuarter,
-                seasonTo,
-                toQuarter
-                );
+        String url = "https://" + Env.REALESTATE_INFO_LIBRARY;
+        url = url + "/in-api/api-aur/aur/csv/transactionPrices";
+        url = "?language=" + language;
+        url = url + "&areaCondition=" + areaCondition;
+        url = url + "&prefecture=" + prefecture;
+        url = url + "&transactionPrice=" + transactionPrice;
+        url = url + "&closedPrice=" + closedPrice;
+        url = url + "&kind=" + kind.getValue();
+        url = url + "&seasonFrom=" + seasonFrom + FROM_QUARTER;
+        url = url + "&seasonTo=" + seasonTo + TO_QUARTER;
+        return url;
     }
 }

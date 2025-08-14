@@ -12,19 +12,30 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
-public class
-HelloWorldDagTest {
-    public interface TestHWOptions extends TestPipelineOptions, App.DagOptions {}
+public class HelloWorldDagTest {
+    public interface TestHWOptions
+            extends TestPipelineOptions, App.DagOptions {
+    }
 
+    /**
+     *
+     */
     private String dagType;
 
+    /**
+     *
+     */
     @Rule
     public final transient TestPipeline p = TestPipeline.create();
 
+    /**
+     *
+     */
     @Before
     public void setUp() {
         // Test pipeline options as JSON array
-        // https://beam.apache.org/releases/javadoc/2.57.0/org/apache/beam/sdk/testing/TestPipeline.html
+        // https://beam.apache.org/releases
+        //   /javadoc/2.57.0/org/apache/beam/sdk/testing/TestPipeline.html
         // https://www.json.org/json-en.html
         String[] pOpts = new String[]{
                 "--runner=DirectRunner"
@@ -33,6 +44,9 @@ HelloWorldDagTest {
         dagType = "HELLOWORLD";
     }
 
+    /**
+     *
+     */
     @Test
     @Category(NeedsRunner.class)
     public void testProcess() {

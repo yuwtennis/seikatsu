@@ -15,7 +15,9 @@ import org.apache.beam.io.requestresponse.UserCodeExecutionException;
 import org.apache.beam.sdk.testing.NeedsRunner;
 import org.apache.beam.sdk.testing.PAssert;
 import org.apache.beam.sdk.testing.TestPipeline;
-import org.apache.beam.sdk.transforms.*;
+import org.apache.beam.sdk.transforms.Create;
+import org.apache.beam.sdk.transforms.MapElements;
+import org.apache.beam.sdk.transforms.ParDo;
 import org.apache.beam.sdk.values.PCollection;
 import org.apache.beam.sdk.values.TypeDescriptors;
 import org.example.dags.realestate.vertices.GeoLandValueFn;
@@ -28,38 +30,63 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
 public class GeoLandValueTest {
-    File geoJson;
+    /**
+     *
+     */
+    private File geoJson;
 
+    /**
+     *
+     */
+    private static final int PRICE_PER_SQM = 670000;
+
+    /**
+     *
+     */
     @Rule
     public final transient TestPipeline p = TestPipeline.create();
 
+    /**
+     *
+     */
     @Before
     public void setUp() {
         geoJson = new File("src/test/resources/geo.json");
     }
 
+    /**
+     *
+     */
     @Test
     public void testGeoLandValue() {
         ObjectMapper mapper = new ObjectMapper();
         try {
-            FeatureCollection json = mapper.readValue(geoJson, FeatureCollection.class);
-            GeoLandValue geoLV = GeoLandValue.of(json.getFeatures().getFirst());
-            assertEquals("高円寺北２丁目７３０番２７", geoLV.locationNumber);
-            assertEquals(670000, geoLV.pricePerSqm);
+            FeatureCollection json = mapper.readValue(
+                    this.geoJson, FeatureCollection.class);
+            GeoLandValue geoLV = GeoLandValue.of(
+                    json.getFeatures().getFirst());
+            assertEquals("高円寺北２丁目７３０番２７",
+                    geoLV.getLocationNumber());
+            assertEquals(PRICE_PER_SQM, geoLV.getPricePerSqm());
         } catch (IOException | ParseException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private static class MockEmptyIterableResponse
+    /**
+     *
+     */
+    private static final class MockEmptyIterableResponse
             implements Caller<File, WebApiHttpResponse> {
         @Override
-        public WebApiHttpResponse call(File file) throws UserCodeExecutionException {
+        public WebApiHttpResponse call(final File file)
+                throws UserCodeExecutionException {
 
             ObjectMapper mapper = new ObjectMapper();
             byte[] b = null;
             try {
-                b = mapper.writeValueAsBytes(mapper.readValue(file, FeatureCollection.class));
+                b = mapper.writeValueAsBytes(
+                        mapper.readValue(file, FeatureCollection.class));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -71,21 +98,27 @@ public class GeoLandValueTest {
         }
     }
 
+    /**
+     *
+     * @throws IOException
+     */
     @Test
     @Category(NeedsRunner.class)
     public void testGeoLandValueIsSerializable() throws IOException {
         List<File> files = new ArrayList<>();
-        files.add(geoJson);
+        files.add(this.geoJson);
         Result<WebApiHttpResponse> resps = p
                 .apply(Create.of(files))
-                .apply(RequestResponseIO.of(new MockEmptyIterableResponse(), WebApiHttpResponseCoder.of()));
+                .apply(RequestResponseIO.of(
+                        new MockEmptyIterableResponse(),
+                        WebApiHttpResponseCoder.of()));
 
         PCollection<String> results = resps.getResponses()
                 .apply(
                         ParDo.of(new GeoLandValueFn.FromWebApiHttpResponseFn()))
                 .apply(MapElements
                         .into(TypeDescriptors.strings())
-                        .via((GeoLandValue g)-> g.locationNumber));
+                        .via((GeoLandValue g) -> g.getLocationNumber()));
 
         PAssert.that(results).containsInAnyOrder("高円寺北２丁目７３０番２７");
         p.run().waitUntilFinish();

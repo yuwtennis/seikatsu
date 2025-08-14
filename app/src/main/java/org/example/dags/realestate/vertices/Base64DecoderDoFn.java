@@ -10,11 +10,16 @@ public class Base64DecoderDoFn {
      *
      */
     public static class Base64DecoderFn extends DoFn<byte[], byte[]> {
+        /**
+         *
+         * @param c
+         */
         @ProcessElement
-        public void processElement(ProcessContext c) {
+        public void processElement(final ProcessContext c) {
             String s = new String(c.element());
-            AppRaisalsResponseSchema json = (AppRaisalsResponseSchema) Utils.asJson(s, AppRaisalsResponseSchema.class);
-            c.output(Base64.getDecoder().decode(json.body));
+            AppRaisalsResponseSchema json = (AppRaisalsResponseSchema) Utils
+                    .asJson(s, AppRaisalsResponseSchema.class);
+            c.output(Base64.getDecoder().decode(json.getBody()));
         }
     }
 }
