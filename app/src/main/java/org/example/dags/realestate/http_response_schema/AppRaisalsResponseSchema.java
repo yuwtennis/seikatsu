@@ -1,7 +1,6 @@
 package org.example.dags.realestate.http_response_schema;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.Map;
 
 public class AppRaisalsResponseSchema {

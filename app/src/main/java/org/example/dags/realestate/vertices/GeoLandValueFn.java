@@ -1,9 +1,7 @@
 package org.example.dags.realestate.vertices;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.io.IOException;
-
 import org.apache.beam.sdk.transforms.DoFn;
 import org.example.dags.realestate.landvalue.GeoLandValue;
 import org.example.dags.webapi.WebApiHttpResponse;

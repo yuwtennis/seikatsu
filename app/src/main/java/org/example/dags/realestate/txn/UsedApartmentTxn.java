@@ -6,9 +6,7 @@ import static org.example.Utils.validateStr;
 import static org.example.dags.realestate.txn.ResidentialLandTxn.parseQuarterDateFormat;
 
 import com.google.api.services.bigquery.model.TableRow;
-
 import java.io.IOException;
-
 import org.apache.beam.sdk.coders.DefaultCoder;
 import org.apache.beam.sdk.extensions.avro.coders.AvroCoder;
 import org.apache.commons.csv.CSVRecord;

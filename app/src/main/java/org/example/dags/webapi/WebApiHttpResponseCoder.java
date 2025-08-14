@@ -3,7 +3,6 @@ package org.example.dags.webapi;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
 import org.apache.beam.sdk.coders.ByteArrayCoder;
 import org.apache.beam.sdk.coders.CustomCoder;
 

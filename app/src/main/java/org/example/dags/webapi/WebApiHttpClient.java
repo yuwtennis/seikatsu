@@ -6,11 +6,9 @@ import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpRequestFactory;
 import com.google.api.client.http.HttpResponse;
 import com.google.api.client.http.javanet.NetHttpTransport;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
-
 import org.apache.beam.io.requestresponse.Caller;
 import org.apache.beam.io.requestresponse.UserCodeExecutionException;
 import org.slf4j.Logger;

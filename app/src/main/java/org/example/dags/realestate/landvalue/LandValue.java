@@ -1,19 +1,17 @@
 package org.example.dags.realestate.landvalue;
 
+import static org.example.Utils.asInt;
+import static org.example.Utils.from4digitStr;
+import static org.example.Utils.validateStr;
+
 import com.google.api.services.bigquery.model.TableRow;
-
 import java.io.IOException;
-
 import org.apache.beam.sdk.coders.DefaultCoder;
 import org.apache.beam.sdk.extensions.avro.coders.AvroCoder;
 import org.apache.commons.csv.CSVRecord;
 import org.example.Magics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import static org.example.Utils.asInt;
-import static org.example.Utils.from4digitStr;
-import static org.example.Utils.validateStr;
 
 /***
  * Residential land deals　published from Ministry of Land,

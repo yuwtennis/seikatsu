@@ -1,9 +1,9 @@
 package org.example.dags.realestate.endpoints;
 
+import static org.example.Utils.asInt;
+
 import org.example.Env;
 import org.example.Magics;
-
-import static org.example.Utils.asInt;
 
 /**
  *

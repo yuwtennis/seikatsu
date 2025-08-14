@@ -1,8 +1,8 @@
 package org.example.dags.realestate;
 
-import static org.example.dags.realestate.BqMetaData.FQTN_RESIDENTIAL_LAND;
 import static org.example.dags.realestate.BqMetaData.FQTN_GEO_LAND_VALUE;
 import static org.example.dags.realestate.BqMetaData.FQTN_LAND_VALUE;
+import static org.example.dags.realestate.BqMetaData.FQTN_RESIDENTIAL_LAND;
 import static org.example.dags.realestate.BqMetaData.FQTN_USED_APARTMENT;
 import static org.example.dags.realestate.vertices.ZipContentHandler.LANDVALUE_TUPLE_TAG;
 import static org.example.dags.realestate.vertices.ZipContentHandler.RESIDENTIAL_LAND_TXN_TUPLE_TAG;
@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.io.gcp.bigquery.BigQueryIO;
 import org.apache.beam.sdk.transforms.Create;

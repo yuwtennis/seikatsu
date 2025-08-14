@@ -1,7 +1,6 @@
 package org.example.dags.realestate.vertices;
 
 import java.util.Base64;
-
 import org.apache.beam.sdk.transforms.DoFn;
 import org.example.Utils;
 import org.example.dags.realestate.http_response_schema.AppRaisalsResponseSchema;

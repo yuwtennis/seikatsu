@@ -1,7 +1,8 @@
 package org.example.dags.realestate.landvalue;
 
-import com.google.api.services.bigquery.model.TableRow;
+import static org.example.Utils.asInt;
 
+import com.google.api.services.bigquery.model.TableRow;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -9,14 +10,11 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.apache.beam.sdk.coders.DefaultCoder;
 import org.apache.beam.sdk.extensions.avro.coders.AvroCoder;
 import org.example.Magics;
 import org.geojson.Feature;
 import org.geojson.Point;
-
-import static org.example.Utils.asInt;
 
 @DefaultCoder(AvroCoder.class)
 public class GeoLandValue {

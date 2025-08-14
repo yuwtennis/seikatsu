@@ -4,7 +4,6 @@ package org.example.dags.realestate.vertices;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.zip.ZipInputStream;
-
 import org.apache.beam.sdk.transforms.DoFn;
 import org.apache.beam.sdk.transforms.PTransform;
 import org.apache.beam.sdk.transforms.ParDo;
