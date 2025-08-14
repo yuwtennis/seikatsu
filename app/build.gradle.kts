@@ -10,6 +10,7 @@ version = "v0.0.1"
 
 plugins {
     id("org.owasp.dependencycheck") version "12.1.3"
+    jacoco
     id("org.sonarqube") version "6.2.0.5505"
     id("com.diffplug.spotless") version "7.2.1"
 
@@ -86,6 +87,8 @@ sonar {
         property("sonar.organization",  System.getenv("SONAR_ORGANIZATION_NAME"))
         property("sonar.sources", "src/main/java")
         property("sonar.tests", "src/test/java")
+        property("sonar.coverage.jacoco.xmlReportPaths",
+            "build/reports/jacoco/test/jacocoTestReport.xml")
     }
 }
 
@@ -103,6 +106,14 @@ tasks.named<Test>("test") {
     useJUnitPlatform()
 }
 
+tasks.named<JacocoReport>("jacocoTestReport") {
+    reports {
+        xml.required = true
+        csv.required = false
+        html.required = false
+    }
+}
+
 tasks.named<SonarTask>("sonar") {
-    dependsOn("test")
+    dependsOn("jacocoTestReport")
 }
