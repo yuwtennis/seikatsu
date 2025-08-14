@@ -5,23 +5,35 @@ import static org.junit.Assert.assertTrue;
 
 import org.example.dags.helloworld.HelloWorldDag;
 import org.example.dags.realestate.RealEstateDag;
-import org.junit.Before;
 import org.junit.Test;
 
 public class DagTypeTest {
-    private final String DAGTYPE_HELLOWORLD = "HELLOWORLD";
-    private final String DAGTYPE_REALESTATE = "REALESTATE";
+    /**
+     *
+     */
+    private static final String DAGTYPE_HELLOWORLD = "HELLOWORLD";
 
-    @Before
-    public void setUp() {}
+    /**
+     *
+     */
+    private static final String DAGTYPE_REALESTATE = "REALESTATE";
 
+    /**
+     *
+     */
     @Test
     public void testDispatchHelloWorld() {
-        assertTrue(dispatch(DagType.valueOf(DAGTYPE_HELLOWORLD)) instanceof HelloWorldDag);
+        assertTrue(dispatch(
+                DagType.valueOf(DAGTYPE_HELLOWORLD)) instanceof HelloWorldDag);
     }
+
+    /**
+     *
+     */
     @Test
     public void testDispatchRealEstate() {
-        assertTrue(dispatch(DagType.valueOf(DAGTYPE_REALESTATE)) instanceof RealEstateDag);
+        assertTrue(dispatch(
+                DagType.valueOf(DAGTYPE_REALESTATE)) instanceof RealEstateDag);
     }
 
 }
