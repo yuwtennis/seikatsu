@@ -41,7 +41,7 @@ dependencies {
     implementation("org.apache.beam:beam-sdks-java-io-rrio")
     implementation("org.apache.beam:beam-sdks-java-extensions-avro")
     implementation("org.apache.beam:beam-sdks-java-io-google-cloud-platform")
-    implementation("com.google.api-client:google-api-client:2.8.0")
+    implementation("com.google.api-client:google-api-client:2.8.1")
     compileOnly("com.google.auto.value:auto-value-annotations:1.11.0")
     annotationProcessor("com.google.auto.value:auto-value:1.11.0")
     implementation("org.hamcrest:hamcrest:3.0")
