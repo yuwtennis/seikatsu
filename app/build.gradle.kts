@@ -48,7 +48,7 @@ dependencies {
     implementation("org.slf4j:slf4j-api:2.0.17")
     implementation("org.slf4j:slf4j-simple:2.0.17")
     implementation("org.apache.commons:commons-csv:1.14.1")
-    implementation("commons-codec:commons-codec:1.19.0")
+    implementation("commons-codec:commons-codec:1.20.0")
     implementation("de.grundid.opendatalab:geojson-jackson:1.14")
 }
 
