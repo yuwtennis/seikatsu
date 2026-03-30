@@ -12,7 +12,7 @@ plugins {
     id("org.owasp.dependencycheck") version "12.2.0"
     jacoco
     id("org.sonarqube") version "7.2.2.6593"
-    id("com.diffplug.spotless") version "8.2.1"
+    id("com.diffplug.spotless") version "8.4.0"
 
     checkstyle
 
