@@ -14,15 +14,19 @@ import org.example.dags.webapi.WebApiHttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * ValidationFn.
+ *
+ */
 public class ValidationFn extends DoFn<WebApiHttpResponse, RealEstatesPrice> {
 
   private static final Logger LOG = LoggerFactory.getLogger(ValidationFn.class);
 
   /**
-   * Validate the response
+   * Validate the response.
    *
-   * @param c
-   * @param output
+   * @param c context
+   * @param output output
    */
   @ProcessElement
   public void processElement(ProcessContext c, MultiOutputReceiver output) {

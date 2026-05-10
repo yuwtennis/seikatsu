@@ -31,7 +31,7 @@ import org.example.dags.webapi.WebApiHttpResponse;
 import org.example.dags.webapi.WebApiHttpResponseCoder;
 
 /**
- * RealEstateDag
+ * RealEstateDag.
  */
 public class RealEstateDag implements Dag {
   /** Tokyo. */
@@ -50,7 +50,7 @@ public class RealEstateDag implements Dag {
   public static final TupleTag<StandardLandPrice> SLP_TAG = new TupleTag<>() {};
 
   /**
-   * process method.
+   * Process method.
    *
    * @param p Pipeline
    */
