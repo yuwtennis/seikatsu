@@ -3,12 +3,12 @@ package org.example.dags.realestate.endpoints;
 import org.apache.beam.sdk.coders.DefaultCoder;
 import org.apache.beam.sdk.extensions.avro.coders.AvroCoder;
 
+/**
+ * Represents the category of a URL, describing its classification or type. This field is used to
+ * identify the nature or purpose of the URL within a specific context.
+ */
 @DefaultCoder(AvroCoder.class)
 public class Url {
-  /**
-   * Represents the category of a URL, describing its classification or type. This field is used to
-   * identify the nature or purpose of the URL within a specific context.
-   */
 
   /** Category of the URL. */
   private String category;
@@ -16,6 +16,7 @@ public class Url {
   /** The actual URL string. */
   private String url;
 
+  /** Url constructor.*/
   public Url() {}
 
   /**
@@ -29,16 +30,18 @@ public class Url {
     this.url = url;
   }
 
-  /***
+  /**
    * Get the category of the URL.
+   *
    * @return String
    */
   public String getCategory() {
     return category;
   }
 
-  /***
+  /**
    * Get the actual URL string.
+   *
    * @return String
    */
   public String getUrl() {

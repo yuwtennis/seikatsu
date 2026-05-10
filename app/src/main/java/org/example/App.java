@@ -10,13 +10,22 @@ import org.example.dags.Dag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * App.
+ */
 public final class App {
   private App() {
     throw new UnsupportedOperationException();
   }
 
+  /**
+   * Dag options.
+   *
+   */
   public interface DagOptions extends PipelineOptions {
     /**
+     * Dag type.
+     *
      * @return String
      */
     @Description("Dag options")
@@ -24,24 +33,32 @@ public final class App {
     String getDagType();
 
     /**
-     * @param dagType
+     * Dag type.
+     *
+     * @param dagType String
      */
     void setDagType(String dagType);
 
     /**
+     * Number of years to backtrack the data.
+     *
      * @return int
      */
     @Description("Number of years to backtrack the data. ")
     ValueProvider<Integer> getBacktrackedYears();
 
     /**
-     * @param backtrackedYears
+     * Number of years to backtrack the data.
+     *
+     * @param backtrackedYears ValueProvider<Integer>
      */
     void setBacktrackedYears(ValueProvider<Integer> backtrackedYears);
   }
 
   /**
-   * @param args
+   * Main.
+   *
+   * @param args String[]
    */
   public static void main(final String[] args) {
     Logger root = LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);

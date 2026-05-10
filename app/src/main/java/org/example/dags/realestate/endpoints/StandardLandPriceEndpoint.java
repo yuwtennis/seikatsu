@@ -1,39 +1,42 @@
 package org.example.dags.realestate.endpoints;
 
-/** */
+/**
+ * StandardLandPriceEndpoint.
+ *
+ */
 public final class StandardLandPriceEndpoint extends Endpoint {
-  /** */
+  /** Category. */
   public static final String CATEGORY = "standard_land_price";
 
-  /** */
+  /** Base URL. */
   private static final String BASE_URL = "https://www.reinfolib.mlit.go.jp/ex-api/external/XCT001";
 
-  /** */
+  /** Year. */
   private final int year;
 
-  /** */
+  /** Area. */
   private final String area;
 
-  /** */
+  /** Division. */
   private final String division;
 
-  /** */
+  /** Builder class. */
   public static class Builder extends Endpoint.Builder<Builder> {
-    /** */
+    /** Year. */
     private final int year;
 
-    /** */
+    /** Area. */
     private final String area;
 
-    /** */
+    /** Division. */
     private final String division;
 
     /**
      * Constructor for the Builder class.
      *
-     * @param year
-     * @param area
-     * @param division
+     * @param year year
+     * @param area area
+     * @param division division
      */
     public Builder(final int year, final String area, final String division) {
       this.year = year;
@@ -42,6 +45,8 @@ public final class StandardLandPriceEndpoint extends Endpoint {
     }
 
     /**
+     * Build the StandardLandPriceEndpoint instance.
+     *
      * @return Builder instance
      */
     @Override
@@ -50,6 +55,8 @@ public final class StandardLandPriceEndpoint extends Endpoint {
     }
 
     /**
+     * Get the Builder instance.
+     *
      * @return Builder instance
      */
     @Override
@@ -66,6 +73,8 @@ public final class StandardLandPriceEndpoint extends Endpoint {
   }
 
   /**
+   * Get the URL to access.
+   *
    * @return Url
    */
   public Url toUrl() {

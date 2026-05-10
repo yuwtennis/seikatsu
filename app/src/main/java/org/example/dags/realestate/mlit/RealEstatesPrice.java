@@ -10,6 +10,11 @@ import org.apache.beam.sdk.schemas.annotations.DefaultSchema;
 // class org.apache.beam.sdk.schemas.SchemaCoder has a #structuralValue method which does not return
 // true when the encoding of the elements is equal. Element
 // org.example.dags.realestate.mlit.RealEstatesPrice@2cdc717e
+
+/**
+ * RealEstatesPrice.
+ *
+ */
 @DefaultSchema(JavaFieldSchema.class)
 public class RealEstatesPrice extends Mlit {
 
