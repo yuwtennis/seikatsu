@@ -3,8 +3,20 @@
 
 [versions]
 guava = "33.5.0-jre"
-junit-jupiter = "6.0.3"
+junit = "4.13.1"
+beam-sdks-java-google-cloud-platform-bom = "2.72.0"
+jackson-bom = "2.21.2"
+slf4j-api = "2.0.17"
+slf4j-simple = "2.0.17"
+auto-value = "1.11.1"
+auto-value-annotations = "1.11.1"
 
 [libraries]
 guava = { module = "com.google.guava:guava", version.ref = "guava" }
-junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit-jupiter" }
+junit = { module = "junit:junit", version.ref = "junit" }
+beam-sdks-java-google-cloud-platform-bom = { module = "org.apache.beam:beam-sdks-java-google-cloud-platform-bom", version.ref = "beam-sdks-java-google-cloud-platform-bom"}
+jackson-bom = { module = "com.fasterxml.jackson:jackson-bom", version.ref = "jackson-bom"}
+slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j-api"}
+slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j-simple"}
+auto-value = { module = "com.google.auto.value:auto-value", version.ref = "auto-value"}
+auto-value-annotations = { module = "com.google.auto.value:auto-value-annotations", version.ref = "auto-value-annotations"}

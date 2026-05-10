@@ -6,22 +6,15 @@ import org.junit.Before;
 import org.junit.Rule;
 
 public class RealEstateDagTest {
-    /**
-     *
-     */
-    private File geoJson;
+  /** */
+  private File geoJson;
 
-    /**
-     *
-     */
-    @Rule
-    public final transient TestPipeline p = TestPipeline.create();
+  /** */
+  @Rule public final transient TestPipeline p = TestPipeline.create();
 
-    /**
-     *
-     */
-    @Before
-    public void setUp() {
-        geoJson = new File("src/test/resources/geo.json");
-    }
+  /** */
+  @Before
+  public void setUp() {
+    geoJson = new File("src/test/resources/txn.json");
+  }
 }

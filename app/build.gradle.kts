@@ -27,29 +27,31 @@ repositories {
 
 dependencies {
     // Use JUnit Jupiter for testing.
-    testImplementation(libs.junit.jupiter)
-    testCompileOnly("junit:junit:4.13.2")
-    testRuntimeOnly("org.junit.vintage:junit-vintage-engine")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-    testRuntimeOnly("com.fasterxml.jackson.core:jackson-databind:2.21.2")
+    testImplementation(libs.junit)
 
     // This dependency is used by the application.
     implementation(libs.guava)
-    implementation(platform("org.apache.beam:beam-sdks-java-google-cloud-platform-bom:2.72.0"))
+    implementation(platform(libs.beam.sdks.java.google.cloud.platform.bom))
     implementation("org.apache.beam:beam-sdks-java-core")
     implementation("org.apache.beam:beam-runners-direct-java")
     implementation("org.apache.beam:beam-sdks-java-io-rrio")
     implementation("org.apache.beam:beam-sdks-java-extensions-avro")
     implementation("org.apache.beam:beam-sdks-java-io-google-cloud-platform")
-    implementation("com.google.api-client:google-api-client:2.9.0")
-    compileOnly("com.google.auto.value:auto-value-annotations:1.11.1")
-    annotationProcessor("com.google.auto.value:auto-value:1.11.1")
-    implementation("org.hamcrest:hamcrest:3.0")
-    implementation("org.slf4j:slf4j-api:2.0.17")
-    implementation("org.slf4j:slf4j-simple:2.0.17")
-    implementation("org.apache.commons:commons-csv:1.14.1")
-    implementation("commons-codec:commons-codec:1.21.0")
-    implementation("de.grundid.opendatalab:geojson-jackson:1.14")
+    implementation("com.google.api-client:google-api-client")
+    implementation("org.hamcrest:hamcrest")
+
+    compileOnly(libs.auto.value.annotations)
+    annotationProcessor(libs.auto.value)
+
+    // Logging
+    implementation(libs.slf4j.api)
+    implementation(libs.slf4j.simple)
+
+    // Jackson
+    implementation(platform(libs.jackson.bom))
+    implementation("com.fasterxml.jackson.core:jackson-core")
+    implementation("com.fasterxml.jackson.core:jackson-databind")
+    implementation("com.fasterxml.jackson.core:jackson-annotations")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
@@ -65,10 +67,9 @@ application {
 }
 
 checkstyle {
-    toolVersion ="11.0.0"
-
+    toolVersion ="13.4.0"
     configProperties = mapOf(
-        "org.checkstyle.google.suppressionfilter.config" to "suppressions.xml"
+        "org.checkstyle.google.severity" to "error"
     )
 }
 
@@ -94,6 +95,7 @@ sonar {
 
 spotless {
     java {
+        googleJavaFormat()
         importOrder()
         removeUnusedImports()
         formatAnnotations()

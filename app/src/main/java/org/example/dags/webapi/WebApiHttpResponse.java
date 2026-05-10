@@ -5,35 +5,41 @@ import java.io.Serializable;
 
 @AutoValue
 public abstract class WebApiHttpResponse implements Serializable {
+  /**
+   * @return Builder
+   */
+  public static Builder builder() {
+    return new AutoValue_WebApiHttpResponse.Builder();
+  }
+
+  /**
+   * @return byte[]
+   */
+  @SuppressWarnings("mutable")
+  public abstract byte[] getData();
+
+  /**
+   * @return
+   */
+  public abstract String getCategory();
+
+  @AutoValue.Builder
+  public abstract static class Builder {
     /**
-     *
+     * @param value
      * @return Builder
      */
-    public static Builder builder() {
-        return new AutoValue_WebApiHttpResponse.Builder();
-    }
+    public abstract Builder setData(byte[] value);
 
     /**
-     *
-     * @return byte[]
+     * @param value
+     * @return
      */
-    @SuppressWarnings("mutable")
-    public abstract byte[] getData();
+    public abstract Builder setCategory(String value);
 
-    @AutoValue.Builder
-    public abstract static class Builder {
-        /**
-         *
-         * @param value
-         * @return Builder
-         */
-        public abstract Builder setData(byte[] value);
-
-        /**
-         *
-         * @return WebApiHttpResponse
-         */
-        public abstract WebApiHttpResponse build();
-    }
-
+    /**
+     * @return WebApiHttpResponse
+     */
+    public abstract WebApiHttpResponse build();
+  }
 }

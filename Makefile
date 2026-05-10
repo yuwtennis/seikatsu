@@ -1,5 +1,4 @@
 
-
 DOCKER_HOSTNAME := ""
 GOOGLE_PROJECT_ID := $(gcloud config get core/project)
 GOOGLE_AR_REPOS_PATH := descriptive-analytics/dev
@@ -10,4 +9,3 @@ build:
 
 push: build
 	docker push $(DOCKER_IMAGE_TAG)
-

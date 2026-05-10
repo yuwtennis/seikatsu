@@ -15,48 +15,35 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
 public class HeloWorldVerticesTest {
-    /**
-     *
-     */
-    private List<String> input;
+  /** */
+  private List<String> input;
 
-    /**
-     *
-     */
-    @Rule
-    public final transient TestPipeline p = TestPipeline.create();
+  /** */
+  @Rule public final transient TestPipeline p = TestPipeline.create();
 
-    /**
-     *
-     */
-    @Before
-    public void setUp() {
-        input = new ArrayList<String>(Arrays.asList("Hello", "World."));
-    }
+  /** */
+  @Before
+  public void setUp() {
+    input = new ArrayList<String>(Arrays.asList("Hello", "World."));
+  }
 
-    /**
-     *
-     */
-    @Test
-    @Category(NeedsRunner.class)
-    public void testStringForwardFn() {
-        PCollection<String> pCol = p.apply(Create.of(input))
-                .apply(
-                        MapElements.via(
-                                new HelloWorldVertices.StringForwardFn()));
-        PAssert.that(pCol).containsInAnyOrder(input);
-        p.run().waitUntilFinish();
-    }
+  /** */
+  @Test
+  @Category(NeedsRunner.class)
+  public void testStringForwardFn() {
+    PCollection<String> pCol =
+        p.apply(Create.of(input)).apply(MapElements.via(new HelloWorldVertices.StringForwardFn()));
+    PAssert.that(pCol).containsInAnyOrder(input);
+    p.run().waitUntilFinish();
+  }
 
-    /**
-     *
-     */
-    @Test
-    @Category(NeedsRunner.class)
-    public void testSimpleVertex() {
-        PCollection<String> pCol = p.apply(Create.of(input))
-                .apply(new HelloWorldVertices.SimpleVertex());
-        PAssert.that(pCol).containsInAnyOrder(input);
-        p.run().waitUntilFinish();
-    }
+  /** */
+  @Test
+  @Category(NeedsRunner.class)
+  public void testSimpleVertex() {
+    PCollection<String> pCol =
+        p.apply(Create.of(input)).apply(new HelloWorldVertices.SimpleVertex());
+    PAssert.that(pCol).containsInAnyOrder(input);
+    p.run().waitUntilFinish();
+  }
 }
