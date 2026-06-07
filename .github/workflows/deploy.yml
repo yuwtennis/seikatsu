@@ -23,6 +23,7 @@ jobs:
         with:
           distribution: corretto
           java-version: 21
+          cache: 'gradle'
       - id: auth
         name: Setup gcloud
         uses: google-github-actions/auth@v3
