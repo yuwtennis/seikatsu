@@ -90,6 +90,9 @@ configure<org.owasp.dependencycheck.gradle.extension.DependencyCheckExtension> {
 
     // Fail build if vulnerabilities are found
     failBuildOnCVSS = 0.0F
+
+    format = org.owasp.dependencycheck.reporting.ReportGenerator.Format.ALL.toString()
+
 }
 
 sonar {
