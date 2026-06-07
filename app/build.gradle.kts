@@ -9,7 +9,7 @@ import org.sonarqube.gradle.SonarTask
 version = "v0.0.1"
 
 plugins {
-    id("org.owasp.dependencycheck") version "12.2.2"
+    id("org.owasp.dependencycheck") version "12.2.2" apply false
     jacoco
     id("org.sonarqube") version "7.3.0.8198"
     id("com.diffplug.spotless") version "8.4.0"
@@ -18,6 +18,10 @@ plugins {
 
     // Apply the application plugin to add support for building a CLI application in Java.
     application
+}
+
+allprojects {
+    apply(plugin = "org.owasp.dependencycheck")
 }
 
 repositories {
