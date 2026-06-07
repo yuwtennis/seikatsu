@@ -108,8 +108,7 @@ spotless {
 }
 
 tasks.named<Test>("test") {
-    // Use JUnit Platform for unit tests.
-    useJUnitPlatform()
+    // Nothing to customize yet
 }
 
 tasks.named<JacocoReport>("jacocoTestReport") {
