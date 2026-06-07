@@ -17,16 +17,12 @@ jobs:
         with:
           distribution: corretto
           java-version: 21
+          cache: 'gradle'
       - name: Cache nvd
         uses: actions/cache@v5
         with:
           path: ~/.gradle/dependency-check-data
           key: "dependency-check-data"
-      - name: Cache Gradle packages
-        uses: actions/cache@v5
-        with:
-          path: ~/.gradle/caches
-          key: gradle-${{ hashFiles('**/*.gradle.kts') }}
       - name: Purge database
         run: ./gradlew dependencyCheckPurge
       - name: Update database
