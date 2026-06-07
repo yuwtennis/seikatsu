@@ -68,10 +68,14 @@ application {
 
 checkstyle {
     toolVersion ="13.4.0"
+    configFile = file("${projectDir}/../config/checkstyle/checkstyle.xml")
     configProperties = mapOf(
-        "org.checkstyle.google.severity" to "error"
+        "org.checkstyle.google.severity" to "error",
+        "org.checkstyle.google.suppressionfilter.config" to
+                "${projectDir}/../config/checkstyle/checkstyle-suppressions.xml"
     )
 }
+
 
 configure<org.owasp.dependencycheck.gradle.extension.DependencyCheckExtension> {
     nvd.apiKey = System.getenv("NVD_API_KEY")
