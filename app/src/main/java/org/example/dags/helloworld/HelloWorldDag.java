@@ -4,10 +4,14 @@ import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.transforms.Create;
 import org.example.dags.Dag;
 
+/**
+ * HelloWorldDag.
+ */
 public class HelloWorldDag implements Dag {
-
   /**
-   * @param p
+   * Process.
+   *
+   * @param p Pipeline
    */
   public void process(final Pipeline p) {
     p.apply(Create.of("Hello", "World", "!")).apply(new HelloWorldVertices.SimpleVertex());

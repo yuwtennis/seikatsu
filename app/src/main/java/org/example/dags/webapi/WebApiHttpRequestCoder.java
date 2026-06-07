@@ -8,15 +8,24 @@ import org.apache.beam.sdk.coders.CustomCoder;
 import org.apache.beam.sdk.coders.MapCoder;
 import org.apache.beam.sdk.coders.StringUtf8Coder;
 
+/**
+ * WebApiHttpRequestCoder.
+ */
 public class WebApiHttpRequestCoder extends CustomCoder<WebApiHttpRequest> {
-  /** */
+  /**
+   * StringUtf8Coder.
+   */
   private static final StringUtf8Coder STRING_UTF_8_CODER = StringUtf8Coder.of();
 
-  /** */
+  /**
+   * MapCoder.
+   */
   private static final MapCoder<String, String> MAP_CODER =
       MapCoder.of(STRING_UTF_8_CODER, STRING_UTF_8_CODER);
 
   /**
+   * Of.
+   *
    * @return WebApiHttpRequestCoder
    */
   public static WebApiHttpRequestCoder of() {
@@ -24,9 +33,11 @@ public class WebApiHttpRequestCoder extends CustomCoder<WebApiHttpRequest> {
   }
 
   /**
-   * @param value
-   * @param outputStream
-   * @throws IOException
+   * Encode.
+   *
+   * @param value WebApiHttpRequest
+   * @param outputStream OutputStream
+   * @throws IOException IOException
    */
   @Override
   public void encode(final WebApiHttpRequest value, final OutputStream outputStream)
@@ -37,9 +48,11 @@ public class WebApiHttpRequestCoder extends CustomCoder<WebApiHttpRequest> {
   }
 
   /**
-   * @param inputStream
-   * @return
-   * @throws IOException
+   * Decode.
+   *
+   * @param inputStream InputStream
+   * @return WebApiHttpRequest
+   * @throws IOException IOException
    */
   @Override
   public WebApiHttpRequest decode(final InputStream inputStream) throws IOException {

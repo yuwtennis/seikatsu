@@ -12,16 +12,25 @@ import org.apache.beam.io.requestresponse.UserCodeExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * WebApiHttpClient.
+ */
 public class WebApiHttpClient implements Caller<WebApiHttpRequest, WebApiHttpResponse> {
 
-  /** */
+  /**
+   * Logger.
+   */
   static final Logger LOG = LoggerFactory.getLogger(WebApiHttpClient.class);
 
-  /** */
+  /**
+   * Request factory.
+   */
   private static final HttpRequestFactory REQUEST_FACTORY =
       new NetHttpTransport().createRequestFactory();
 
   /**
+   * Of.
+   *
    * @return WebApiHttpClient
    */
   public static WebApiHttpClient of() {
@@ -29,9 +38,11 @@ public class WebApiHttpClient implements Caller<WebApiHttpRequest, WebApiHttpRes
   }
 
   /**
-   * @param webApiHttpRequest
+   * Call.
+   *
+   * @param webApiHttpRequest WebApiHttpRequest
    * @return WebApiHttpRequest
-   * @throws UserCodeExecutionException
+   * @throws UserCodeExecutionException UserCodeExecutionException
    */
   @Override
   public WebApiHttpResponse call(final WebApiHttpRequest webApiHttpRequest)
@@ -64,9 +75,10 @@ public class WebApiHttpClient implements Caller<WebApiHttpRequest, WebApiHttpRes
     }
   }
 
-  /***
+  /**
+   * Create headers.
    *
-   * @param headers
+   * @param headers Map. String as Key, String as Value
    * @return HttpHeaders
    */
   private HttpHeaders createHeaders(final Map<String, String> headers) throws RuntimeException {

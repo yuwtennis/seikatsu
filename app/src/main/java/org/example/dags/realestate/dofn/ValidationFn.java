@@ -51,6 +51,6 @@ public class ValidationFn extends DoFn<WebApiHttpResponse, RealEstatesPrice> {
     } catch (Exception e) {
       e.printStackTrace();
     }
-    // TODO implement dlq pattern
+    // TODO: implement dlq pattern
   }
 }

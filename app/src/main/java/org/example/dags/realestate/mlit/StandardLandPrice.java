@@ -4,11 +4,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.beam.sdk.schemas.JavaFieldSchema;
 import org.apache.beam.sdk.schemas.annotations.DefaultSchema;
 
-// TODO Fix [direct-runner-worker] WARN org.apache.beam.sdk.util.MutationDetectors - Coder of type
+// TODO: Fix [direct-runner-worker] WARN org.apache.beam.sdk.util .MutationDetectors - Coder of type
 // class org.apache.beam.sdk.schemas.SchemaCoder has a #structuralValue method which does not return
 // true when the encoding of the elements is equal. Element
 // org.example.dags.realestate.mlit.StandardLandPrice@4a6c27d4
 
+/**
+ * StandardLandPrice is a class representing the standard land price data.
+ */
 @DefaultSchema(JavaFieldSchema.class)
 public class StandardLandPrice extends Mlit {
 

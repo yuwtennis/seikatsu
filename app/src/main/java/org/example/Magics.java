@@ -5,10 +5,14 @@ package org.example;
  *
  */
 public enum Magics {
-  /** 人が単位分あたりに移動する距離. 不動産サイト ホームズ を参考 “徒歩◯分”は正しい？ 駅までの実際の所要時間を調べるには */
+  /* NOTE 人が単位分あたりに移動する距離. 不動産サイト ホームズ を参考 “徒歩◯分”は正しい？
+   * 駅までの実際の所要時間を調べるには
+   */
   DISTANCE_MOVED_PER_MINUTE("80");
 
-  /** Value. */
+  /**
+   * Value.
+   */
   private final String value;
 
   Magics(final String v) {
@@ -16,6 +20,8 @@ public enum Magics {
   }
 
   /**
+   * Get the value.
+   *
    * @return String
    */
   public String getValue() {

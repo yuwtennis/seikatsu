@@ -7,6 +7,9 @@ import org.example.dags.realestate.endpoints.Url;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * WebApiHttpRequest.
+ */
 @AutoValue
 public abstract class WebApiHttpRequest implements Serializable {
   static Builder builder() {
@@ -16,8 +19,10 @@ public abstract class WebApiHttpRequest implements Serializable {
   private static final Logger LOG = LoggerFactory.getLogger(WebApiHttpRequest.class);
 
   /**
-   * @param url
-   * @param headers
+   * Create a new WebApiHttpRequest.
+   *
+   * @param url Url
+   * @param headers Map. String as Key, String as Value
    * @return WebApiHttpRequest
    */
   public static WebApiHttpRequest of(final Url url, final Map<String, String> headers) {
@@ -36,16 +41,22 @@ public abstract class WebApiHttpRequest implements Serializable {
   }
 
   /**
+   * Get the URL to access.
+   *
    * @return String
    */
   public abstract String getUrl();
 
   /**
-   * @return
+   * Get the category.
+   *
+   * @return String
    */
   public abstract String getCategory();
 
   /**
+   * Get the headers.
+   *
    * @return Map
    */
   public abstract Map<String, String> getHeaders();
@@ -53,20 +64,32 @@ public abstract class WebApiHttpRequest implements Serializable {
   @AutoValue.Builder
   abstract static class Builder {
     /**
-     * @param url
+     * Set the URL to access.
+     *
+     * @param apiEndpointUrl String
      * @return Builder
      */
-    abstract Builder setUrl(String url);
-
-    abstract Builder setCategory(String category);
+    abstract Builder setUrl(String apiEndpointUrl);
 
     /**
-     * @param headers
+     * Set the category.
+     *
+     * @param realEstateCategory String
      * @return Builder
      */
-    abstract Builder setHeaders(Map<String, String> headers);
+    abstract Builder setCategory(String realEstateCategory);
 
     /**
+     * Set the headers.
+     *
+     * @param httpRequestHeaders Map
+     * @return Builder
+     */
+    abstract Builder setHeaders(Map<String, String> httpRequestHeaders);
+
+    /**
+     * Build the WebApiHttpRequest.
+     *
      * @return WebApiHttpRequest
      */
     abstract WebApiHttpRequest build();
