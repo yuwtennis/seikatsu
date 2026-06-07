@@ -62,7 +62,7 @@ public class RealEstatesPrice extends Mlit {
   public String totalFloorArea; // changed: int → String (empty string possible)
 
   @JsonProperty("BuildingYear")
-  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy年")
+  @JsonDeserialize(converter = JapaneseYearConverter.class)
   public String buildingYear;
 
   @JsonProperty("Structure")
