@@ -1,6 +1,5 @@
 package org.example.dags.realestate.mlit;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.apache.beam.sdk.schemas.JavaFieldSchema;
@@ -62,7 +61,7 @@ public class RealEstatesPrice extends Mlit {
   public String totalFloorArea; // changed: int → String (empty string possible)
 
   @JsonProperty("BuildingYear")
-  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy年")
+  @JsonDeserialize(converter = JapaneseYearConverter.class)
   public String buildingYear;
 
   @JsonProperty("Structure")

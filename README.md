@@ -23,7 +23,7 @@ e.g. Closes station name.
 Set environment variables.
 
 ```shell
-export OCP_APIM_SUBSCRIPTION_KEY=b848cf43fc4a4eb497bb0ec542ababeb
+export OCP_APIM_SUBSCRIPTION_KEY=MY_KEY
 ```
 
 From gradle
