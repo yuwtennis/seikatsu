@@ -79,7 +79,7 @@ checkstyle {
 
 configure<org.owasp.dependencycheck.gradle.extension.DependencyCheckExtension> {
     nvd.apiKey = System.getenv("NVD_API_KEY")
-    autoUpdate = false
+    autoUpdate = true
 
     // Fail build if vulnerabilities are found
     failBuildOnCVSS = 0.0F
