@@ -79,7 +79,8 @@ checkstyle {
 
 configure<org.owasp.dependencycheck.gradle.extension.DependencyCheckExtension> {
     nvd.apiKey = System.getenv("NVD_API_KEY")
-    autoUpdate = true
+    // Speed up the process. Use the one that was created asynchronously
+    autoUpdate = false
 
     // Fail build if vulnerabilities are found
     failBuildOnCVSS = 0.0F
