@@ -12,28 +12,18 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
-/**
- * HelloWorldDagTest.
- */
+/** HelloWorldDagTest. */
 public class HelloWorldDagTest {
-  /**
-   * TestHWOptions.
-   */
+  /** TestHWOptions. */
   public interface TestHWOptions extends TestPipelineOptions, App.DagOptions {}
 
-  /**
-   * Type of the DAG.
-   */
+  /** Type of the DAG. */
   private String dagType;
 
-  /**
-   * Mock pipeline.
-   */
+  /** Mock pipeline. */
   @Rule public final transient TestPipeline pipeline = TestPipeline.create();
 
-  /**
-   * Setup.
-   */
+  /** Setup. */
   @Before
   public void setUp() {
     // Test pipeline options as JSON array
@@ -45,9 +35,7 @@ public class HelloWorldDagTest {
     dagType = "HELLOWORLD";
   }
 
-  /**
-   * Test process.
-   */
+  /** Test process. */
   @Test
   @Category(NeedsRunner.class)
   public void testProcess() {

@@ -14,47 +14,33 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
-/**
- * HeloWorldVerticesTest.
- */
+/** HeloWorldVerticesTest. */
 public class HeloWorldVerticesTest {
-  /**
-   * Sample lines as input of the pipeline.
-   */
+  /** Sample lines as input of the pipeline. */
   private List<String> samples;
 
-  /**
-   * Mock pipeline.
-   */
+  /** Mock pipeline. */
   @Rule public final transient TestPipeline pipeline = TestPipeline.create();
 
-  /**
-   * Setup.
-   */
+  /** Setup. */
   @Before
   public void setUp() {
     samples = new ArrayList<String>(Arrays.asList("Hello", "World."));
   }
 
-  /**
-   * Test StringForwardFn.
-   */
+  /** Test StringForwardFn. */
   @Test
   @Category(NeedsRunner.class)
   public void testStringForwardFn() {
     PCollection<String> lines =
         pipeline
-                .apply(Create.of(samples))
-                .apply(
-                        MapElements.via(
-                                new HelloWorldVertices.StringForwardFn()));
+            .apply(Create.of(samples))
+            .apply(MapElements.via(new HelloWorldVertices.StringForwardFn()));
     PAssert.that(lines).containsInAnyOrder(samples);
     pipeline.run().waitUntilFinish();
   }
 
-  /**
-   * Test SimpleVertex.
-   */
+  /** Test SimpleVertex. */
   @Test
   @Category(NeedsRunner.class)
   public void testSimpleVertex() {

@@ -7,29 +7,21 @@ import java.io.InputStream;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- * MlitTest.
- */
+/** MlitTest. */
 public class MlitTest {
-  /**
-   * Fixture for testing deserialization.
-   */
+  /** Fixture for testing deserialization. */
   private String txnJson;
 
   private String standardLandPriceJson;
 
-  /**
-   * Setup.
-   */
+  /** Setup. */
   @Before
   public void setUp() {
     txnJson = "txn.json";
     standardLandPriceJson = "standard_land_price.json";
   }
 
-  /**
-   * Test deserialization of txn.json.
-   */
+  /** Test deserialization of txn.json. */
   @Test
   public void testDeserializeTxnJson() {
     ObjectMapper mapper = new ObjectMapper();
@@ -41,9 +33,7 @@ public class MlitTest {
     }
   }
 
-  /**
-   * Test deserialization of standard_land_price.json.
-   */
+  /** Test deserialization of standard_land_price.json. */
   @Test
   public void testDeserializeStandardPricingJson() {
     ObjectMapper mapper = new ObjectMapper();
