@@ -12,33 +12,47 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
+/**
+ * HelloWorldDagTest.
+ */
 public class HelloWorldDagTest {
+  /**
+   * TestHWOptions.
+   */
   public interface TestHWOptions extends TestPipelineOptions, App.DagOptions {}
 
-  /** */
+  /**
+   * Type of the DAG.
+   */
   private String dagType;
 
-  /** */
-  @Rule public final transient TestPipeline p = TestPipeline.create();
+  /**
+   * Mock pipeline.
+   */
+  @Rule public final transient TestPipeline pipeline = TestPipeline.create();
 
-  /** */
+  /**
+   * Setup.
+   */
   @Before
   public void setUp() {
     // Test pipeline options as JSON array
     // https://beam.apache.org/releases
     //   /javadoc/2.57.0/org/apache/beam/sdk/testing/TestPipeline.html
     // https://www.json.org/json-en.html
-    String[] pOpts = new String[] {"--runner=DirectRunner"};
-    System.setProperty("beamTestPipelineOptions", asJsonStr(pOpts));
+    String[] pipelineOptions = new String[] {"--runner=DirectRunner"};
+    System.setProperty("beamTestPipelineOptions", asJsonStr(pipelineOptions));
     dagType = "HELLOWORLD";
   }
 
-  /** */
+  /**
+   * Test process.
+   */
   @Test
   @Category(NeedsRunner.class)
   public void testProcess() {
-    p.getOptions().as(App.DagOptions.class).setDagType(dagType);
-    p.run();
+    pipeline.getOptions().as(App.DagOptions.class).setDagType(dagType);
+    pipeline.run();
     assertTrue(true);
   }
 }
