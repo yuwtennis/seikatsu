@@ -5,7 +5,7 @@ GOOGLE_AR_REPOS_PATH := descriptive-analytics/dev
 DOCKER_IMAGE_TAG := descr-analyt:$((git rev-parse HEAD))
 
 build:
-	docker build -t $(DOCKER_IMAGE_TAG) .
+	docker build -e OCP_APIM_SUBSCRIPTION_KEY -t $(DOCKER_IMAGE_TAG) .
 
 push: build
 	docker push $(DOCKER_IMAGE_TAG)
