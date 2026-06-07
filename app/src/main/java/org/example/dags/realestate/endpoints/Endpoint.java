@@ -1,22 +1,26 @@
 package org.example.dags.realestate.endpoints;
 
-
+/** Endpoint. */
 public abstract class Endpoint {
 
-    abstract static class Builder<T extends Builder<T>> {
-        abstract Endpoint build();
-        protected abstract T self();
-    }
+  /** Builder class. */
+  abstract static class Builder<T extends Builder<T>> {
+    abstract Endpoint build();
 
-    /**
-     *
-     * @param builder
-     */
-    Endpoint(final Builder builder) { }
+    protected abstract T self();
+  }
 
-    /**
-     *
-     * @return Returns URL to access
-     */
-    public abstract String toUrl();
+  /**
+   * Constructor.
+   *
+   * @param builder Builder
+   */
+  Endpoint(final Builder builder) {}
+
+  /**
+   * Returns URL to access.
+   *
+   * @return Returns URL to access
+   */
+  public abstract Url toUrl();
 }

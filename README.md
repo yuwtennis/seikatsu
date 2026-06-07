@@ -20,6 +20,19 @@ e.g. Closes station name.
 
 ### command
 
+Set environment variables.
+
+```shell
+export OCP_APIM_SUBSCRIPTION_KEY=b848cf43fc4a4eb497bb0ec542ababeb
+```
+
+From gradle
+```shell
+./gradlew run \
+  --args="--dagType=REALESTATE --tempLocation=gs://elite-caster-125113/tmp --backtrackedYears=1"
+```
+
+From the artifact.
 ```shell
 /app/bin/app \
   --dagType=REALESTATE \

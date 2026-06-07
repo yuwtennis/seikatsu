@@ -14,49 +14,39 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
+/** HeloWorldVerticesTest. */
 public class HeloWorldVerticesTest {
-    /**
-     *
-     */
-    private List<String> input;
+  /** Sample lines as input of the pipeline. */
+  private List<String> samples;
 
-    /**
-     *
-     */
-    @Rule
-    public final transient TestPipeline p = TestPipeline.create();
+  /** Mock pipeline. */
+  @Rule public final transient TestPipeline pipeline = TestPipeline.create();
 
-    /**
-     *
-     */
-    @Before
-    public void setUp() {
-        input = new ArrayList<String>(Arrays.asList("Hello", "World."));
-    }
+  /** Setup. */
+  @Before
+  public void setUp() {
+    samples = new ArrayList<String>(Arrays.asList("Hello", "World."));
+  }
 
-    /**
-     *
-     */
-    @Test
-    @Category(NeedsRunner.class)
-    public void testStringForwardFn() {
-        PCollection<String> pCol = p.apply(Create.of(input))
-                .apply(
-                        MapElements.via(
-                                new HelloWorldVertices.StringForwardFn()));
-        PAssert.that(pCol).containsInAnyOrder(input);
-        p.run().waitUntilFinish();
-    }
+  /** Test StringForwardFn. */
+  @Test
+  @Category(NeedsRunner.class)
+  public void testStringForwardFn() {
+    PCollection<String> lines =
+        pipeline
+            .apply(Create.of(samples))
+            .apply(MapElements.via(new HelloWorldVertices.StringForwardFn()));
+    PAssert.that(lines).containsInAnyOrder(samples);
+    pipeline.run().waitUntilFinish();
+  }
 
-    /**
-     *
-     */
-    @Test
-    @Category(NeedsRunner.class)
-    public void testSimpleVertex() {
-        PCollection<String> pCol = p.apply(Create.of(input))
-                .apply(new HelloWorldVertices.SimpleVertex());
-        PAssert.that(pCol).containsInAnyOrder(input);
-        p.run().waitUntilFinish();
-    }
+  /** Test SimpleVertex. */
+  @Test
+  @Category(NeedsRunner.class)
+  public void testSimpleVertex() {
+    PCollection<String> lines =
+        pipeline.apply(Create.of(samples)).apply(new HelloWorldVertices.SimpleVertex());
+    PAssert.that(lines).containsInAnyOrder(samples);
+    pipeline.run().waitUntilFinish();
+  }
 }

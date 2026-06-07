@@ -10,6 +10,12 @@ FROM debian:trixie-slim
 
 # TODO Switch to distroless when it supports trixie for using java 21
 
+ARG project
+ARG tempLocation
+ARG dagType
+ARG runner
+ARG backtrackedYears
+
 WORKDIR /app
 COPY --from=build /work/app/build/distributions/app-*.tar .
 RUN apt update &&  \
@@ -17,4 +23,10 @@ RUN apt update &&  \
     apt clean \
 RUN tar --strip-components=1  xvf app-*.tar
 
-ENTRYPOINT ["/app/bin/app"]
+CMD ["/app/bin/app",
+"--project=${project}",
+"--runner=${runner}",
+"--dagType=${dagType}",
+"--tempLocation=${tempLocation}",
+"--backtrackedYears=${backtrackedYears}"
+]

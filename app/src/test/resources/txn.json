@@ -1,0 +1,36 @@
+{
+  "status": "OK",
+  "data": [
+    {
+      "PriceCategory": "不動産取引価格情報",
+      "Type": "宅地(土地と建物)",
+      "Region": "商業地",
+      "MunicipalityCode": "13102",
+      "Prefecture": "東京都",
+      "Municipality": "中央区",
+      "DistrictName": "日本橋小網町",
+      "TradePrice": "85000000",
+      "PricePerUnit": "",
+      "FloorPlan": "",
+      "Area": "80",
+      "UnitPrice": "",
+      "LandShape": "不整形",
+      "Frontage": "6",
+      "TotalFloorArea": "240",
+      "BuildingYear": "1972年",
+      "Structure": "ＲＣ",
+      "Use": "事務所",
+      "Purpose": "事務所",
+      "Direction": "北西",
+      "Classification": "区道",
+      "Breadth": "8",
+      "CityPlanning": "商業地域",
+      "CoverageRatio": "80",
+      "FloorAreaRatio": "500",
+      "Period": "2015年第2四半期",
+      "Renovation": "",
+      "Remarks": "",
+      "DistrictCode": "131020170"
+    }
+  ]
+}

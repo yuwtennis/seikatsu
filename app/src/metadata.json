@@ -1,0 +1,21 @@
+{
+  "name": "seikatsu-template",
+  "description": "Seikatsu flex template for Java",
+  "parameters": [
+    {
+      "name": "dagType",
+      "label": "Dag Type",
+      "helpText": "Dag Type"
+    },
+    {
+      "name": "tempLocation",
+      "label": "BQ Location",
+      "helpText": "BQ Location"
+    },
+    {
+      "name": "backtrackedYears",
+      "label": "Backtracked Years",
+      "helpText": "Backtracked Years"
+    }
+  ]
+}
