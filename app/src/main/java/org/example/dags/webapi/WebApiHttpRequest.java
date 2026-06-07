@@ -7,9 +7,7 @@ import org.example.dags.realestate.endpoints.Url;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * WebApiHttpRequest.
- */
+/** WebApiHttpRequest. */
 @AutoValue
 public abstract class WebApiHttpRequest implements Serializable {
   static Builder builder() {

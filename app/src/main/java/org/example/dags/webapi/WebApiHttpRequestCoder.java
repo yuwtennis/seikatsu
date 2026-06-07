@@ -8,18 +8,12 @@ import org.apache.beam.sdk.coders.CustomCoder;
 import org.apache.beam.sdk.coders.MapCoder;
 import org.apache.beam.sdk.coders.StringUtf8Coder;
 
-/**
- * WebApiHttpRequestCoder.
- */
+/** WebApiHttpRequestCoder. */
 public class WebApiHttpRequestCoder extends CustomCoder<WebApiHttpRequest> {
-  /**
-   * StringUtf8Coder.
-   */
+  /** StringUtf8Coder. */
   private static final StringUtf8Coder STRING_UTF_8_CODER = StringUtf8Coder.of();
 
-  /**
-   * MapCoder.
-   */
+  /** MapCoder. */
   private static final MapCoder<String, String> MAP_CODER =
       MapCoder.of(STRING_UTF_8_CODER, STRING_UTF_8_CODER);
 

@@ -30,9 +30,7 @@ import org.example.dags.webapi.WebApiHttpRequest;
 import org.example.dags.webapi.WebApiHttpResponse;
 import org.example.dags.webapi.WebApiHttpResponseCoder;
 
-/**
- * RealEstateDag.
- */
+/** RealEstateDag. */
 public class RealEstateDag implements Dag {
   /** Tokyo. */
   private static final String AREA_TOKYO = "13";
@@ -65,12 +63,10 @@ public class RealEstateDag implements Dag {
 
     // Create Key Value pairs of request {Type: Url}
     for (int i = currentYear; i > currentYear - backtracked; i--) {
-      urls.add(new RealEstatePriceEndpoint.Builder(
-              i, AREA_TOKYO, LANGUAGE).build().toUrl());
+      urls.add(new RealEstatePriceEndpoint.Builder(i, AREA_TOKYO, LANGUAGE).build().toUrl());
 
       urls.add(
-          new StandardLandPriceEndpoint.Builder(
-                  i, AREA_TOKYO, DIVISION_RESIDENTIAL_AREA)
+          new StandardLandPriceEndpoint.Builder(i, AREA_TOKYO, DIVISION_RESIDENTIAL_AREA)
               .build()
               .toUrl());
     }

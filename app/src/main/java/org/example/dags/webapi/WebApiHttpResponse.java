@@ -3,9 +3,7 @@ package org.example.dags.webapi;
 import com.google.auto.value.AutoValue;
 import java.io.Serializable;
 
-/**
- * WebApiHttpResponse.
- */
+/** WebApiHttpResponse. */
 @AutoValue
 public abstract class WebApiHttpResponse implements Serializable {
   /**
@@ -32,9 +30,7 @@ public abstract class WebApiHttpResponse implements Serializable {
    */
   public abstract String getCategory();
 
-  /**
-   * Builder.
-   */
+  /** Builder. */
   @AutoValue.Builder
   public abstract static class Builder {
     /**

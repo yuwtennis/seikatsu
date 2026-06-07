@@ -3,10 +3,7 @@ package org.example;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-/**
- * Utils.
- *
- */
+/** Utils. */
 public final class Utils {
   private Utils() {
     throw new UnsupportedOperationException();

@@ -1,9 +1,6 @@
 package org.example.dags.realestate.endpoints;
 
-/**
- * StandardLandPriceEndpoint.
- *
- */
+/** StandardLandPriceEndpoint. */
 public final class StandardLandPriceEndpoint extends Endpoint {
   /** Category. */
   public static final String CATEGORY = "standard_land_price";

@@ -1,14 +1,9 @@
 package org.example.dags.realestate.endpoints;
 
-/**
- * Endpoint.
- */
+/** Endpoint. */
 public abstract class Endpoint {
 
-  /**
-   * Builder class.
-   *
-   */
+  /** Builder class. */
   abstract static class Builder<T extends Builder<T>> {
     abstract Endpoint build();
 

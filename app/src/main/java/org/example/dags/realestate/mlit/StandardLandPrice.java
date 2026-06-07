@@ -9,9 +9,7 @@ import org.apache.beam.sdk.schemas.annotations.DefaultSchema;
 // true when the encoding of the elements is equal. Element
 // org.example.dags.realestate.mlit.StandardLandPrice@4a6c27d4
 
-/**
- * StandardLandPrice is a class representing the standard land price data.
- */
+/** StandardLandPrice is a class representing the standard land price data. */
 @DefaultSchema(JavaFieldSchema.class)
 public class StandardLandPrice extends Mlit {
 

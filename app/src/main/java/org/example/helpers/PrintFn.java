@@ -4,13 +4,9 @@ import org.apache.beam.sdk.transforms.DoFn;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * PrintFn.
- */
+/** PrintFn. */
 public class PrintFn extends DoFn<Object, Object> {
-  /**
-   * Logger.
-   */
+  /** Logger. */
   private static final Logger LOG = LoggerFactory.getLogger(PrintFn.class);
 
   /**

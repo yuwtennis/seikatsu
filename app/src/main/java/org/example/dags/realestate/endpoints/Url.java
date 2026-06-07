@@ -16,7 +16,7 @@ public class Url {
   /** The actual URL string. */
   private String url;
 
-  /** Url constructor.*/
+  /** Url constructor. */
   public Url() {}
 
   /**

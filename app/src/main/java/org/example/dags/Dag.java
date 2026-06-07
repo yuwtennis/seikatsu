@@ -2,9 +2,7 @@ package org.example.dags;
 
 import org.apache.beam.sdk.Pipeline;
 
-/**
- * DAG.
- */
+/** DAG. */
 public interface Dag {
   /**
    * Process.

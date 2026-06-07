@@ -14,10 +14,7 @@ import org.example.dags.webapi.WebApiHttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * ValidationFn.
- *
- */
+/** ValidationFn. */
 public class ValidationFn extends DoFn<WebApiHttpResponse, RealEstatesPrice> {
 
   private static final Logger LOG = LoggerFactory.getLogger(ValidationFn.class);

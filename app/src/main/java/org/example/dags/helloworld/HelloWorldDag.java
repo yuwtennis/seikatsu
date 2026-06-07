@@ -4,9 +4,7 @@ import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.transforms.Create;
 import org.example.dags.Dag;
 
-/**
- * HelloWorldDag.
- */
+/** HelloWorldDag. */
 public class HelloWorldDag implements Dag {
   /**
    * Process.

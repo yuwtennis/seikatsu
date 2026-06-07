@@ -1,8 +1,6 @@
 package org.example.dags.realestate.endpoints;
 
-/**
- * RealEstatePriceEndpoint.
- */
+/** RealEstatePriceEndpoint. */
 public final class RealEstatePriceEndpoint extends Endpoint {
   /** Category. */
   public static final String CATEGORY = "txn";
@@ -20,9 +18,7 @@ public final class RealEstatePriceEndpoint extends Endpoint {
   /** Language. */
   private final String language;
 
-  /**
-   * Builder class.
-   */
+  /** Builder class. */
   public static class Builder extends Endpoint.Builder<Builder> {
     /** Year. */
     private final int year;

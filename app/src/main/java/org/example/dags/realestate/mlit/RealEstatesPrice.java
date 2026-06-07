@@ -12,10 +12,7 @@ import org.apache.beam.sdk.schemas.annotations.DefaultSchema;
 // org.example.dags.realestate.mlit.RealEstatesPrice@2cdc717e
 // Perhaps use a intermediate object Map<String, String> then pass it to ValueSchema
 
-/**
- * RealEstatesPrice.
- *
- */
+/** RealEstatesPrice. */
 @DefaultSchema(JavaFieldSchema.class)
 public class RealEstatesPrice extends Mlit {
 

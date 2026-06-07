@@ -6,17 +6,13 @@ import org.example.dags.realestate.RealEstateDag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * DagDispatcher.
- */
+/** DagDispatcher. */
 public final class DagDispatcher {
   private DagDispatcher() {
     throw new UnsupportedOperationException();
   }
 
-  /**
-   * Logger.
-   */
+  /** Logger. */
   static final Logger LOG = LoggerFactory.getLogger(DagDispatcher.class);
 
   /**

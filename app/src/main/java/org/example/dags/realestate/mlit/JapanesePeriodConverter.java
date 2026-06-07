@@ -2,9 +2,7 @@ package org.example.dags.realestate.mlit;
 
 import com.fasterxml.jackson.databind.util.StdConverter;
 
-/**
- * Converts the Japanese fiscal period to the format YYYYMM.
- */
+/** Converts the Japanese fiscal period to the format YYYYMM. */
 public class JapanesePeriodConverter extends StdConverter<String, String> {
 
   /**

@@ -12,19 +12,13 @@ import org.apache.beam.io.requestresponse.UserCodeExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * WebApiHttpClient.
- */
+/** WebApiHttpClient. */
 public class WebApiHttpClient implements Caller<WebApiHttpRequest, WebApiHttpResponse> {
 
-  /**
-   * Logger.
-   */
+  /** Logger. */
   static final Logger LOG = LoggerFactory.getLogger(WebApiHttpClient.class);
 
-  /**
-   * Request factory.
-   */
+  /** Request factory. */
   private static final HttpRequestFactory REQUEST_FACTORY =
       new NetHttpTransport().createRequestFactory();
 

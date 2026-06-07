@@ -10,18 +10,13 @@ import org.example.dags.Dag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * App.
- */
+/** App. */
 public final class App {
   private App() {
     throw new UnsupportedOperationException();
   }
 
-  /**
-   * Dag options.
-   *
-   */
+  /** Dag options. */
   public interface DagOptions extends PipelineOptions {
     /**
      * Dag type.

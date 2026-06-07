@@ -8,18 +8,12 @@ import org.apache.beam.sdk.coders.CustomCoder;
 import org.apache.beam.sdk.coders.StringUtf8Coder;
 import org.jspecify.annotations.NonNull;
 
-/**
- * WebApiHttpResponseCoder.
- */
+/** WebApiHttpResponseCoder. */
 public class WebApiHttpResponseCoder extends CustomCoder<WebApiHttpResponse> {
-  /**
-   * StringUtf8Coder.
-   */
+  /** StringUtf8Coder. */
   private static final StringUtf8Coder STRING_UTF_8_CODER = StringUtf8Coder.of();
 
-  /**
-   * ByteArrayCoder.
-   */
+  /** ByteArrayCoder. */
   private static final ByteArrayCoder BYTE_ARRAY_CODER = ByteArrayCoder.of();
 
   /**
@@ -39,8 +33,7 @@ public class WebApiHttpResponseCoder extends CustomCoder<WebApiHttpResponse> {
    * @throws IOException IOException
    */
   @Override
-  public void encode(
-          final WebApiHttpResponse value, final @NonNull OutputStream outStream)
+  public void encode(final WebApiHttpResponse value, final @NonNull OutputStream outStream)
       throws IOException {
     BYTE_ARRAY_CODER.encode(value.getData(), outStream);
     STRING_UTF_8_CODER.encode(value.getCategory(), outStream);

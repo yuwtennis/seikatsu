@@ -1,15 +1,9 @@
 package org.example;
 
-/**
- * DagType.
- */
+/** DagType. */
 public enum DagType {
-  /**
-   * HelloWorldDag.
-   */
+  /** HelloWorldDag. */
   HELLOWORLD,
-  /**
-   * RealEstateDag.
-   */
+  /** RealEstateDag. */
   REALESTATE
 }

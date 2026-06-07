@@ -9,22 +9,16 @@ import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * HelloWorldVertices.
- */
+/** HelloWorldVertices. */
 public final class HelloWorldVertices {
   private HelloWorldVertices() {
     throw new UnsupportedOperationException();
   }
 
-  /**
-   * Logger.
-   */
+  /** Logger. */
   static final Logger LOG = LoggerFactory.getLogger(HelloWorldVertices.class);
 
-  /**
-   * StringForwardFn.
-   */
+  /** StringForwardFn. */
   public static class StringForwardFn extends SimpleFunction<String, String> {
     /**
      * Forward the string.
@@ -42,9 +36,7 @@ public final class HelloWorldVertices {
     }
   }
 
-  /**
-   * SimpleVertex.
-   */
+  /** SimpleVertex. */
   public static class SimpleVertex extends PTransform<PCollection<String>, PCollection<String>> {
     /**
      * Expand.
@@ -54,8 +46,8 @@ public final class HelloWorldVertices {
      * @throws NullPointerException if the input is null
      */
     @Override
-    public @NonNull PCollection<String> expand(
-            final PCollection<String> lines) throws NullPointerException {
+    public @NonNull PCollection<String> expand(final PCollection<String> lines)
+        throws NullPointerException {
       return lines.apply(MapElements.via(new StringForwardFn()));
     }
   }
