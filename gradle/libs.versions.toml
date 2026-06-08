@@ -5,7 +5,7 @@
 guava = "33.6.0-jre"
 junit = "4.13.1"
 beam-sdks-java-google-cloud-platform-bom = "2.72.0"
-jackson-bom = "2.21.2"
+jackson-bom = "2.22.0"
 slf4j-api = "2.0.17"
 slf4j-simple = "2.0.17"
 auto-value = "1.11.1"
