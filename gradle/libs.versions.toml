@@ -7,7 +7,7 @@ junit = "4.13.1"
 beam-sdks-java-google-cloud-platform-bom = "2.72.0"
 jackson-bom = "2.21.2"
 slf4j-api = "2.0.17"
-slf4j-simple = "2.0.17"
+slf4j-simple = "2.0.18"
 auto-value = "1.11.1"
 auto-value-annotations = "1.11.1"
 
