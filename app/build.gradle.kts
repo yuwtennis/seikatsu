@@ -11,7 +11,7 @@ version = "v0.0.1"
 plugins {
     id("org.owasp.dependencycheck") version "12.2.2" apply false
     jacoco
-    id("org.sonarqube") version "7.3.0.8198"
+    id("org.sonarqube") version "7.5.0.8588"
     id("com.diffplug.spotless") version "8.6.0"
 
     checkstyle
